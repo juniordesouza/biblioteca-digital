@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../auth.service';
+import { HomeHeaderComponent } from '../../components/home-header/home-header.component';
 
 // Custom validator to check if passwords match
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
@@ -17,7 +18,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
   templateUrl: './cadastro.component.html',
   styleUrls: ['./cadastro.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule]
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, HomeHeaderComponent]
 })
 export class CadastroComponent {
   private fb = inject(FormBuilder);
