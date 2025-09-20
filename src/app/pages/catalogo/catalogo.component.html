@@ -1,3 +1,4 @@
+<app-menu></app-menu>
 <div class="catalogo-container">
   @for (category of categories(); track category) {
     <section class="category-section">
@@ -6,11 +7,7 @@
         <button class="nav-button prev-button" (click)="scroll(category, 'left')">&#10094;</button>
         <div class="carousel" #carousel>
           @for (book of booksByCategory()[category]; track book.id) {
-            <div class="book-card">
-              <img [src]="book.coverUrl" [alt]="book.title">
-              <h3>{{ book.title }}</h3>
-              <p>{{ book.author }}</p>
-            </div>
+            <app-livro-card [book]="book" />
           }
         </div>
         <button class="nav-button next-button" (click)="scroll(category, 'right')">&#10095;</button>

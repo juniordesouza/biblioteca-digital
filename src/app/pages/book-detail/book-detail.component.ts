@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { BookService } from '../book.service';
+import { BookService } from '../../book.service';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { Book } from '../../book';
 
 @Component({
   selector: 'app-book-detail',
@@ -29,7 +30,7 @@ export class BookDetailComponent {
       }
       return of(undefined);
     })
-  ));
+  ), { initialValue: undefined as Book | undefined });
 
   isFavorite = computed(() => {
     const book = this.book();

@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, QueryList, signal, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BookService } from '../book.service';
-import { Book } from '../book';
-import { Observable } from 'rxjs';
+import { BookService } from '../../book.service';
+import { Book } from '../../book';
+import { LivroCardComponent } from '../../components/livro-card/livro-card.component';
+import { MenuComponent } from '../../components/menu/menu.component';
 
 @Component({
   selector: 'app-catalogo',
   templateUrl: './catalogo.component.html',
   styleUrls: ['./catalogo.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule]
+  imports: [CommonModule, LivroCardComponent, MenuComponent]
 })
 export class CatalogoComponent {
   private bookService = inject(BookService);
