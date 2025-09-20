@@ -1,0 +1,49 @@
+<div class="form-container">
+  <h2>Cadastro</h2>
+  <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="fullName">Nome Completo</label>
+      <input id="fullName" type="text" formControlName="fullName">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email">
+    </div>
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input id="username" type="text" formControlName="username">
+    </div>
+
+    <div class="form-group">
+      <label for="cpf">CPF</label>
+      <input id="cpf" type="text" formControlName="cpf">
+    </div>
+
+    <div class="form-group">
+      <label for="password">Senha</label>
+      <input id="password" type="password" formControlName="password">
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirmar Senha</label>
+      <input id="confirmPassword" type="password" formControlName="confirmPassword">
+    </div>
+
+    <div class="form-group radio-group">
+      <label>Sexo</label>
+      <div class="radio-options">
+        <label>
+          <input type="radio" value="F" formControlName="gender"> Feminino
+        </label>
+        <label>
+          <input type="radio" value="M" formControlName="gender"> Masculino
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-button" [disabled]="cadastroForm.invalid">Cadastrar</button>
+  </form>
+  <p>JÃ¡ tem uma conta? <a routerLink="/login">FaÃ§a o login</a></p>
+</div>

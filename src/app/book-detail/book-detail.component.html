@@ -1,0 +1,15 @@
+<div class="book-detail-container" *ngIf="book() as book">
+  <div class="book-card">
+    <img [src]="book?.coverUrl" [alt]="book?.title" class="book-cover">
+    <div class="book-info">
+      <h2>{{ book?.title }}</h2>
+      <p><strong>Autor:</strong> {{ book?.author }}</p>
+      <p><strong>Categoria:</strong> {{ book?.category }}</p>
+      
+      <button (click)="toggleFavorite()" class="favorite-button">
+        {{ isFavorite() ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos' }}
+      </button>
+      <button (click)="goBack()" class="back-button">Voltar</button>
+    </div>
+  </div>
+</div>
