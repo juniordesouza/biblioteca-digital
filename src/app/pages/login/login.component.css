@@ -47,9 +47,11 @@ label {
 
 input {
   width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #ccc;
+  padding: 1rem;
+  background-color: #373634;
+  border: 1px solid;
   border-radius: 4px;
+  outline: none;
 }
 
 .login-button {
@@ -72,13 +74,16 @@ input {
   text-align: center;
 }
 
-.restore-link {
+.signup-link a{
+  color: #C38632;
+}
+
+.restore-link{
   text-align: right;
-  color: white;
   text-decoration: underline;
   margin-bottom: 1rem;
 }
 
-.restore-link:visited {
-  color: white;
+.restore-link a{
+  color: #C38632;
 }
