@@ -1,9 +1,16 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #000;
+}
+
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #000;
+  flex-grow: 1;
+  width: 100%;
 }
 
 .login-card {
@@ -52,6 +59,7 @@ input {
   border: 1px solid;
   border-radius: 4px;
   outline: none;
+  color: white;
 }
 
 .login-button {
