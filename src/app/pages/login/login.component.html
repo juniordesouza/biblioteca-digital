@@ -2,18 +2,21 @@
 
 <div class="login-container">
   <div class="login-card">
-    <h2>Login</h2>
-    <form (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Senha</label>
-        <input type="password" id="password" required>
-      </div>
-      <button type="submit" class="login-button">Entrar</button>
-    </form>
-    <p class="signup-link">Não tem uma conta? <a routerLink="/cadastro">Cadastre-se</a></p>
-  </div>
+    <div class="title"><h2>BEM-VINDO(A) DE VOLTA!</h2></div>
+    <div class="body">
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input type="password" id="password" required>
+        </div>
+        <p class="restore-link"><a routerLink="/cadastro">Esqueci minha senha</a></p>
+        <button type="submit" class="login-button">Entrar</button>
+      </form>
+      <p class="signup-link">Não tem uma conta? <a routerLink="/cadastro">Cadastre-se</a></p>
+    </div>
+</div>
 </div>
