@@ -71,6 +71,11 @@ input:focus {
   border: 1px solid #C38632;
 }
 
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
 .login-button {
   width: 50%;
   padding: 1rem;
