@@ -6,13 +6,14 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Book } from '../../book';
+import { MenuComponent } from '../../components/menu/menu.component';
 
 @Component({
   selector: 'app-book-detail',
   templateUrl: './book-detail.component.html',
   styleUrls: ['./book-detail.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule]
+  imports: [CommonModule, MenuComponent]
 })
 export class BookDetailComponent {
   private route = inject(ActivatedRoute);
