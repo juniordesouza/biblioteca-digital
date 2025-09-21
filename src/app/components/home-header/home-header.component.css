@@ -16,6 +16,10 @@
   text-decoration: none;
 }
 
+.logo:hover{
+  cursor: pointer;
+}
+
 .auth-links {
   display: flex;
   list-style: none;
@@ -37,7 +41,8 @@
 }
 
 .button:hover {
-  background-color: #C38632;
+  background-color: #774f18;
+  cursor: pointer;
 }
 
 .button-secondary {
