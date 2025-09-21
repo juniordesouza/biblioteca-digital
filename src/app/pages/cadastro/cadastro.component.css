@@ -13,8 +13,7 @@
   align-items: center;
   flex-grow: 1;
   width: 100%;
-  padding: 0.8rem;
-  transform: scale(0.9);
+  padding: 2%;
 }
 
 .login-card {
@@ -30,7 +29,7 @@
 }
 
 .title{
-  padding: 1.5rem;
+  padding: 1rem;
   width: 100%;
   background-color: #C38632;
   border-top-right-radius: 20px;
@@ -38,7 +37,7 @@
 }
 
 .body{
-  padding: 2rem 1.5rem;
+  padding: 2rem 3rem;
   color: white;
 }
 
@@ -46,6 +45,8 @@ h2 {
   text-transform: uppercase;
   text-align: center;
   color: white;
+  font-size: 50px;
+  font-family: 'Alumni Sans', sans-serif;
 }
 
 .form-group {
@@ -54,12 +55,13 @@ h2 {
 
 label {
   display: block;
+  font-weight: bold;
   margin-bottom: 0.5rem;
 }
 
 input {
   width: 100%;
-  padding: 1rem;
+  padding: 0.7rem;
   background-color: #373634;
   border-radius: 8px;
   border: 0 none;
@@ -67,6 +69,7 @@ input {
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   color: white;
   transition: ease-in-out;
+  font-weight: bold;
 }
 
 input:focus {
@@ -111,7 +114,7 @@ input:focus {
 }
 
 .signup-link {
-  font-size: 12px;
+  font-size: 14px;
   margin-top: 1rem;
   text-align: center;
 }
