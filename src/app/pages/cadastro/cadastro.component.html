@@ -1,51 +1,62 @@
 <app-home-header></app-home-header>
-
-<div class="form-container">
-  <h2>Cadastro</h2>
-  <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="fullName">Nome Completo</label>
-      <input id="fullName" type="text" formControlName="fullName">
+<div class="login-container">
+  <div class="login-card">
+    <div class="title">
+      <h2>CRIE SUA CONTA</h2>
     </div>
+    <div class="body">
+      <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
 
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input id="email" type="email" formControlName="email">
-    </div>
+        <div class="form-group">
+          <label for="fullName">NOME COMPLETO</label>
+          <input id="fullName" type="text" formControlName="fullName">
+        </div>
 
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input id="username" type="text" formControlName="username">
-    </div>
+        <div class="form-group">
+          <label for="email">EMAIL</label>
+          <input id="email" type="email" formControlName="email">
+        </div>
 
-    <div class="form-group">
-      <label for="cpf">CPF</label>
-      <input id="cpf" type="text" formControlName="cpf">
-    </div>
+        <div class="form-group">
+          <label for="username">USERNAME</label>
+          <input id="username" type="text" formControlName="username">
+        </div>
 
-    <div class="form-group">
-      <label for="password">Senha</label>
-      <input id="password" type="password" formControlName="password">
-    </div>
+        <div class="form-group">
+          <label for="cpf">CPF</label>
+          <input id="cpf" type="text" formControlName="cpf">
+        </div>
 
-    <div class="form-group">
-      <label for="confirmPassword">Confirmar Senha</label>
-      <input id="confirmPassword" type="password" formControlName="confirmPassword">
-    </div>
+        <div class="form-group">
+          <label for="password">SENHA</label>
+          <input id="password" type="password" formControlName="password">
+        </div>
 
-    <div class="form-group radio-group">
-      <label>Sexo</label>
-      <div class="radio-options">
-        <label>
-          <input type="radio" value="F" formControlName="gender"> Feminino
-        </label>
-        <label>
-          <input type="radio" value="M" formControlName="gender"> Masculino
-        </label>
+        <div class="form-group">
+          <label for="confirmPassword">CONFIRMAR SENHA</label>
+          <input id="confirmPassword" type="password" formControlName="confirmPassword">
+        </div>
+
+        <div class="form-group radio-group">
+          <label>SEXO</label>
+          <div class="radio-options">
+            <label>
+              <input type="radio" value="F" formControlName="gender"> Feminino
+            </label>
+            <label>
+              <input type="radio" value="M" formControlName="gender"> Masculino
+            </label>
+          </div>
+        </div>
+
+        <div class="button-container">
+          <button type="submit" class="login-button" [disabled]="cadastroForm.invalid">CADASTRAR</button>
+        </div>
+
+      </form>
+      <div class="signup-link">
+        <p>Já tem uma conta? <a routerLink="/login">Faça o login</a></p>
       </div>
     </div>
-
-    <button type="submit" class="submit-button" [disabled]="cadastroForm.invalid">Cadastrar</button>
-  </form>
-  <p>JÃ¡ tem uma conta? <a routerLink="/login">FaÃ§a o login</a></p>
+  </div>
 </div>
