@@ -5,28 +5,26 @@
     </div>
     <div class="links">
       <ul>
-        <li><a routerLink="/">Home</a></li>
-        <li><a routerLink="/catalogo">Catálogo</a></li>
-        <li><a routerLink="/sobre">Sobre</a></li>
-        <li><a routerLink="/favoritos">Favoritos</a></li>
-        <li><a routerLink="/login">Login</a></li>
-        <li><a routerLink="/cadastro">Cadastro</a></li>
+        <li><a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+        <li><a routerLink="/catalogo" routerLinkActive="active-link">Catálogo</a></li>
+        <li><a routerLink="/sobre" routerLinkActive="active-link">Sobre</a></li>
+        <li><a routerLink="/favoritos" routerLinkActive="active-link">Favoritos</a></li>
+        <li><a routerLink="/login" routerLinkActive="active-link">Login</a></li>
+        <li><a routerLink="/cadastro" routerLinkActive="active-link">Cadastro</a></li>
       </ul>
     </div>
   </div>
-  <div class="right-side">
-    <div class="search">
-      <div class="search-icon" (click)="toggleSearch()">
-        <span class="material-symbols-outlined">
-          search
-        </span>
-      </div>
-      <input type="text" placeholder="Pesquisar..." [class.visible]="isSearchVisible()" class="search-input">
-      <div class="user-info">
-        <span class="material-symbols-outlined">
-          person
-        </span>
-      </div>
-  </div>
+  <div class="search">
+    <div class="search-icon" (click)="toggleSearch()">
+      <span class="material-symbols-outlined">
+        search
+      </span>
+    </div>
+    <input type="text" placeholder="Pesquisar..." [class.visible]="isSearchVisible()" class="search-input">
+    <div class="user-info">
+      <span class="material-symbols-outlined">
+        person
+      </span>
+    </div>
   </div>
 </nav>

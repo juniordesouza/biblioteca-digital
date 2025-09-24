@@ -22,17 +22,10 @@
   gap: 30px;
 }
 
-.right-side{
-  padding: 0 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .search{
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 20px;
   padding: 10px;
 }
 
@@ -44,8 +37,10 @@
 .menu-container ul {
   list-style-type: none;
   margin: 0;
+  padding: 0;
   display: flex;
   justify-content: center;
+  color: white;
 }
 
 .menu-container li {
@@ -60,6 +55,8 @@
   text-decoration: none;
   border-radius: 20px;
   transition: ease-in-out .3s;
+  font-size: 22px;
+  font-family: 'Alumni Sans', sans-serif;
 }
 
 .menu-container li a:hover {
@@ -69,14 +66,18 @@
 .search-input{
   border-radius: 20px;
   border: none;
-  padding: 10px 15px;
-  transition: all 0.5s ease-in-out;
+  padding: 10px;
+  transition: all 0.3s ease-in-out;
   width: 0;
-  outline: none;
   opacity: 0;
 }
 
 .search-input.visible {
-  width: 250px;
+  width: 200px;
   opacity: 1;
+}
+
+.active-link {
+  font-weight: bold;
+  text-decoration: underline !important;
 }
