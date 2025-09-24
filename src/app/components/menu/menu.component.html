@@ -1,7 +1,7 @@
 <nav class="menu-container">
   <div class="selection-container">
     <div class="logo">
-      Digital Library
+      LOGO HERE
     </div>
     <div class="links">
       <ul>
@@ -14,16 +14,19 @@
       </ul>
     </div>
   </div>
-  <div class="search">
-    <div class="search-icon">
-      <span class="material-symbols-outlined">
-        search
-      </span>
-    </div>
-    <div class="user-info">
-      <span class="material-symbols-outlined">
-        person
-      </span>
-    </div>
+  <div class="right-side">
+    <div class="search">
+      <div class="search-icon" (click)="toggleSearch()">
+        <span class="material-symbols-outlined">
+          search
+        </span>
+      </div>
+      <input type="text" placeholder="Pesquisar..." [class.visible]="isSearchVisible()" class="search-input">
+      <div class="user-info">
+        <span class="material-symbols-outlined">
+          person
+        </span>
+      </div>
+  </div>
   </div>
 </nav>
