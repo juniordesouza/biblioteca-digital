@@ -16,6 +16,7 @@ h2 {
 
 .carousel-wrapper {
   position: relative;
+  cursor: grab;
 }
 
 .carousel {
@@ -24,7 +25,14 @@ h2 {
   scroll-behavior: smooth;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+  transition: scroll 1s ease-in-out; /* Slower, smoother transition */
 }
+
+.carousel.active {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+}
+
 
 .carousel::-webkit-scrollbar {
   display: none; /* Chrome, Safari, and Opera */
@@ -38,7 +46,7 @@ h2 {
   border-radius: 8px;
   overflow: hidden;
   text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
 }
 
 .book-card:hover {
@@ -79,6 +87,11 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .prev-button {

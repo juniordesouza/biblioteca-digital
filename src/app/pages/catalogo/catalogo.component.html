@@ -5,7 +5,14 @@
       <h2>{{ category }}</h2>
       <div class="carousel-wrapper">
         <button class="nav-button prev-button" (click)="scroll(category, 'left')">&#10094;</button>
-        <div class="carousel" #carousel>
+        <div 
+          class="carousel"
+          #carousel
+          (mousedown)="onMouseDown($event, category)" 
+          (mouseleave)="onMouseLeave(category)" 
+          (mouseup)="onMouseUp(category)" 
+          (mousemove)="onMouseMove($event, category)"
+        >
           @for (book of booksByCategory()[category]; track book.id) {
             <app-livro-card [book]="book" />
           }
