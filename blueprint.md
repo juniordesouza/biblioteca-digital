@@ -1,33 +1,23 @@
-# Blueprint da Aplicação Biblioteca Digital
+# Blueprint do Projeto: App de Catálogo de Livros
 
 ## Visão Geral
 
-O objetivo deste projeto é criar uma aplicação de biblioteca digital moderna e interativa usando as últimas funcionalidades do Angular. A aplicação permitirá aos usuários navegar por um catálogo de livros, ver detalhes de cada livro, adicionar livros aos seus favoritos e se cadastrar para ter uma experiência personalizada.
+Este documento descreve o plano de desenvolvimento para um aplicativo de catálogo de livros, detalhando os recursos, design e etapas de implementação.
 
-## Estilo, Design e Funcionalidades
+## Recursos e Design Implementados
 
-* **Arquitetura Standalone:** Todos os componentes, diretivas e pipes são standalone para uma arquitetura mais limpa e modular.
-* **Change Detection OnPush:** Todos os componentes usam a estratégia `ChangeDetectionStrategy.OnPush` para um melhor desempenho.
-* **Controle de Fluxo Nativo:** Utiliza a nova sintaxe `@` para todo o controle de fluxo nos templates.
-* **CSS Moderno e Responsivo:** A aplicação utiliza CSS nativo e moderno para um design visualmente atraente e responsivo.
-* **Componentes Reutilizáveis:** Criação de componentes reutilizáveis, como o `livro-card` e o `menu`, para manter um código limpo e consistente.
-* **Roteamento:** O roteamento da aplicação é configurado no arquivo `app.routes.ts`.
-* **Menu de Navegação:** Um menu de navegação horizontal está presente nas páginas de Catálogo, Favoritos e Detalhes do Livro.
+- **Página Inicial**: Apresenta o aplicativo e seus recursos.
+- **Catálogo de Livros**: Exibe uma lista de livros com imagens e títulos.
+- **Detalhes do Livro**: Mostra informações detalhadas sobre um livro selecionado.
+- **Favoritos**: Permite ao usuário salvar e visualizar seus livros favoritos.
+- **Página "Sobre"**: Fornece informações sobre o projeto.
+- **Páginas de Login e Cadastro**: Interfaces para gerenciamento de contas de usuário.
+- **Navegação**: Barra de navegação para acessar as diferentes seções do app.
+- **Página de Usuário**: Exibe uma foto de perfil aleatória e uma descrição do usuário.
 
-## Plano de Desenvolvimento Atual
+## Plano de Implementação Atual
 
-O plano atual foi adicionar o componente de menu horizontal nas páginas de favoritos e de detalhes do livro.
+### Fase 1: Configurar o Firebase
 
-### Passos:
-
-1.  **Adicionar Menu aos Favoritos:**
-    *   Importar o `MenuComponent` em `favoritos.component.ts`.
-    *   Adicionar `MenuComponent` aos `imports` do componente.
-    *   Adicionar o seletor `<app-menu>` em `favoritos.component.html`.
-2.  **Adicionar Menu aos Detalhes do Livro:**
-    *   Importar o `MenuComponent` em `book-details.component.ts`.
-    *   Adicionar `MenuComponent` aos `imports` do componente.
-    *   Adicionar o seletor `<app-menu>` em `book-details.component.html`.
-3.  **Verificar e Finalizar:**
-    *   Executar o `ng build`.
-    *   Atualizar o `blueprint.md`.
+1.  **Instalar o Firebase**: Adicionar a biblioteca do Firebase ao projeto.
+2.  **Criar Arquivo de Configuração**: Armazenar as credenciais do Firebase em um arquivo de configuração separado.
