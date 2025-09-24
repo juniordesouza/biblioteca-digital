@@ -25,14 +25,19 @@
 .search{
   display: flex;
   justify-content: center;
-  gap: 20px;
-  padding: 10px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
 }
 
 .search span{
   font-size: 1.8rem;
   cursor: pointer;
   }
+
+.search-icon{
+  margin-top: 5px;
+}
 
 .menu-container ul {
   list-style-type: none;
@@ -67,7 +72,8 @@
   border-radius: 20px;
   border: none;
   padding: 10px;
-  transition: all 0.3s ease-in-out;
+  outline: none;
+  transition: all 0.4s ease-in-out;
   width: 0;
   opacity: 0;
 }
@@ -80,4 +86,16 @@
 .active-link {
   font-weight: bold;
   text-decoration: underline !important;
+}
+
+.user-info{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-info p{
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
 }
