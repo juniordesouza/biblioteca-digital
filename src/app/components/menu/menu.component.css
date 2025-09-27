@@ -76,6 +76,7 @@
   transition: all 0.4s ease-in-out;
   width: 0;
   opacity: 0;
+  outline: none;
 }
 
 .search-input.visible {
