@@ -6,7 +6,8 @@
 .carousel {
   display: flex;
   overflow-x: auto;
-  scroll-behavior: smooth; /* Garante a fluidez no clique das setas */
+  /* O CSS é a única fonte de verdade para a animação de rolagem. */
+  scroll-behavior: smooth; 
   -ms-overflow-style: none; 
   scrollbar-width: none;  
 }
@@ -64,6 +65,7 @@
   right: 10px;
 }
 
+/* A classe .active DESLIGA a animação suave para o arraste com o mouse. */
 .carousel.active {
   cursor: grabbing;
   cursor: -webkit-grabbing;

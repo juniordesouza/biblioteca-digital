@@ -45,18 +45,20 @@ export class CarouselNetflixComponent {
     e.preventDefault();
     const carouselEl = this.carousel().nativeElement;
     const x = e.pageX - carouselEl.offsetLeft;
-    const walk = (x - this.startX) * 2; // Multiplicador para acelerar o arraste
+    const walk = (x - this.startX) * 2;
     carouselEl.scrollLeft = this.scrollLeft - walk;
   }
 
   scroll(direction: 'left' | 'right'): void {
     const carouselEl = this.carousel().nativeElement;
-    const scrollAmount = carouselEl.clientWidth * 0.8; // Rola 80% da largura visível
+    const scrollAmount = carouselEl.clientWidth * 0.8; 
 
+    // A responsabilidade da animação é transferida para o CSS, eliminando o conflito.
+    // O TypeScript apenas dispara o evento de rolagem.
     if (direction === 'right') {
-      carouselEl.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      carouselEl.scrollBy({ left: scrollAmount });
     } else {
-      carouselEl.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      carouselEl.scrollBy({ left: -scrollAmount });
     }
   }
 }
