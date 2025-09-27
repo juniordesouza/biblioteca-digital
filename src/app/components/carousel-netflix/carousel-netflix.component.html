@@ -1,0 +1,20 @@
+<div class="carousel-container">
+  <button class="nav-button prev-button" (click)="scroll('left')">&#10094;</button>
+  <div 
+    #carousel 
+    class="carousel"
+    (mousedown)="onMouseDown($event)" 
+    (mouseleave)="onMouseLeave()" 
+    (mouseup)="onMouseUp()" 
+    (mousemove)="onMouseMove($event)"
+  >
+    @for (book of books(); track book.id) {
+      <div class="carousel-item">
+        <a [routerLink]="['/livro', book.id]">
+          <img [src]="book.coverUrl" [alt]="book.title">
+        </a>
+      </div>
+    }
+  </div>
+  <button class="nav-button next-button" (click)="scroll('right')">&#10095;</button>
+</div>
