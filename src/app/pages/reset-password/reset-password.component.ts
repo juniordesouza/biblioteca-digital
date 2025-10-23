@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,5 +8,12 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ResetPasswordComponent {
+  isTokenSent = signal(false);
 
+  sendToken(event: Event) {
+    event.preventDefault();
+    // Aqui você adicionaria a lógica para enviar o email de recuperação
+    // Por enquanto, vamos apenas ativar a animação
+    this.isTokenSent.set(true);
+  }
 }
