@@ -6,6 +6,7 @@ import { SobreComponent } from './pages/sobre/sobre.component';
 import { FavoritosComponent } from './pages/favoritos/favoritos.component';
 import { LoginComponent } from './pages/login/login.component';
 import { CadastroComponent } from './pages/cadastro/cadastro.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -15,5 +16,6 @@ export const routes: Routes = [
     { path: 'sobre', component: SobreComponent },
     { path: 'favoritos', component: FavoritosComponent },
     { path: 'login', component: LoginComponent },
-    { path: 'cadastro', component: CadastroComponent }
+    { path: 'cadastro', component: CadastroComponent },
+    { path: 'reset-password', component: ResetPasswordComponent }
 ];
