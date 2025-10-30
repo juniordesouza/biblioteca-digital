@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-reset-password',
@@ -9,11 +8,11 @@ import { CommonModule } from '@angular/common';
 })
 export class ResetPasswordComponent {
   isTokenSent = signal(false);
+  animateCard1 = signal(false);
 
   sendToken(event: Event) {
     event.preventDefault();
-    // Aqui você adicionaria a lógica para enviar o email de recuperação
-    // Por enquanto, vamos apenas ativar a animação
     this.isTokenSent.set(true);
+    this.animateCard1.set(true);
   }
 }
