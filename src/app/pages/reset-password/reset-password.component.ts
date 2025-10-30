@@ -16,6 +16,7 @@ export class ResetPasswordComponent {
 
   sendToken(event: Event): void {
     event.preventDefault();
+    alert('codigo enviado!');
     this.isTokenSent.set(true);
     this.animateCard1.set(true);
   }
