@@ -16,13 +16,13 @@ Este documento descreve o plano de desenvolvimento para um aplicativo de catálo
 - **Página de Usuário**: Exibe uma foto de perfil aleatória e uma descrição do usuário.
 - **Página de Redefinição de Senha**:
     - Interface de dois cards para solicitação de token e redefinição de senha.
-    - Animação de transição entre os cards.
+    - **Animação Paralela**: A animação de transição dos cards ocorre em paralelo com a exibição do banner de feedback, proporcionando uma experiência de usuário mais fluida e responsiva.
     - **Banner de Feedback Flutuante**: Uma faixa verde no topo da página exibe mensagens de status (ex: "código enviado", "senha redefinida") sem afetar o layout da página.
 
 ## Plano de Implementação Atual
 
-### Concluído: Refinamento do Feedback de Redefinição de Senha
+### Concluído: Otimização da Experiência de Redefinição de Senha
 
-1.  **Implementado Banner de Feedback**: Um banner verde é exibido na parte superior da página para fornecer feedback ao usuário.
-2.  **Posicionamento Flutuante**: O banner usa `position: fixed` para garantir que ele flutue sobre o conteúdo sem deslocar outros elementos da página, melhorando a experiência do usuário.
-3.  **Lógica Unificada**: A lógica de exibição de mensagens foi centralizada em um único `signal` para maior clareza e manutenibilidade.
+1.  **Animações em Paralelo**: A lógica foi refatorada para permitir que a animação de transição do card e a exibição do banner de feedback ocorram simultaneamente, eliminando atrasos na interface.
+2.  **Banner de Feedback Flutuante**: O banner usa `position: fixed` para garantir que ele flutue sobre o conteúdo sem deslocar outros elementos da página.
+3.  **Lógica Simplificada**: A gestão das mensagens e animações foi aprimorada para maior clareza e eficiência.

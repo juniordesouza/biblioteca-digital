@@ -20,13 +20,16 @@ export class ResetPasswordComponent {
 
   sendToken(event: Event): void {
     event.preventDefault();
-    this.feedbackMessage.set('código enviado!');
     
+    // 1. Mostra o banner e inicia a animação do card imediatamente
+    this.feedbackMessage.set('código enviado!');
+    this.isTokenSent.set(true);
+    this.animateCard1.set(true);
+    
+    // 2. Define um timer para esconder o banner após 2 segundos, sem bloquear a animação
     setTimeout(() => {
       this.feedbackMessage.set('');
-      this.isTokenSent.set(true);
-      this.animateCard1.set(true);
-    }, 2000); // A mensagem some e o card transiciona após 2s
+    }, 2000);
   }
 
   resetPassword(event: Event): void {
@@ -36,6 +39,6 @@ export class ResetPasswordComponent {
     setTimeout(() => {
       this.feedbackMessage.set('');
       this.router.navigate(['/']);
-    }, 2000); // A mensagem some e o usuário é redirecionado após 2s
+    }, 2000);
   }
 }
