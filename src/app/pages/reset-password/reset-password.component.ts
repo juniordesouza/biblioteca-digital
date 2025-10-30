@@ -14,9 +14,14 @@ export class ResetPasswordComponent {
   isTokenSent = signal(false);
   animateCard1 = signal(false);
 
-  sendToken(event: Event) {
+  sendToken(event: Event): void {
     event.preventDefault();
     this.isTokenSent.set(true);
     this.animateCard1.set(true);
+  }
+
+  resetPassword(event: Event): void {
+    event.preventDefault();
+    alert('senha redefinida');
   }
 }
