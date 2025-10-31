@@ -1,5 +1,199 @@
-.hero-section h1,
-.hero-section p,
-.content-section p {
-  color: gold;
+:root {
+  --primary-color: #C38632;
+  --background-dark: #121212; /* Um preto mais profundo */
+  --text-light: #E0E0E0; /* Branco suave */
+  --text-dark: #333333;
+  --card-background: #1A1A1A;
+}
+
+.home-container {
+  color: white;
+  background-color: var(--background-dark);
+  color: var(--text-light);
+  font-family: 'Alumni Sans', sans-serif;
+  /* Fundo da biblioteca mais visível */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.75)), url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.main-content {
+  color: white;
+  padding: 2rem 5%;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  flex-wrap: wrap; /* Para responsividade */
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+  padding: 4rem 0;
+  min-height: 70vh;
+}
+
+.hero-left {
+  flex-basis: 40%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Book Cover Styling */
+.book-cover {
+  width: 320px; /* Aumentado um pouco */
+  height: 480px; /* Aumentado um pouco */
+  background-color: #0A0A0A;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: 4px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+  /* Textura de fundo mais sutil */
+  background-image: url('https://www.transparenttextures.com/patterns/dark-geometric.png'); 
+  border: 1px solid #222; /* Borda interna sutil */
+  overflow: hidden; /* Garante que os ornamentos fiquem dentro */
+}
+
+.logo {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-light);
+  letter-spacing: 0.1em;
+  z-index: 1;
+}
+
+/* Corner Ornaments */
+.corner-ornament {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-style: solid;
+  border-color: var(--primary-color);
+  opacity: 0.9;
+}
+
+.corner-ornament.top-left {
+  top: 20px;
+  left: 20px;
+  border-width: 4px 0 0 4px;
+}
+
+.corner-ornament.top-right {
+  top: 20px;
+  right: 20px;
+  border-width: 4px 4px 0 0;
+}
+
+.corner-ornament.bottom-left {
+  bottom: 20px;
+  left: 20px;
+  border-width: 0 0 4px 4px;
+}
+
+.corner-ornament.bottom-right {
+  bottom: 20px;
+  right: 20px;
+  border-width: 0 4px 4px 0;
+}
+
+/* Swirls for ornaments */
+.corner-ornament::before, .corner-ornament::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 3px solid var(--primary-color);
+}
+
+.top-left::before { top: -15px; left: 5px; border-width: 0 3px 3px 0; transform: rotate(-45deg); }
+.top-left::after { top: 5px; left: -15px; border-width: 0 3px 3px 0; transform: rotate(-45deg); }
+
+.top-right::before { top: -15px; right: 5px; border-width: 0 0 3px 3px; transform: rotate(45deg); }
+.top-right::after { top: 5px; right: -15px; border-width: 0 0 3px 3px; transform: rotate(45deg); }
+
+.bottom-left::before { bottom: -15px; left: 5px; border-width: 3px 3px 0 0; transform: rotate(45deg); }
+.bottom-left::after { bottom: 5px; left: -15px; border-width: 3px 3px 0 0; transform: rotate(45deg); }
+
+.bottom-right::before { bottom: -15px; right: 5px; border-width: 3px 0 0 3px; transform: rotate(-45deg); }
+.bottom-right::after { bottom: 5px; right: -15px; border-width: 3px 0 0 3px; transform: rotate(-45deg); }
+
+/* Hero Right */
+.hero-right {
+  flex-basis: 55%;
+  text-align: left;
+}
+
+.hero-right h1, .hero-right h3 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.hero-right .highlight {
+  font-size: 5.5rem;
+  font-weight: 900;
+  color: var(--text-light);
+  margin: -10px 0;
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+.cta-button {
+  background-color: transparent;
+  border: 2px solid var(--text-light);
+  color: var(--text-light);
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 2.5rem;
+  letter-spacing: 0.1em;
+}
+
+.cta-button:hover { background-color: var(--text-light); color: var(--text-dark); }
+
+/* Details & Features Sections */
+.details {
+  background-color: var(--card-background);
+  padding: 2.5rem;
+  border-radius: 8px;
+  margin: 3rem 0;
+  text-align: center;
+}
+
+.details-card h4, .feature-item h5 {
+  letter-spacing: 0.05em;
+  font-weight: 900;
+}
+
+/* FIX: Forçar a cor clara nos parágrafos */
+.details-card p, .feature-item p {
+  color: var(--text-light) !important; 
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.details-card h4 { font-size: 1.8rem; margin-bottom: 1rem; }
+.feature-item h5 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+.features { padding: 4rem 0; }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+}
+
+.feature-item { text-align: left; }
+
+.feature-icon {
+  width: 35px;
+  height: 35px;
+  margin-bottom: 1rem;
+  filter: invert(80%) sepia(20%) saturate(1500%) hue-rotate(350deg) brightness(95%) contrast(90%);
 }
