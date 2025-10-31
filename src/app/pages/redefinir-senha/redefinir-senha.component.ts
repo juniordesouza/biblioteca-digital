@@ -4,11 +4,11 @@ import { HomeHeaderComponent } from '../../components/home-header/home-header.co
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-reset-password',
+  selector: 'app-redefinir-senha',
   standalone: true,
   imports: [CommonModule, HomeHeaderComponent],
-  templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.css'],
+  templateUrl: './redefinir-senha.component.html',
+  styleUrls: ['./redefinir-senha.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ResetPasswordComponent {
