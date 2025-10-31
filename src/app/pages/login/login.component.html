@@ -1,29 +1,32 @@
 <app-home-header></app-home-header>
-<div class="login-container">
-  <div class="login-card">
-    <div class="title">
-      <h2>BEM-VINDO DE VOLTA</h2>
-    </div>
-    <div class="body">
-      <form>
-        <div class="form-group">
-         <label for="email">USERNAME OU EMAIL</label>
-         <input type="email" id="email" placeholder="@email.com" required>
+<div class="main-wrapper">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="title">
+        <h2>BEM-VINDO DE VOLTA</h2>
+      </div>
+      <div class="body">
+        <form>
+          <div class="form-group">
+           <label for="email">USERNAME OU EMAIL</label>
+           <input type="email" id="email" placeholder="@email.com" required>
+         </div>
+         <div class="form-group">
+           <label for="password">SENHA</label>
+           <input type="password" id="password" placeholder="senha" required>
+         </div>
+         <div class="restore-link">
+             <a routerLink="/forgot-password">Esqueci a senha</a>
+         </div>
+         <div class="button-container">
+          <button type="submit" class="login-button">ENTRAR</button>
+         </div>
+       </form>
+       <div class="signup-link">
+         <p>Ainda não tem conta? <a routerLink="/cadastro">Cadastre-se</a></p>
        </div>
-       <div class="form-group">
-         <label for="password">SENHA</label>
-         <input type="password" id="password" placeholder="senha" required>
-       </div>
-       <div class="restore-link">
-           <a routerLink="/forgot-password">Esqueci a senha</a>
-       </div>
-       <div class="button-container">
-        <button type="submit" class="login-button">ENTRAR</button>
-       </div>
-     </form>
-     <div class="signup-link">
-       <p>Ainda não tem conta? <a routerLink="/cadastro">Cadastre-se</a></p>
      </div>
    </div>
- </div>
+  </div>
 </div>
+
