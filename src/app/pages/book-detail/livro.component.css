@@ -1,0 +1,78 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #333;
+  color: #fff;
+}
+
+.book-detail-container {
+  display: flex;
+  padding: 40px;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.book-cover img {
+  width: 350px;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.book-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.book-info h1 {
+  font-family: 'Arial', sans-serif;
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.rating {
+  display: flex;
+  gap: 5px;
+  color: #ffc107;
+  margin-bottom: 15px;
+}
+
+.rating .star {
+  font-size: 24px;
+}
+
+.description {
+  line-height: 1.6;
+}
+
+.description button {
+  background: none;
+  border: none;
+  color: #ffc107;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 10px;
+  text-decoration: underline;
+}
+
+.get-book-btn {
+  background-color: #e5a00d;
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
+  align-self: flex-start;
+  text-transform: uppercase;
+}
+
+.get-book-btn:hover {
+  background-color: #c48a0b;
+}

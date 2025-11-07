@@ -1,8 +1,8 @@
-<app-menu></app-menu>
-<div class="catalogo-container">
+<app-menu />
+<div class="catalog-container">
   @for (category of categories(); track category) {
-    <section class="category-section">
-      <app-carousel-netflix [books]="booksByCategory()[category]" />
-    </section>
+    <div class="category-section">
+      <app-carousel-netflix [books]="booksByCategory()[category]" [title]="category" />
+    </div>
   }
 </div>

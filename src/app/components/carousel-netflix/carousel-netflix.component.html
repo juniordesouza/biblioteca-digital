@@ -1,20 +1,25 @@
 <div class="carousel-container">
-  <button class="nav-button prev-button" (click)="scroll('left')">&#10094;</button>
-  <div 
-    #carousel 
-    class="carousel"
-    (mousedown)="onMouseDown($event)" 
-    (mouseleave)="onMouseLeave()" 
-    (mouseup)="onMouseUp()" 
-    (mousemove)="onMouseMove($event)"
-  >
-    @for (book of books(); track book.id) {
-      <div class="carousel-item">
-        <a [routerLink]="['/livro', book.id]">
-          <img [src]="book.coverUrl" [alt]="book.title">
-        </a>
-      </div>
-    }
-  </div>
-  <button class="nav-button next-button" (click)="scroll('right')">&#10095;</button>
+    <div class="carousel-header">
+        <h2>{{ title() }}</h2>
+        <a class="carousel-link" [routerLink]="['/catalogo']">Ver mais</a>
+    </div>
+    <div class="carousel-content">
+        <button class="carousel-arrow left-arrow" (click)="scrollLeft()" [disabled]="scrollPosition() === 0">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="carousel-items-container" #carouselContainer>
+            <div class="carousel-items" #carouselItems>
+                @for (book of books(); track book.id) {
+                <div class="carousel-item">
+                    <a [routerLink]="['/livro', book.id]">
+                        <img [src]="book.cover" [alt]="book.title">
+                    </a>
+                </div>
+                }
+            </div>
+        </div>
+        <button class="carousel-arrow right-arrow" (click)="scrollRight()" [disabled]="scrollPosition() >= maxScrollPosition()">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
 </div>

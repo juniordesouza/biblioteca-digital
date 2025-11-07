@@ -1,0 +1,37 @@
+<app-menu />
+<div class="book-detail-container">
+  @if (book(); as book) {
+  <div class="book-cover">
+    <img [src]="book.cover" [alt]="book.title" />
+  </div>
+  <div class="book-info">
+    <h1>{{ book.title }}</h1>
+
+    <div class="rating">
+      @for (star of getStars(book.rating || 0); track $index) {
+      <span class="star">&#9733;</span>
+      }
+    </div>
+
+    <p><strong>Autor(a):</strong> {{ book.author }}</p>
+    <p><strong>Editora:</strong> {{ book.publisher }}</p>
+    <p><strong>Tema:</strong> {{ book.category }}</p>
+
+    <div class="description">
+      <p><strong>Descrição:</strong></p>
+      <p [class.expanded]="isExpanded()">
+        {{ book.description }}
+      </p>
+      <button (click)="toggleDescription()">
+        {{ isExpanded() ? 'Leia menos' : 'Leia mais' }}
+      </button>
+    </div>
+
+    <p><strong>Quantidades restantes:</strong> {{ book.quantity }}</p>
+
+    <button class="get-book-btn">OBTER LIVRO</button>
+  </div>
+  } @else {
+  <p>Carregando detalhes do livro...</p>
+  }
+</div>

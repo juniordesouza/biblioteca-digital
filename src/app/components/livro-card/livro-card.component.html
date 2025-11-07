@@ -1,3 +1,5 @@
-<a [routerLink]="['/livro', book().id]">
-  <img [src]="book().coverUrl" [alt]="book().title">
-</a>
+<div class="book-card">
+  <img [src]="book().cover" [alt]="book().title">
+  <h3>{{ book().title }}</h3>
+  <p>{{ book().author }}</p>
+</div>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, input, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, computed, input, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Book } from '../../book';
 import { RouterModule } from '@angular/router';
@@ -12,53 +12,32 @@ import { RouterModule } from '@angular/router';
 })
 export class CarouselNetflixComponent {
   books = input.required<Book[]>();
-  carousel = viewChild.required<ElementRef<HTMLDivElement>>('carousel');
+  title = input.required<string>();
+  carouselContainer = viewChild.required<ElementRef<HTMLDivElement>>('carouselContainer');
+  carouselItems = viewChild.required<ElementRef<HTMLDivElement>>('carouselItems');
 
-  isDown = false;
-  startX = 0;
-  scrollLeft = 0;
+  scrollPosition = signal(0);
 
-  onMouseDown(e: MouseEvent): void {
-    const carouselEl = this.carousel().nativeElement;
-    this.isDown = true;
-    carouselEl.classList.add('active');
-    this.startX = e.pageX - carouselEl.offsetLeft;
-    this.scrollLeft = carouselEl.scrollLeft;
-  }
-
-  onMouseLeave(): void {
-    if (!this.isDown) return;
-    const carouselEl = this.carousel().nativeElement;
-    this.isDown = false;
-    carouselEl.classList.remove('active');
-  }
-
-  onMouseUp(): void {
-    if (!this.isDown) return;
-    const carouselEl = this.carousel().nativeElement;
-    this.isDown = false;
-    carouselEl.classList.remove('active');
-  }
-
-  onMouseMove(e: MouseEvent): void {
-    if (!this.isDown) return;
-    e.preventDefault();
-    const carouselEl = this.carousel().nativeElement;
-    const x = e.pageX - carouselEl.offsetLeft;
-    const walk = (x - this.startX) * 2;
-    carouselEl.scrollLeft = this.scrollLeft - walk;
-  }
-
-  scroll(direction: 'left' | 'right'): void {
-    const carouselEl = this.carousel().nativeElement;
-    const scrollAmount = carouselEl.clientWidth * 0.8; 
-
-    // A responsabilidade da animação é transferida para o CSS, eliminando o conflito.
-    // O TypeScript apenas dispara o evento de rolagem.
-    if (direction === 'right') {
-      carouselEl.scrollBy({ left: scrollAmount });
-    } else {
-      carouselEl.scrollBy({ left: -scrollAmount });
+  maxScrollPosition = computed(() => {
+    const container = this.carouselContainer()?.nativeElement;
+    const items = this.carouselItems()?.nativeElement;
+    if (!container || !items) {
+      return 0;
     }
+    return items.scrollWidth - container.clientWidth;
+  });
+
+  scrollLeft() {
+    const container = this.carouselContainer().nativeElement;
+    const newScrollPosition = this.scrollPosition() - container.clientWidth * 0.8;
+    this.scrollPosition.set(Math.max(0, newScrollPosition));
+    container.scrollTo({ left: this.scrollPosition(), behavior: 'smooth' });
+  }
+
+  scrollRight() {
+    const container = this.carouselContainer().nativeElement;
+    const newScrollPosition = this.scrollPosition() + container.clientWidth * 0.8;
+    this.scrollPosition.set(Math.min(this.maxScrollPosition(), newScrollPosition));
+    container.scrollTo({ left: this.scrollPosition(), behavior: 'smooth' });
   }
 }

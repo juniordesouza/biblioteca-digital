@@ -1,13 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { MenuComponent } from '../../components/menu/menu.component';
 
 @Component({
   selector: 'app-sobre',
   templateUrl: './sobre.component.html',
   styleUrls: ['./sobre.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule]
+  imports: [MenuComponent]
 })
-export class SobreComponent {
-
-}
+export class SobreComponent {}

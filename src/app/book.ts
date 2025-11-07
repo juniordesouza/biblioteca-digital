@@ -3,5 +3,9 @@ export interface Book {
   title: string;
   author: string;
   category: string;
-  coverUrl: string;
+  cover: string;
+  description?: string;
+  publisher?: string;
+  rating?: number;
+  quantity?: number;
 }
