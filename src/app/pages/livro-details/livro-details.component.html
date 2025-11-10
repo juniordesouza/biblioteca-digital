@@ -1,0 +1,16 @@
+<div class="book-details-container">
+    @if (book(); as book) {
+      <div class="book-cover">
+        <img [src]="book.cover" [alt]="book.title">
+      </div>
+      <div class="book-info">
+        <h1>{{ book.title }}</h1>
+        <h2>by {{ book.author }}</h2>
+        <p class="category">{{ book.category }}</p>
+        <p class="description">{{ book.description }}</p>
+        <button class="add-to-cart-btn">Adicionar à Estante</button>
+      </div>
+    } @else {
+      <p>Carregando detalhes do livro...</p>
+    }
+  </div>

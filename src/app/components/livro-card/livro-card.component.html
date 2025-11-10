@@ -1,3 +1,5 @@
-<div class="book-card">
-  <img [src]="book().cover" [alt]="book().title">
-</div>
+<a [routerLink]="['/livro', book().id]">
+    <div class="book-card">
+      <img [src]="book().cover" [alt]="book().title">
+    </div>
+  </a>
