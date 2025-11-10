@@ -1,0 +1,130 @@
+/* Tela cheia com centralização e fundo escuro */
+.page-wrapper {
+    background-color: #1e1e1e;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    height: 99vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    box-sizing: border-box;
+  }
+  
+  /* Container principal (livro + info lado a lado) */
+  .book-section {
+    display: flex;
+    gap: 50px;
+    max-width: 950px;
+    width: 100%;
+    align-items: flex-start;
+  }
+  
+  /* Lado esquerdo - capa */
+  .left {
+    flex: 0 0 300px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .cover {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+  }
+  
+  /* Lado direito - conteúdo */
+  .right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .book-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+  
+  /* Estilo das estrelas */
+  .rating {
+    margin-bottom: 15px;
+  }
+  
+  .star {
+    font-size: 22px;
+    color: #444;
+  }
+  
+  .star.filled {
+    color: #ffb703;
+  }
+  
+  /* Texto da descrição */
+  .description {
+    color: #ccc;
+    text-align: justify;
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+  
+  .read-more {
+    color: #00b4d8;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 5px;
+  }
+  
+  .read-more:hover {
+    text-decoration: underline;
+  }
+  
+  /* Quantidade e botão */
+  .stock {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .btn-obter {
+    background-color: #ff9f1c;
+    color: #000;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+    align-self: flex-start;
+  }
+  
+  .btn-obter:hover {
+    background-color: #ffa93b;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 900px) {
+    .book-section {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .right {
+      align-items: center;
+    }
+  
+    .book-title {
+      text-align: center;
+    }
+  
+    .btn-obter {
+      align-self: center;
+    }
+  }
+  
