@@ -1,25 +1,12 @@
 <div class="carousel-container">
-    <div class="carousel-header">
-        <h2>{{ title() }}</h2>
-        <a class="carousel-link" [routerLink]="['/catalogo']">Ver mais</a>
+  <h2>{{ title() }}</h2>
+  <div class="carousel-wrapper">
+    <button class="arrow left-arrow" (click)="scrollLeft()" aria-label="Scroll Left">&lt;</button>
+    <div class="carousel" #carousel>
+      @for (book of books(); track book.id) {
+        <app-livro-card [book]="book" />
+      }
     </div>
-    <div class="carousel-content">
-        <button class="carousel-arrow left-arrow" (click)="scrollLeft()" [disabled]="scrollPosition() === 0">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <div class="carousel-items-container" #carouselContainer>
-            <div class="carousel-items" #carouselItems>
-                @for (book of books(); track book.id) {
-                <div class="carousel-item">
-                    <a [routerLink]="['/livro', book.id]">
-                        <img [src]="book.cover" [alt]="book.title">
-                    </a>
-                </div>
-                }
-            </div>
-        </div>
-        <button class="carousel-arrow right-arrow" (click)="scrollRight()" [disabled]="scrollPosition() >= maxScrollPosition()">
-            <i class="fas fa-chevron-right"></i>
-        </button>
-    </div>
+    <button class="arrow right-arrow" (click)="scrollRight()" aria-label="Scroll Right">&gt;</button>
+  </div>
 </div>

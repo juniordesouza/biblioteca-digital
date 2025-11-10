@@ -1,73 +1,61 @@
 .carousel-container {
+  margin-bottom: 2rem;
   position: relative;
-  overflow: hidden;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.carousel-wrapper {
+  position: relative;
 }
 
 .carousel {
   display: flex;
   overflow-x: auto;
-  /* O CSS é a única fonte de verdade para a animação de rolagem. */
-  scroll-behavior: smooth; 
-  -ms-overflow-style: none; 
-  scrollbar-width: none;  
+  padding-bottom: 1rem;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
 .carousel::-webkit-scrollbar {
-  display: none; 
+  display: none; /* Chrome, Safari, and Opera */
 }
 
-.carousel-item {
+.carousel app-livro-card {
   flex: 0 0 auto;
-  width: 180px;
   margin-right: 1rem;
+  width: 200px;
 }
 
-.carousel-item img {
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
-}
-
-.nav-button {
+.arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 1.5rem;
+  padding: 1rem;
   cursor: pointer;
   z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s, opacity 0.3s;
-  opacity: 0;
+  display: none; /* Hidden by default */
+  font-size: 1.5rem;
 }
 
-.carousel-container:hover .nav-button {
-  opacity: 1;
+.left-arrow {
+  left: 0;
 }
 
-
-.nav-button:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+.right-arrow {
+  right: 0;
 }
 
-.prev-button {
-  left: 10px;
-}
-
-.next-button {
-  right: 10px;
-}
-
-/* A classe .active DESLIGA a animação suave para o arraste com o mouse. */
-.carousel.active {
-  cursor: grabbing;
-  cursor: -webkit-grabbing;
-  scroll-behavior: auto; 
+/* Show arrows on desktop when hovering over the container */
+@media (min-width: 768px) {
+  .carousel-container:hover .arrow {
+    display: block;
+  }
 }
