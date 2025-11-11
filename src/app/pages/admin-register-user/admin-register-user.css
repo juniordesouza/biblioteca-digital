@@ -1,0 +1,74 @@
+/* Estrutura geral */
+.main-content {
+    display: flex;
+    height: 100vh;
+    background-color: #1b1b1b;
+    color: white;
+  }
+  
+  /* Conteúdo à direita da sidebar */
+  .content-area {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+  
+  /* Card de formulário */
+  .form-container {
+    background-color: #232323;
+    border-radius: 8px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .form-title {
+    background-color: #b37d35;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Inputs */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  input {
+    background-color: #2c2c2c;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem;
+    color: white;
+    width: 100%;
+  }
+  
+  .row {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  button {
+    background-color: #b37d35;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  button:hover {
+    background-color: #d28b2a;
+  }
+  

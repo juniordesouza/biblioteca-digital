@@ -5,6 +5,7 @@ import { CatalogoComponent } from './pages/catalogo/catalogo.component';
 import { SobreComponent } from './pages/sobre/sobre.component';
 import { BookDetailsComponent } from './pages/book-detail/book-details.component';
 import { AdminDashboardPage } from './pages/admin-dashboard-page/admin-dashboard-page';
+import { AdminRegisterUserPage } from './pages/admin-register-user/admin-register-user';
 
 
 export const routes: Routes = [
@@ -14,4 +15,5 @@ export const routes: Routes = [
     { path: 'livro/:id', component: BookDetailsComponent }, // Rota de detalhes do livro
     { path: 'sobre', component: SobreComponent },
     { path: 'admin', component: AdminDashboardPage },
+    { path: 'admin-register', component: AdminRegisterUserPage },
 ];
