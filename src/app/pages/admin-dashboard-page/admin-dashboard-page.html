@@ -1,0 +1,66 @@
+<div class="admin-container">
+    <!-- Menu lateral -->
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-text">LOGO E NOME DO SITE</span>
+      </div>
+  
+      <nav>
+        <ul>
+          <li>Usuários</li>
+          <li>Livros</li>
+          <li>Status API</li>
+        </ul>
+      </nav>
+    </aside>
+  
+    <!-- Conteúdo principal -->
+    <main class="main-content">
+      <header class="header">
+        <input type="text" placeholder="Pesquisar..." />
+        <div class="header-actions">
+          <button>Desbloquear Usuário</button>
+          <button>Histórico de Livros</button>
+          <span>Meu usuário</span>
+        </div>
+      </header>
+  
+      <section class="content">
+        <h2>Lista de Usuários</h2>
+  
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Nome Completo</th>
+              <th>E-mail</th>
+              <th>Dt_Nasc</th>
+              <th>CPF</th>
+              <th>CEP</th>
+              <th>Num</th>
+              <th>Telefone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user.username }}</td>
+              <td>{{ user.fullName }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.birthDate }}</td>
+              <td>{{ user.cpf }}</td>
+              <td>{{ user.cep }}</td>
+              <td>{{ user.number }}</td>
+              <td>{{ user.phone }}</td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <div class="pagination">
+          <button (click)="previousPage()">&lt;</button>
+          <span>Página {{ currentPage }} de {{ totalPages }}</span>
+          <button (click)="nextPage()">&gt;</button>
+        </div>
+      </section>
+    </main>
+  </div>
+  
