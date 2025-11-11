@@ -6,11 +6,17 @@ import { SobreComponent } from './pages/sobre/sobre.component';
 import { BookDetailsComponent } from './pages/book-detail/book-details.component';
 import { AdminDashboardPage } from './pages/admin-dashboard-page/admin-dashboard-page';
 import { AdminRegisterUserPage } from './pages/admin-register-user/admin-register-user';
+import { LoginComponent } from './pages/login/login.component';
+import { CadastroComponent } from './pages/cadastro/cadastro.component';
+import { ResetPasswordComponent } from './pages/redefinir-senha/redefinir-senha.component';
 
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'cadastro', component: CadastroComponent },
+    { path: 'redefinir-senha', component: ResetPasswordComponent },
     { path: 'catalogo', component: CatalogoComponent },
     { path: 'livro/:id', component: BookDetailsComponent }, // Rota de detalhes do livro
     { path: 'sobre', component: SobreComponent },
