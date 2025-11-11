@@ -1,37 +1,38 @@
 <app-admin-header (toggleSidebar)="toggleSidebar()"></app-admin-header>
 <app-sidebar [isOpen]="sidebarOpen"></app-sidebar>
 
-<div class="main-layout">
+<div class="main-layout" [class.sidebar-open]="sidebarOpen">
   <main class="content">
     <h2>Lista de Usuários</h2>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Username</th>
-          <th>Nome Completo</th>
-          <th>E-mail</th>
-          <th>Dt_Nasc</th>
-          <th>CPF</th>
-          <th>CEP</th>
-          <th>Num</th>
-          <th>Telefone</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let user of usuarios">
-          <td>{{ user.username }}</td>
-          <td>{{ user.fullName }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.birthDate }}</td>
-          <td>{{ user.cpf }}</td>
-          <td>{{ user.cep }}</td>
-          <td>{{ user.number }}</td>
-          <td>{{ user.phone }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Nome Completo</th>
+            <th>E-mail</th>
+            <th>Dt_Nasc</th>
+            <th>CPF</th>
+            <th>CEP</th>
+            <th>Num</th>
+            <th>Telefone</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of usuarios">
+            <td>{{ user.username }}</td>
+            <td>{{ user.fullName }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.birthDate }}</td>
+            <td>{{ user.cpf }}</td>
+            <td>{{ user.cep }}</td>
+            <td>{{ user.number }}</td>
+            <td>{{ user.phone }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="pagination">
       <button (click)="previousPage()">&lt;</button>

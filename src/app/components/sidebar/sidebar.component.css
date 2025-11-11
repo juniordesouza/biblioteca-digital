@@ -1,4 +1,19 @@
 /* Container da sidebar + overlay */
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 240px;
+  height: calc(100vh - 60px);
+  background-color: #b47b2a;
+  transition: transform 0.3s ease;
+  transform: translateX(-240px);
+}
+
+:host-context(.sidebar-open) .sidebar {
+  transform: translateX(0);
+}
+
 .sidebar-container {
   position: fixed;
   top: 0;

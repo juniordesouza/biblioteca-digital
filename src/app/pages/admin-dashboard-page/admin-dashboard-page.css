@@ -1,34 +1,67 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+/* Layout principal */
 .main-layout {
   display: flex;
+  transition: all 0.3s ease;
   background: #1f1f1f;
   color: #fff;
   min-height: 100vh;
 }
 
+/* Quando a sidebar estiver aberta */
+.main-layout.sidebar-open {
+  margin-left: 240px;
+  width: calc(100% - 240px);
+}
+
+/* Quando estiver fechada */
+.main-layout:not(.sidebar-open) {
+  margin-left: 0;
+  width: 100%;
+}
+
+/* Conteúdo principal */
 .content {
   flex: 1;
   padding: 2rem;
-  margin-left: 240px; /* espaço da sidebar */
-  margin-top: 60px; /* espaço do header fixo */
+  margin-top: 60px;
+  transition: all 0.3s ease;
+  overflow-x: auto;
 }
 
+/* Container da tabela para permitir adaptação fluida */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  transition: width 0.3s ease;
+}
+
+/* Título */
 h2 {
   margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
 
+/* Tabela */
 table {
   width: 100%;
   border-collapse: collapse;
   background-color: #222;
   border-radius: 6px;
   overflow: hidden;
+  min-width: 900px; /* evita quebra excessiva em telas pequenas */
 }
 
 thead {
   background: #3a3a3a;
 }
 
-th, td {
+th,
+td {
   padding: 0.6rem;
   text-align: left;
   border-bottom: 1px solid #444;
@@ -38,6 +71,7 @@ tbody tr:hover {
   background: #333;
 }
 
+/* Paginação */
 .pagination {
   display: flex;
   justify-content: center;
@@ -53,8 +87,22 @@ tbody tr:hover {
   padding: 0.4rem 0.8rem;
   border-radius: 4px;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .pagination button:hover {
   background: #555;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+  .content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  table {
+    min-width: 700px;
+  }
 }
