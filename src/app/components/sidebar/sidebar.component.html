@@ -1,0 +1,34 @@
+<div class="sidebar-container" [class.open]="isOpen">
+  <div class="sidebar">
+    <div class="logo">LOGO E NOME DO SITE</div>
+
+    <div class="menu-section">
+      <div class="menu-group">
+        <p class="menu-category">Usuários</p>
+        <ul>
+          <li class="active">Exibir Lista</li>
+          <li>Aprovação</li>
+          <li>Cadastrar</li>
+        </ul>
+      </div>
+
+      <div class="menu-group">
+        <p class="menu-category">Livros</p>
+        <ul>
+          <li>Exibir Lista</li>
+          <li>Cadastrar</li>
+        </ul>
+      </div>
+
+      <div class="menu-group">
+        <p class="menu-category">Status API</p>
+        <ul>
+          <li>Dashboard</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" (click)="isOpen = false"></div>
+</div>

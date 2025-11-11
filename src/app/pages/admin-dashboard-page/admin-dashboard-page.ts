@@ -1,20 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { SidebarComponent } from '../../components/sidebar/sidebar.component';
+import { AdminHeaderComponent } from '../../components/admin-header/admin-header.component';
 
 @Component({
   selector: 'app-admin-dashboard-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HttpClientModule, SidebarComponent, AdminHeaderComponent],
   templateUrl: './admin-dashboard-page.html',
   styleUrls: ['./admin-dashboard-page.css']
 })
 export class AdminDashboardPage implements OnInit {
+  sidebarOpen = false;
   usuarios: any[] = [];
   currentPage = 1;
-  totalPages = 10; // valor fixo, pode ajustar depois
+  totalPages = 10;
 
   constructor(private http: HttpClient) {}
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
 
   ngOnInit(): void {
     this.loadUsers(this.currentPage);

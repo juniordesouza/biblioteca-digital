@@ -1,130 +1,60 @@
-/* Layout geral */
-.admin-container {
-    display: flex;
-    min-height: 100vh;
-    background-color: #1f1f1f;
-    color: #f1f1f1;
-    font-family: 'Inter', sans-serif;
-  }
-  
-  /* Sidebar */
-  .sidebar {
-    width: 240px;
-    background-color: #2c2c2c;
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-  }
-  
-  .logo {
-    font-weight: bold;
-    font-size: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  nav ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  nav li {
-    margin: 1rem 0;
-    cursor: pointer;
-    color: #ccc;
-  }
-  
-  nav li:hover {
-    color: #fff;
-  }
-  
-  /* Conteúdo principal */
-  .main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  /* Header */
-  .header {
-    background-color: #2c2c2c;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .header input {
-    padding: 0.5rem;
-    border-radius: 4px;
-    border: none;
-    background: #3a3a3a;
-    color: #fff;
-    width: 200px;
-  }
-  
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .header-actions button {
-    background: #eaa636;
-    border: none;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .header-actions button:hover {
-    background: #c88522;
-  }
-  
-  /* Tabela */
-  .content {
-    padding: 1.5rem;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-  }
-  
-  thead {
-    background: #3a3a3a;
-  }
-  
-  th, td {
-    padding: 0.5rem;
-    text-align: left;
-    border-bottom: 1px solid #444;
-  }
-  
-  tbody tr:hover {
-    background: #333;
-  }
-  
-  /* Paginação */
-  .pagination {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1rem;
-  }
-  
-  .pagination button {
-    background: #3a3a3a;
-    border: none;
-    color: #fff;
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .pagination button:hover {
-    background: #555;
-  }
-  
+.main-layout {
+  display: flex;
+  background: #1f1f1f;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  margin-left: 240px; /* espaço da sidebar */
+  margin-top: 60px; /* espaço do header fixo */
+}
+
+h2 {
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #222;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+thead {
+  background: #3a3a3a;
+}
+
+th, td {
+  padding: 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid #444;
+}
+
+tbody tr:hover {
+  background: #333;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.pagination button {
+  background: #3a3a3a;
+  border: none;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background: #555;
+}
