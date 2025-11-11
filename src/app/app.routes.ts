@@ -14,6 +14,6 @@ export const routes: Routes = [
     { path: 'catalogo', component: CatalogoComponent },
     { path: 'livro/:id', component: BookDetailsComponent }, // Rota de detalhes do livro
     { path: 'sobre', component: SobreComponent },
-    { path: 'admin', component: AdminDashboardPage },
-    { path: 'admin-register', component: AdminRegisterUserPage },
+    { path: 'admin/dashboard', component: AdminDashboardPage },
+    { path: 'admin/register-user', component: AdminRegisterUserPage },
 ];

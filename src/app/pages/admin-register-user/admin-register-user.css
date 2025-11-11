@@ -1,74 +1,106 @@
-/* Estrutura geral */
-.main-content {
-    display: flex;
-    height: 100vh;
-    background-color: #1b1b1b;
-    color: white;
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  background-color: #1b1b1b;
+  color: white;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+/* quando sidebar está aberta */
+.main-layout.sidebar-open {
+  margin-left: 240px;
+}
+
+/* Conteúdo principal abaixo do header */
+.content-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  margin-top: 60px; /* altura do header */
+  transition: all 0.3s ease;
+}
+
+/* -------- FORM CARD -------- */
+.form-container {
+  background-color: #232323;
+  border-radius: 8px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  transition: width 0.3s ease, margin 0.3s ease;
+}
+
+/* quando sidebar está aberta e tela é grande */
+@media (min-width: 1100px) {
+  .main-layout.sidebar-open .form-container {
+    max-width: 600px;
+    margin-left: 1rem;
   }
-  
-  /* Conteúdo à direita da sidebar */
-  .content-area {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 2rem;
-    overflow-y: auto;
+}
+
+/* quando sidebar está aberta e tela muito grande */
+@media (min-width: 1400px) {
+  .main-layout.sidebar-open .form-container {
+    max-width: 650px;
+    margin-left: 2rem;
   }
-  
-  /* Card de formulário */
-  .form-container {
-    background-color: #232323;
-    border-radius: 8px;
-    padding: 2rem;
-    width: 100%;
+}
+
+/* quando sidebar está aberta em telas pequenas — sem mexer */
+@media (max-width: 1099px) {
+  .main-layout.sidebar-open .form-container {
+    margin-left: 0;
     max-width: 700px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
   }
-  
-  .form-title {
-    background-color: #b37d35;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-    border-radius: 6px;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-  }
-  
-  /* Inputs */
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  
-  input {
-    background-color: #2c2c2c;
-    border: none;
-    border-radius: 6px;
-    padding: 0.75rem;
-    color: white;
-    width: 100%;
-  }
-  
-  .row {
-    display: flex;
-    gap: 1rem;
-  }
-  
-  button {
-    background-color: #b37d35;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 0.75rem;
-    margin-top: 1rem;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  button:hover {
-    background-color: #d28b2a;
-  }
-  
+}
+
+/* -------- TÍTULO -------- */
+.form-title {
+  background-color: #b37d35;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 6px;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+/* -------- INPUTS -------- */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+input {
+  background-color: #2c2c2c;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem;
+  color: white;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+}
+
+button {
+  background-color: #b37d35;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #d28b2a;
+}
