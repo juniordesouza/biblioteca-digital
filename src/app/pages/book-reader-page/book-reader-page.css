@@ -1,0 +1,72 @@
+.reader-layout {
+    display: flex;
+    flex-direction: column;
+    background: #f2f2f2;
+    color: #222;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  
+  .reader-layout.dark {
+    background: #181818;
+    color: #e4e4e4;
+  }
+  
+  /* Header fixo */
+  .reader-header {
+    background: #b37d35;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  .reader-header .icon-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+  
+  .reader-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .book-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  /* PDF */
+  .pdf-viewer {
+    width: 100%;
+    max-width: 900px;
+    height: 85vh;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Texto alternativo (fallback) */
+  .book-text {
+    background: #ececec;
+    border-radius: 10px;
+    padding: 2rem;
+    max-width: 800px;
+    line-height: 1.6;
+  }
+  
+  .reader-layout.dark .book-text {
+    background: #2a2a2a;
+  }
+  

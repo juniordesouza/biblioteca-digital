@@ -22,4 +22,5 @@ export const routes: Routes = [
     { path: 'sobre', component: SobreComponent },
     { path: 'admin/dashboard', component: AdminDashboardPage },
     { path: 'admin/register-user', component: AdminRegisterUserPage },
+    { path: 'livro/ler/:id', loadComponent: () => import('./pages/book-reader-page/book-reader-page').then(m => m.BookReaderPage) }
 ];
