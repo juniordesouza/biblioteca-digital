@@ -1,28 +1,24 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
-export interface User {
-  username: string;
-  nomeCompleto: string;
-  email: string;
-  dtNasc: string;
-  cpf: string;
-  cep: string;
-  numero: string;
-  telefone: string;
-  imagemUrl?: string; // <- se vier a imagem
+export interface UserName {
+  title: string;
+  first: string;
+  last: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
-export class UserService {
-  private apiUrl = 'https://api.seuservidor.com/usuarios'; // URL da sua API
+export interface User {
+  gender: string;
+  name: UserName;
+  email: string;
+  picture: {
+    large: string;
+    medium: string;
+    thumbnail: string;
+  };
+}
 
-  constructor(private http: HttpClient) {}
+export class UserModel implements User {
+  constructor(public name: UserName, public gender: string, public email: string, public picture: any) {}
 
-  getUsuarios(page: number = 1): Observable<{ data: User[]; totalPages: number }> {
-    return this.http.get<{ data: User[]; totalPages: number }>(`${this.apiUrl}?page=${page}`);
+  get fullName(): string {
+    return `${this.name.first} ${this.name.last}`;
   }
 }

@@ -1,36 +1,37 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-dashboard-page',
+  standalone: true,
+  imports: [CommonModule], // ✅ habilita *ngFor, *ngIf etc
   templateUrl: './admin-dashboard-page.html',
   styleUrls: ['./admin-dashboard-page.css']
 })
 export class AdminDashboardPage implements OnInit {
-
-  // Dados simulados (serão substituídos pela API depois)
-  users: any[] = [];
+  usuarios: any[] = [];
   currentPage = 1;
   totalPages = 10;
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    // Aqui futuramente vai a chamada da API
-    this.loadUsers();
-  }
-
-  loadUsers(): void {
-    // Simulação de dados (mock)
-    this.users = Array.from({ length: 10 }, (_, i) => ({
-      username: `Fulaninho${i + 1}`,
-      fullName: 'Fulano da Silva',
-      email: `fulano${i + 1}@gmail.com`,
-      birthDate: '31/02/1982',
-      cpf: '499.490.838-8',
-      cep: '01234-567',
-      number: '0123',
-      phone: '(11)91234-5678'
-    }));
+    this.http.get<any>('https://randomuser.me/api/?results=10').subscribe({
+      next: (response) => {
+        this.usuarios = response.results.map((user: any) => ({
+          username: user.login.username,
+          fullName: `${user.name.first} ${user.name.last}`,
+          email: user.email,
+          birthDate: new Date(user.dob.date).toLocaleDateString(),
+          cpf: user.id.value || 'N/A',
+          cep: user.location.postcode || 'N/A',
+          number: user.location.street.number,
+          phone: user.phone,
+        }));
+      },
+      error: (err) => console.error('Erro ao buscar usuários:', err)
+    });
   }
 
   nextPage(): void {
