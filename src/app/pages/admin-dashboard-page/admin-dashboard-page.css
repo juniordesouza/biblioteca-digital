@@ -106,3 +106,68 @@ tbody tr:hover {
     min-width: 700px;
   }
 }
+
+
+/* 🔹 Estilo dos botões de ação em grupo */
+.bulk-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 1.2rem;
+}
+
+.bulk-actions button {
+  padding: 0.5rem 1.3rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  letter-spacing: 0.3px;
+}
+
+/* Botão de aprovar */
+.btn-approve {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  box-shadow: 0 0 8px rgba(46, 204, 113, 0.3);
+}
+
+.btn-approve:hover {
+  background: linear-gradient(135deg, #3ee18a, #2ecc71);
+  box-shadow: 0 0 10px rgba(46, 204, 113, 0.6);
+  transform: translateY(-1px);
+}
+
+/* Botão de recusar */
+.btn-reject {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: #fff;
+  box-shadow: 0 0 8px rgba(231, 76, 60, 0.3);
+}
+
+.btn-reject:hover {
+  background: linear-gradient(135deg, #ff6b5a, #e74c3c);
+  box-shadow: 0 0 10px rgba(231, 76, 60, 0.6);
+  transform: translateY(-1px);
+}
+
+/* Efeito de foco para acessibilidade */
+.bulk-actions button:focus {
+  outline: 2px solid #00b4d8;
+  outline-offset: 3px;
+}
+
+/* Responsividade dos botões */
+@media (max-width: 700px) {
+  .bulk-actions {
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .bulk-actions button {
+    padding: 0.45rem 1rem;
+    font-size: 0.9rem;
+  }
+}

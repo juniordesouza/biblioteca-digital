@@ -5,10 +5,23 @@
   <main class="content">
     <h2>Lista de Usuários</h2>
 
+    <div class="bulk-actions">
+      <button class="btn-approve">Aprovar Selecionados</button>
+      <button class="btn-reject">Recusar Selecionados</button>
+    </div>
+
     <div class="table-container">
       <table>
         <thead>
           <tr>
+            <th>
+              <!-- ✅ Checkbox principal -->
+              <input
+                type="checkbox"
+                [checked]="allSelected"
+                (change)="toggleSelectAll($event)"
+              />
+            </th>
             <th>Username</th>
             <th>Nome Completo</th>
             <th>E-mail</th>
@@ -21,6 +34,14 @@
         </thead>
         <tbody>
           <tr *ngFor="let user of usuarios">
+            <td>
+              <!-- ✅ Checkbox individual -->
+              <input
+                type="checkbox"
+                [(ngModel)]="user.selected"
+                (change)="updateSelectAllState()"
+              />
+            </td>
             <td>{{ user.username }}</td>
             <td>{{ user.fullName }}</td>
             <td>{{ user.email }}</td>
