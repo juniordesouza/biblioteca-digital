@@ -12,7 +12,7 @@ import { AdminHeaderComponent } from '../../components/admin-header/admin-header
   styleUrls: ['./admin-register-user.css']
 })
 export class AdminRegisterUserPage {
-  sidebarOpen = false;
+  sidebarOpen = true;
 
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;

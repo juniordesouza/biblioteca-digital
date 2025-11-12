@@ -91,3 +91,44 @@ li {
 li:hover, li.active {
   background-color: rgba(0, 0, 0, 0.2);
 }
+
+/* --- Ícones das categorias --- */
+.menu-category {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  stroke: #fff;
+  flex-shrink: 0;
+  opacity: 0.9;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.menu-category:hover .icon {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+/* Ajuste opcional para deixar o espaçamento visual perfeito */
+.menu-group {
+  margin-bottom: 1.8rem;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  stroke: #fff;
+  opacity: 0.9;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.menu-category:hover .icon {
+  transform: scale(1.1);
+  opacity: 1;
+}

@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./admin-dashboard-page.css']
 })
 export class AdminDashboardPage implements OnInit {
-  sidebarOpen = false;
+  sidebarOpen = true;
   usuarios: any[] = [];
   currentPage = 1;
   totalPages = 10;

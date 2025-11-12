@@ -1,10 +1,14 @@
 <div class="sidebar-container" [class.open]="isOpen">
   <div class="sidebar">
-    <div class="logo">LOGO E NOME DO SITE</div>
+    <div class="logo">Menu</div>
 
     <div class="menu-section">
+      <!-- Grupo Usuários -->
       <div class="menu-group">
-        <p class="menu-category">Usuários</p>
+        <p class="menu-category">
+          <lucide-icon name="user" class="icon"></lucide-icon>
+          Usuários
+        </p>
         <ul>
           <li routerLink="/admin/dashboard" routerLinkActive="active">Exibir Lista</li>
           <li>Aprovação</li>
@@ -12,16 +16,24 @@
         </ul>
       </div>
 
+      <!-- Grupo Livros -->
       <div class="menu-group">
-        <p class="menu-category">Livros</p>
+        <p class="menu-category">
+          <lucide-icon name="book" class="icon"></lucide-icon>
+          Livros
+        </p>
         <ul>
           <li>Exibir Lista</li>
           <li>Cadastrar</li>
         </ul>
       </div>
 
+      <!-- Grupo Status API -->
       <div class="menu-group">
-        <p class="menu-category">Status API</p>
+        <p class="menu-category">
+          <lucide-icon name="bar-chart-3" class="icon"></lucide-icon>
+          Status API
+        </p>
         <ul>
           <li>Dashboard</li>
         </ul>
