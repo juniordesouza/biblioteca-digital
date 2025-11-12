@@ -1,199 +1,255 @@
-:root {
-  --primary-color: #C38632;
-  --background-dark: #121212; /* Um preto mais profundo */
-  --text-light: #E0E0E0; /* Branco suave */
-  --text-dark: #333333;
-  --card-background: #1A1A1A;
-}
-
-.home-container {
-  color: white;
-  background-color: var(--background-dark);
-  color: var(--text-light);
+:host {
+  display: block;
+  background-color: #121212;
+  color: #fff;
   font-family: 'Alumni Sans', sans-serif;
-  /* Fundo da biblioteca mais visível */
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.75)), url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2070&auto=format&fit=crop');
+  background-image: linear-gradient(
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.9)
+    ),
+    url('/home-bg.png');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-.main-content {
-  color: white;
-  padding: 2rem 5%;
-}
-
-/* Hero Section */
+/* === HERO === */
 .hero {
   display: flex;
-  flex-wrap: wrap; /* Para responsividade */
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  gap: 4rem;
-  padding: 4rem 0;
-  min-height: 70vh;
-}
-
-.hero-left {
-  flex-basis: 40%;
-  display: flex;
-  justify-content: center;
-}
-
-/* Book Cover Styling */
-.book-cover {
-  width: 320px; /* Aumentado um pouco */
-  height: 480px; /* Aumentado um pouco */
-  background-color: #0A0A0A;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 6rem 10%;
+  min-height: 80vh;
+  flex-wrap: wrap;
   position: relative;
-  border-radius: 4px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-  /* Textura de fundo mais sutil */
-  background-image: url('https://www.transparenttextures.com/patterns/dark-geometric.png'); 
-  border: 1px solid #222; /* Borda interna sutil */
-  overflow: hidden; /* Garante que os ornamentos fiquem dentro */
+  z-index: 2;
 }
 
-.logo {
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--text-light);
-  letter-spacing: 0.1em;
-  z-index: 1;
+/* Moldura dourada */
+.gold-frame {
+  border: 3px solid #cfa03b;
+  width: 300px;
+  height: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6);
+  position: relative;
+  background: linear-gradient(180deg, #101010, #000);
 }
 
-/* Corner Ornaments */
-.corner-ornament {
+.gold-frame::before {
+  content: '';
   position: absolute;
-  width: 80px;
-  height: 80px;
-  border-style: solid;
-  border-color: var(--primary-color);
-  opacity: 0.9;
+  inset: 10px;
+  border: 2px solid rgba(207, 160, 59, 0.7);
+  pointer-events: none;
 }
 
-.corner-ornament.top-left {
-  top: 20px;
-  left: 20px;
-  border-width: 4px 0 0 4px;
+.book-logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
 }
 
-.corner-ornament.top-right {
-  top: 20px;
-  right: 20px;
-  border-width: 4px 4px 0 0;
-}
-
-.corner-ornament.bottom-left {
-  bottom: 20px;
-  left: 20px;
-  border-width: 0 0 4px 4px;
-}
-
-.corner-ornament.bottom-right {
-  bottom: 20px;
-  right: 20px;
-  border-width: 0 4px 4px 0;
-}
-
-/* Swirls for ornaments */
-.corner-ornament::before, .corner-ornament::after {
-    content: '';
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    border: 3px solid var(--primary-color);
-}
-
-.top-left::before { top: -15px; left: 5px; border-width: 0 3px 3px 0; transform: rotate(-45deg); }
-.top-left::after { top: 5px; left: -15px; border-width: 0 3px 3px 0; transform: rotate(-45deg); }
-
-.top-right::before { top: -15px; right: 5px; border-width: 0 0 3px 3px; transform: rotate(45deg); }
-.top-right::after { top: 5px; right: -15px; border-width: 0 0 3px 3px; transform: rotate(45deg); }
-
-.bottom-left::before { bottom: -15px; left: 5px; border-width: 3px 3px 0 0; transform: rotate(45deg); }
-.bottom-left::after { bottom: 5px; left: -15px; border-width: 3px 3px 0 0; transform: rotate(45deg); }
-
-.bottom-right::before { bottom: -15px; right: 5px; border-width: 3px 0 0 3px; transform: rotate(-45deg); }
-.bottom-right::after { bottom: 5px; right: -15px; border-width: 3px 0 0 3px; transform: rotate(-45deg); }
-
-/* Hero Right */
 .hero-right {
-  flex-basis: 55%;
-  text-align: left;
-}
-
-.hero-right h1, .hero-right h3 {
-  font-size: 2.8rem;
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: 0.05em;
+  flex: 1;
+  margin-left: 4rem;
+  text-align: right;
 }
 
 .hero-right .highlight {
-  font-size: 5.5rem;
-  font-weight: 900;
-  color: var(--text-light);
-  margin: -10px 0;
-  line-height: 1;
-  letter-spacing: 0.05em;
+  font-size: 6rem;
+  background: linear-gradient(90deg, #ffcf40, #c38632);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
+.tagline {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  letter-spacing: 1px;
+}
+
+/* === BOTÃO === */
 .cta-button {
-  background-color: transparent;
-  border: 2px solid var(--text-light);
-  color: var(--text-light);
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
+  margin-top: 2rem;
+  padding: 1rem 2.5rem;
+  border: 2px solid #ffcf40;
+  color: #ffcf40;
   font-weight: bold;
+  font-size: 1.2rem;
+  background: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 2.5rem;
-  letter-spacing: 0.1em;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
 }
 
-.cta-button:hover { background-color: var(--text-light); color: var(--text-dark); }
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+  transform: skewX(-25deg);
+  transition: 0.5s;
+}
 
-/* Details & Features Sections */
-.details {
-  background-color: var(--card-background);
-  padding: 2.5rem;
-  border-radius: 8px;
-  margin: 3rem 0;
+.cta-button:hover::before {
+  left: 125%;
+}
+
+.cta-button:hover {
+  background-color: #ffcf40;
+  color: #000;
+  box-shadow: 0 0 20px rgba(255, 207, 64, 0.6);
+}
+
+/* === FEATURES === */
+.features {
+  display: flex;
+  justify-content: space-around;
+  padding: 5rem 10%;
   text-align: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  background: rgba(12, 12, 12, 1);
+  backdrop-filter: blur(6px);
 }
 
-.details-card h4, .feature-item h5 {
-  letter-spacing: 0.05em;
-  font-weight: 900;
+.feature {
+  flex: 1;
+  min-width: 250px;
 }
 
-/* FIX: Forçar a cor clara nos parágrafos */
-.details-card p, .feature-item p {
-  color: var(--text-light) !important; 
-  font-size: 1.05rem;
-  line-height: 1.7;
-}
-
-.details-card h4 { font-size: 1.8rem; margin-bottom: 1rem; }
-.feature-item h5 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-
-.features { padding: 4rem 0; }
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 3rem;
-}
-
-.feature-item { text-align: left; }
-
-.feature-icon {
-  width: 35px;
-  height: 35px;
+.icon {
+  font-size: 2.8rem;
+  display: block;
   margin-bottom: 1rem;
-  filter: invert(80%) sepia(20%) saturate(1500%) hue-rotate(350deg) brightness(95%) contrast(90%);
+  color: #ffcf40;
+}
+
+.feature h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.feature p {
+  color: #ddd;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* === CAROUSEL === */
+.carousel-section {
+  padding: 3rem 10%;
+  height: 100%;
+  background: rgba(15, 15, 15, 0.8);
+  backdrop-filter: blur(3px);
+}
+
+.carousel {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.4rem;
+  transform: scale(1.2);
+}
+
+.carousel-section h2{
+  font-size: 48px;
+}
+
+.book-card {
+  position: relative;
+}
+
+.book-card img {
+  width: 150px;
+  opacity: 0.6;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+.book-index {
+  position: absolute;
+  bottom: -10px;
+  left: 10px;
+  font-size: 5rem;
+  color: #fff;
+  text-shadow: 0 0 10px #000;
+}
+
+/* === FAQ === */
+.faq {
+  padding: 4rem 10%;
+  background: rgba(18, 18, 18, 1);
+  backdrop-filter: blur(5px);
+}
+
+.faq-item {
+  margin-bottom: 1.5rem;
+}
+
+.cta-bottom {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.cta-bottom .cta-button {
+  background-color: #ffcf40;
+  color: #000;
+  border: none;
+  font-weight: 700;
+}
+
+/* === FOOTER === */
+footer {
+  background: rgba(18, 18, 18, 0.9);
+  color: #ddd;
+  padding: 3rem 10%;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+}
+
+.footer-grid h3 {
+  color: #ffcf40;
+  margin-bottom: 1rem;
+}
+
+/* === RESPONSIVO === */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    gap: 3rem;
+    padding: 4rem 5%;
+  }
+
+  .hero-right {
+    margin: 0;
+  }
+
+  .hero-right .highlight {
+    font-size: 4rem;
+  }
+
+  .book-cover {
+    width: 250px;
+    height: 370px;
+  }
+
+  .carousel-section {
+    padding: 2rem 5%;
+  }
 }

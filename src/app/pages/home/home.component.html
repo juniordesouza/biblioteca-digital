@@ -1,56 +1,105 @@
-<app-home-header></app-home-header>
+<app-menu></app-menu>
+
 <div class="home-container">
-  
-  <main class="main-content">
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-left">
-        <div class="book-cover">
-          <!-- Ornamental corners -->
-          <span class="corner-ornament top-left"></span>
-          <span class="corner-ornament top-right"></span>
-          <span class="corner-ornament bottom-left"></span>
-          <span class="corner-ornament bottom-right"></span>
-          <div class="logo">
-            LOGO
-          </div>
-        </div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="book-cover gold-frame">
+        <span class="book-logo">LOGO</span>
       </div>
-      <div class="hero-right">
-        <h1>LEIA TODOS OS SEUS LIVROS</h1>
-        <h2 class="highlight">FAVORITOS</h2>
-        <h3>EM QUALQUER LUGAR</h3>
-        <button class="cta-button">CADASTRE - SE AGORA</button>
-      </div>
-    </section>
+    </div>
 
-    <!-- Details Section -->
-    <section class="details">
-      <div class="details-card">
-        <h4>LEITURA NO PRÓPRIO SITE</h4>
-        <p>Leia seus livros favoritos diretamente no site, sem precisar baixar nada. Nossa plataforma conta com um leitor integrado, simples e confortável, que garante a melhor experiência de leitura online.</p>
-      </div>
-    </section>
+    <div class="hero-right">
+      <h2 class="tagline">LEIA TODOS OS SEUS LIVROS</h2>
+      <h1 class="highlight">FAVORITOS</h1>
+      <h2 class="tagline">EM QUALQUER LUGAR</h2>
+      <button class="cta-button">CADASTRE-SE AGORA</button>
+    </div>
+  </section>
 
-    <!-- Features Section -->
-    <section class="features">
-      <div class="features-grid">
-        <div class="feature-item">
-          <img src="https://raw.githubusercontent.com/ahamedkammal/travel-notebook/main/public/assets/icons/search.svg" alt="Busca" class="feature-icon">
-          <h5>BUSCA INTELIGENTE</h5>
-          <p>Encontre qualquer livro em segundos. Nossa busca avançada permite localizar títulos, autores ou temas de forma rápida e intuitiva.</p>
-        </div>
-        <div class="feature-item">
-          <img src="https://raw.githubusercontent.com/ahamedkammal/travel-notebook/main/public/assets/icons/catalog.svg" alt="Catálogo" class="feature-icon">
-          <h5>CATÁLOGO VARIADO</h5>
-          <p>De clássicos da literatura a publicações recentes, explore um catálogo amplo que atende a todos os gostos e interesses.</p>
-        </div>
-        <div class="feature-item">
-          <img src="https://raw.githubusercontent.com/ahamedkammal/travel-notebook/main/public/assets/icons/clock.svg" alt="Continue" class="feature-icon">
-          <h5>Continue de Onde Parou</h5>
-          <p>Não se preocupe em perder o ponto da leitura. O sistema salva automaticamente sua última página acessada.</p>
-        </div>
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="feature">
+      <i class="icon">🔍</i>
+      <h3>BUSCA INTELIGENTE</h3>
+      <p>Encontre qualquer livro em segundos. Nossa busca avançada permite localizar títulos, autores ou temas de forma rápida e intuitiva.</p>
+    </div>
+
+    <div class="feature">
+      <i class="icon">📚</i>
+      <h3>CATÁLOGO VARIADO</h3>
+      <p>De clássicos da literatura a publicações recentes, explore um catálogo amplo que atende a todos os gostos e interesses.</p>
+    </div>
+
+    <div class="feature">
+      <i class="icon">⏰</i>
+      <h3>Continue de Onde Parou</h3>
+      <p>Não se preocupe em perder o ponto da leitura. O sistema salva automaticamente sua última página acessada.</p>
+    </div>
+  </section>
+
+  <!-- EM ALTA -->
+  <section class="carousel-section">
+    <h2>EM ALTA</h2>
+    <div class="carousel">
+      <div class="book-card" *ngFor="let book of topBooks; let i = index">
+        <img [src]="book.image" [alt]="book.title" />
+        <span class="book-index">{{ i + 1 }}</span>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <h2>PERGUNTAS FREQUENTES</h2>
+
+    <div class="faq-item">
+      <p><strong>O que são os "espaços de leitura"?</strong><br />
+      Cada usuário tem 3 espaços. Eles podem ser usados para livros que você está lendo ou para reservas na fila de espera.</p>
+    </div>
+
+    <div class="faq-item">
+      <p><strong>O que acontece quando um livro reservado fica disponível?</strong><br />
+      Assim que chegar sua vez, ele ocupa automaticamente o espaço de reserva e vai direto para sua biblioteca, pronto para leitura.</p>
+    </div>
+
+    <div class="faq-item">
+      <p><strong>Posso mudar a distribuição dos espaços?</strong><br />
+      Sim! Você pode liberar um espaço a qualquer momento, seja de um livro em leitura ou de uma reserva. Seu progresso e posição na fila ficam salvos.</p>
+    </div>
+
+    <div class="faq-item">
+      <p><strong>Posso acessar meus espaços em qualquer dispositivo?</strong><br />
+      Sim! Seus livros e reservas ficam vinculados à sua conta e podem ser acessados no computador, tablet ou celular.</p>
+    </div>
+
+    <div class="cta-bottom">
+      <p>NÃO PERCA MAIS TEMPO</p>
+      <button class="cta-button">CADASTRE-SE AGORA</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <h3>SOBRE NÓS</h3>
+        <p>Nossa biblioteca digital foi criada para aproximar leitores de conhecimento. Aqui você encontra praticidade, organização e uma experiência de leitura completa.</p>
+      </div>
+      <div>
+        <h3>CONTATO</h3>
+        <p>E-mail: contato@biblioteca.com<br />
+        Telefone: (11) 99999-9999<br />
+        Endereço: Rua Exemplo, 123 – São Paulo, SP</p>
+      </div>
+      <div>
+        <h3>REDES SOCIAIS</h3>
+        <p>Facebook<br />Instagram<br />Twitter<br />LinkedIn</p>
+      </div>
+      <div>
+        <h3>INFORMAÇÕES LEGAIS</h3>
+        <p>Política de Privacidade<br />Termos de Uso<br />Ajuda</p>
+      </div>
+    </div>
+  </footer>
 </div>
