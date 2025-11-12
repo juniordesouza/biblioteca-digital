@@ -1,13 +1,12 @@
-<div class="carousel-container">
-  <h2>{{ title }}</h2>
+<section class="carousel-section">
+  <h2 class="carousel-title">{{ title }}</h2>
 
-  <div class="carousel-wrapper">
-    <button class="arrow left-arrow" (click)="scrollLeft()" aria-label="Scroll Left">
-      &lt;
-    </button>
+  <div class="carousel-container">
+    <button class="arrow left" (click)="scrollLeft()">❮</button>
 
     <div class="carousel" #carousel>
       <div
+        class="carousel-item"
         *ngFor="let book of books; trackBy: trackByBookId"
         (click)="bookSelected.emit(book.id)"
       >
@@ -15,8 +14,6 @@
       </div>
     </div>
 
-    <button class="arrow right-arrow" (click)="scrollRight()" aria-label="Scroll Right">
-      &gt;
-    </button>
+    <button class="arrow right" (click)="scrollRight()">❯</button>
   </div>
-</div>
+</section>

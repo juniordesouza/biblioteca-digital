@@ -1,95 +1,73 @@
-.carousel-container {
-  margin-bottom: 2rem;
-  position: relative;
+.carousel-section {
   color: #fff;
-  overflow: hidden;
+  margin: 40px 0;
 }
 
-h2 {
+.carousel-title {
   font-size: 1.6rem;
-  margin-bottom: 1rem;
-  color: #fff;
-  font-weight: 600;
-  padding-left: 0.5rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-left: 10px;
 }
 
-.carousel-wrapper {
+.carousel-container {
   position: relative;
 }
 
 .carousel {
   display: flex;
+  gap: 16px;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding-bottom: 1rem;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  padding: 10px;
+  scrollbar-width: none;
 }
 
 .carousel::-webkit-scrollbar {
-  display: none; /* Chrome, Safari e Opera */
+  display: none;
 }
 
-.carousel app-livro-card {
+.carousel-item {
   flex: 0 0 auto;
-  margin-right: 1rem;
-  width: 180px;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
-.carousel app-livro-card:hover {
+.carousel-item:hover {
   transform: scale(1.05);
 }
 
-/* Botões laterais */
 .arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   color: white;
   border: none;
-  padding: 1rem;
+  font-size: 2rem;
+  width: 40px;
+  height: 60px;
+  border-radius: 8px;
   cursor: pointer;
-  z-index: 10;
+  transition: background 0.2s ease, transform 0.2s ease;
+  z-index: 2;
   display: none;
-  font-size: 1.5rem;
-  border-radius: 50%;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.carousel-container:hover .arrow {
+  display: block;
 }
 
 .arrow:hover {
   background-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-50%) scale(1.1);
+  transform: translateY(-50%) scale(1.05);
 }
 
-.left-arrow {
+.arrow.left {
   left: 0;
 }
 
-.right-arrow {
+.arrow.right {
   right: 0;
-}
-
-/* Mostrar setas ao passar o mouse (apenas desktop) */
-@media (min-width: 768px) {
-  .carousel-container:hover .arrow {
-    display: block;
-  }
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-  h2 {
-    font-size: 1.3rem;
-  }
-
-  .carousel app-livro-card {
-    width: 140px;
-  }
-
-  .arrow {
-    padding: 0.7rem;
-    font-size: 1.2rem;
-  }
 }

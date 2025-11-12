@@ -12,16 +12,16 @@ import { LivroCardComponent } from '../livro-card/livro-card.component';
 export class CarouselNetflixComponent {
   @Input() title!: string;
   @Input() books: any[] = [];
-  @Output() bookSelected = new EventEmitter<string>(); // ✅ envia string (id)
+  @Output() bookSelected = new EventEmitter<string>();
 
-  @ViewChild('carousel') carousel!: ElementRef<HTMLDivElement>;
+  @ViewChild('carousel', { static: false }) carousel!: ElementRef<HTMLDivElement>;
 
   scrollLeft() {
-    this.carousel.nativeElement.scrollBy({ left: -400, behavior: 'smooth' });
+    this.carousel.nativeElement.scrollBy({ left: -600, behavior: 'smooth' });
   }
 
   scrollRight() {
-    this.carousel.nativeElement.scrollBy({ left: 400, behavior: 'smooth' });
+    this.carousel.nativeElement.scrollBy({ left: 600, behavior: 'smooth' });
   }
 
   trackByBookId(index: number, book: any) {

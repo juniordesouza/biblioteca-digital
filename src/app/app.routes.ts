@@ -19,7 +19,7 @@ export const routes: Routes = [
     { path: 'cadastro', component: CadastroComponent },
     { path: 'redefinir-senha', component: ResetPasswordComponent },
     { path: 'catalogo', component: CatalogoComponent },
-    { path: 'livro/:id', component: LivroDetailsComponent }, // Rota de detalhes do livro
+    { path: 'livros/:id', component: LivroDetailsComponent }, // Rota de detalhes do livro
     { path: 'sobre', component: SobreComponent },
     { path: 'admin/dashboard', component: AdminDashboardPage },
     { path: 'admin/register-user', component: AdminRegisterUserPage },

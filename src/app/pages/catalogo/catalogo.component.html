@@ -1,7 +1,7 @@
 <app-menu></app-menu>
 
-<div class="catalog-container">
-  <h1>Catálogo</h1>
+<main class="catalogo-wrapper">
+  <h1 class="catalog-title">Catálogo</h1>
 
   @for (category of categories(); track category) {
     <app-carousel-netflix
@@ -10,4 +10,4 @@
       (bookSelected)="openBookDetails($event)"
     ></app-carousel-netflix>
   }
-</div>
+</main>
