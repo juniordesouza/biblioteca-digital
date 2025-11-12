@@ -1,16 +1,40 @@
-<div class="book-details-container">
-    @if (book(); as book) {
-      <div class="book-cover">
-        <img [src]="book.cover" [alt]="book.title">
+<app-menu></app-menu>
+<main class="page-wrapper" *ngIf="!loading(); else loadingTpl">
+  <section class="book-section">
+    <div class="left">
+      <img [src]="book().cover" alt="Capa do livro" class="cover" />
+    </div>
+
+    <div class="right">
+      <h1 class="book-title">{{ book().title }}</h1>
+
+      <div class="rating">
+        @for (i of [].constructor(5); track i) {
+          <span class="star" [class.filled]="i < book().rating">★</span>
+        }
       </div>
-      <div class="book-info">
-        <h1>{{ book.title }}</h1>
-        <h2>by {{ book.author }}</h2>
-        <p class="category">{{ book.category }}</p>
-        <p class="description">{{ book.description }}</p>
-        <button class="add-to-cart-btn">Adicionar à Estante</button>
-      </div>
-    } @else {
-      <p>Carregando detalhes do livro...</p>
-    }
-  </div>
+
+      <p><strong>Autor(a):</strong> {{ book().author }}</p>
+      <p><strong>Editora:</strong> {{ book().publisher }}</p>
+      <p><strong>Tema:</strong> {{ book().theme }}</p>
+
+      <p><strong>Descrição:</strong></p>
+      <p class="description">
+        {{ truncatedDescription() }}
+        @if (book().description.length > 450) {
+          <a (click)="toggleDescription()" class="read-more">
+            {{ showFullDescription() ? 'Ler menos' : 'Ler mais' }}
+          </a>
+        }
+      </p>
+
+      <p class="stock">Quantidades restantes: {{ book().stock }}</p>
+
+      <button class="btn-obter">OBTER LIVRO</button>
+    </div>
+  </section>
+</main>
+
+<ng-template #loadingTpl>
+  <p style="color:white;text-align:center;">Carregando detalhes do livro...</p>
+</ng-template>

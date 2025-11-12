@@ -9,6 +9,7 @@ import { AdminRegisterUserPage } from './pages/admin-register-user/admin-registe
 import { LoginComponent } from './pages/login/login.component';
 import { CadastroComponent } from './pages/cadastro/cadastro.component';
 import { ResetPasswordComponent } from './pages/redefinir-senha/redefinir-senha.component';
+import { LivroDetailsComponent } from './pages/livro-details/livro-details.component';
 
 
 export const routes: Routes = [
@@ -18,7 +19,7 @@ export const routes: Routes = [
     { path: 'cadastro', component: CadastroComponent },
     { path: 'redefinir-senha', component: ResetPasswordComponent },
     { path: 'catalogo', component: CatalogoComponent },
-    { path: 'livro/:id', component: BookDetailsComponent }, // Rota de detalhes do livro
+    { path: 'livro/:id', component: LivroDetailsComponent }, // Rota de detalhes do livro
     { path: 'sobre', component: SobreComponent },
     { path: 'admin/dashboard', component: AdminDashboardPage },
     { path: 'admin/register-user', component: AdminRegisterUserPage },
