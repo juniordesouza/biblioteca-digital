@@ -1,12 +1,16 @@
 .carousel-container {
   margin-bottom: 2rem;
   position: relative;
+  color: #fff;
+  overflow: hidden;
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   margin-bottom: 1rem;
   color: #fff;
+  font-weight: 600;
+  padding-left: 0.5rem;
 }
 
 .carousel-wrapper {
@@ -16,21 +20,28 @@ h2 {
 .carousel {
   display: flex;
   overflow-x: auto;
+  scroll-behavior: smooth;
   padding-bottom: 1rem;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
 }
 
 .carousel::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, and Opera */
+  display: none; /* Chrome, Safari e Opera */
 }
 
 .carousel app-livro-card {
   flex: 0 0 auto;
   margin-right: 1rem;
-  width: 200px;
+  width: 180px;
+  transition: transform 0.3s ease;
 }
 
+.carousel app-livro-card:hover {
+  transform: scale(1.05);
+}
+
+/* Botões laterais */
 .arrow {
   position: absolute;
   top: 50%;
@@ -41,8 +52,15 @@ h2 {
   padding: 1rem;
   cursor: pointer;
   z-index: 10;
-  display: none; /* Hidden by default */
+  display: none;
   font-size: 1.5rem;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.arrow:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.1);
 }
 
 .left-arrow {
@@ -53,9 +71,25 @@ h2 {
   right: 0;
 }
 
-/* Show arrows on desktop when hovering over the container */
+/* Mostrar setas ao passar o mouse (apenas desktop) */
 @media (min-width: 768px) {
   .carousel-container:hover .arrow {
     display: block;
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .carousel app-livro-card {
+    width: 140px;
+  }
+
+  .arrow {
+    padding: 0.7rem;
+    font-size: 1.2rem;
   }
 }

@@ -1,27 +1,30 @@
-
-import { ChangeDetectionStrategy, Component, ElementRef, input, viewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Book } from '../../book';
 import { LivroCardComponent } from '../livro-card/livro-card.component';
 
 @Component({
   selector: 'app-carousel-netflix',
+  standalone: true,
+  imports: [CommonModule, LivroCardComponent],
   templateUrl: './carousel-netflix.component.html',
   styleUrls: ['./carousel-netflix.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [CommonModule, LivroCardComponent]
 })
 export class CarouselNetflixComponent {
-  books = input<Book[]>([]);
-  title = input<string>('');
-  carousel = viewChild.required<ElementRef<HTMLDivElement>>('carousel');
+  @Input() title!: string;
+  @Input() books: any[] = [];
+  @Output() bookSelected = new EventEmitter<string>(); // ✅ envia string (id)
+
+  @ViewChild('carousel') carousel!: ElementRef<HTMLDivElement>;
 
   scrollLeft() {
-    this.carousel().nativeElement.scrollBy({ left: -300, behavior: 'smooth' });
+    this.carousel.nativeElement.scrollBy({ left: -400, behavior: 'smooth' });
   }
 
   scrollRight() {
-    this.carousel().nativeElement.scrollBy({ left: 300, behavior: 'smooth' });
+    this.carousel.nativeElement.scrollBy({ left: 400, behavior: 'smooth' });
+  }
+
+  trackByBookId(index: number, book: any) {
+    return book.id;
   }
 }
