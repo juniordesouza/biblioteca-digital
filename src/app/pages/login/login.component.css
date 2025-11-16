@@ -92,6 +92,13 @@ input:focus {
   transition: background-color 0.3s;
 }
 
+.login-button:disabled {
+  background-color: #7a745b;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+
 .login-button:hover {
   background-color: #774f18;
 }
@@ -115,4 +122,63 @@ input:focus {
 
 .restore-link a{
   color: #C38632;
+}
+
+/* ======= TOAST MODERNO ======= */
+
+.modern-toast {
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-30px);
+  background: rgba(40, 40, 40, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #fff;
+  padding: 0.9rem 1.4rem;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 500;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  animation: toastSlide 0.4s ease forwards, toastFade 0.4s ease 3s forwards;
+  z-index: 999999;
+  max-width: 90%;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toast-icon {
+  font-size: 18px;
+}
+
+@keyframes toastSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes toastFade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .modern-toast {
+    font-size: 14px;
+    padding: 0.7rem 1rem;
+  }
 }

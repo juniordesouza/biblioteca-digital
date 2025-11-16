@@ -38,7 +38,6 @@ export class CadastroComponent {
   onSubmit() {
     if (this.cadastroForm.valid) {
       console.log('Form Submitted', this.cadastroForm.value);
-      this.authService.register();
       this.router.navigate(['/catalogo']);
     }
   }
