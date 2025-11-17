@@ -1,41 +1,45 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
-import { AuthService } from './auth.service';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private router: Router) {}
 
-  canActivate(): boolean {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
-    const token = this.auth.getToken();
+    const token = sessionStorage.getItem('token');
+    const pending = sessionStorage.getItem('pendingUser');
 
-    if (!token) {
-      this.router.navigate(['/login']);
+    // =========================================
+    // 1️⃣ Usuário APROVADO → pode tudo
+    // =========================================
+    if (token) return true;
+
+    // =========================================
+    // 2️⃣ Usuário PENDENTE → só pode /sala-de-espera
+    // =========================================
+    if (pending) {
+      if (state.url === '/sala-de-espera') return true;
+
+      this.router.navigate(['/sala-de-espera']);
       return false;
     }
 
-    // opcional: validar expiração do JWT
-    if (this.isTokenExpired(token)) {
-      this.auth.logout();
-      this.router.navigate(['/login']);
-      return false;
+    // =========================================
+    // 3️⃣ Não logado → rota pública? deixa passar
+    // =========================================
+
+    const publicRoutes = ['/home', '/login', '/cadastro', '/redefinir-senha'];
+
+    if (publicRoutes.includes(state.url)) {
+      return true; // rota pública → deixa entrar
     }
 
-    return true;
-  }
-
-  private isTokenExpired(token: string): boolean {
-    try {
-      const jwt = token.replace("Bearer ", "");
-      const payload = JSON.parse(atob(jwt.split('.')[1]));
-      const exp = payload.exp * 1000;
-      return Date.now() > exp;
-    } catch (e) {
-      return true;
-    }
+    // Rota privada → mandar para login
+    this.router.navigate(['/login']);
+    return false;
   }
 }

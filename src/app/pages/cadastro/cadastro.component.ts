@@ -114,6 +114,8 @@ export class CadastroComponent {
   serverError: string | null = null;
   private cdr = inject(ChangeDetectorRef);
 
+  
+
 
   estados: string[] = [
     "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG",
@@ -282,6 +284,9 @@ export class CadastroComponent {
   ];
 
   ngOnInit() {
+    if (sessionStorage.getItem('pendingUser')) {
+      this.router.navigate(['/sala-de-espera']);
+    }
     this.cadastroForm.valueChanges.subscribe(() => {
       this.serverError = null;
       this.cdr.markForCheck();

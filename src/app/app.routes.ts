@@ -1,4 +1,3 @@
-
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { CatalogoComponent } from './pages/catalogo/catalogo.component';
@@ -11,19 +10,24 @@ import { CadastroComponent } from './pages/cadastro/cadastro.component';
 import { ResetPasswordComponent } from './pages/redefinir-senha/redefinir-senha.component';
 import { LivroDetailsComponent } from './pages/livro-details/livro-details.component';
 import { WaitingPageComponent } from './pages/waiting-page/waiting-page';
-
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'cadastro', component: CadastroComponent },
     { path: 'redefinir-senha', component: ResetPasswordComponent },
-    { path: 'sala-de-espera', component: WaitingPageComponent },
-    { path: 'catalogo', component: CatalogoComponent },
-    { path: 'livros/:id', component: LivroDetailsComponent }, // Rota de detalhes do livro
-    { path: 'sobre', component: SobreComponent },
-    { path: 'admin/dashboard', component: AdminDashboardPage },
-    { path: 'admin/register-user', component: AdminRegisterUserPage },
-    { path: 'livro/ler/:id', loadComponent: () => import('./pages/book-reader-page/book-reader-page').then(m => m.BookReaderPage) }
+
+    { path: 'catalogo', component: CatalogoComponent, canActivate: [AuthGuard] },
+    { path: 'sala-de-espera', component: WaitingPageComponent, canActivate: [AuthGuard] },
+    { path: 'livros/:id', component: LivroDetailsComponent, canActivate: [AuthGuard] },
+    { path: 'sobre', component: SobreComponent, canActivate: [AuthGuard] },
+    { path: 'admin/dashboard', component: AdminDashboardPage, canActivate: [AuthGuard] },
+    { path: 'admin/register-user', component: AdminRegisterUserPage, canActivate: [AuthGuard] },
+    {
+    path: 'livro/ler/:id',
+    loadComponent: () => import('./pages/book-reader-page/book-reader-page').then(m => m.BookReaderPage),
+    canActivate: [AuthGuard]
+    }
+
 ];

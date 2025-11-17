@@ -1,8 +1,6 @@
 :host {
   display: block;
   background-color: #121212;
-  color: #fff;
-  font-family: 'Alumni Sans', sans-serif;
   background-image: linear-gradient(
       rgba(0, 0, 0, 0.7),
       rgba(0, 0, 0, 0.9)
@@ -11,6 +9,11 @@
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+}
+
+.home-container {
+  color: #fff;
+  font-family: 'Alumni Sans', sans-serif;
 }
 
 /* === HERO === */

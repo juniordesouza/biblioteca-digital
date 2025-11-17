@@ -1,9 +1,37 @@
 <div class="home-header">
   <nav class="home-nav">
+
     <a routerLink="/" class="logo">Digital Library</a>
+
     <ul class="auth-links">
-      <li><a routerLink="/login" class="button">Login</a></li>
-      <li><a routerLink="/cadastro" class="button-secondary">Cadastro</a></li>
+
+      <!-- 🔹 Usuário logado (token) -->
+      <ng-container *ngIf="token; else notLogged">
+
+        <li class="welcome-text">Olá, {{ username }}</li>
+        <li><a (click)="logout()" class="button-secondary">Sair</a></li>
+
+      </ng-container>
+
+      <!-- 🔹 Usuário pendente -->
+      <ng-template #notLogged>
+        <ng-container *ngIf="pendingUser; else loggedOut">
+
+          <li class="welcome-text">
+            Aguardando aprovação: {{ pendingUser }}
+          </li>
+          <li><a (click)="logout()" class="button-secondary">Sair</a></li>
+
+        </ng-container>
+      </ng-template>
+
+      <!-- 🔹 Não logado -->
+      <ng-template #loggedOut>
+        <li><a routerLink="/login" class="button">Login</a></li>
+        <li><a routerLink="/cadastro" class="button-secondary">Cadastro</a></li>
+      </ng-template>
+
     </ul>
+
   </nav>
 </div>

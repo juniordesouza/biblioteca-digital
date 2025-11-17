@@ -1,6 +1,12 @@
 .home-header {
   background-color: #151515;
   padding: 1.5rem 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  color: white;
 }
 
 .home-nav {
@@ -59,3 +65,4 @@
   background-color: #C38632;
   color: white;
 }
+

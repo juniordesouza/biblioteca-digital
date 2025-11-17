@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../auth.service';
+import { AuthGuard } from '../../auth.guard';
 import { HomeHeaderComponent } from '../../components/home-header/home-header.component';
 
 @Component({
@@ -33,6 +34,12 @@ export class LoginComponent implements OnInit {
     if (this.authService.isLogged()) {
       this.router.navigate(['/catalogo']);
     }
+
+    // Se está pendente → só pode esperar
+    if (sessionStorage.getItem('pendingUser')) {
+      this.router.navigate(['/sala-de-espera']);
+      return;
+    }
   }
 
   onSubmit() {
@@ -47,7 +54,12 @@ export class LoginComponent implements OnInit {
       next: () => {
         this.router.navigate(['/catalogo']);
       },
-      error: () => {
+      error: (err) => {
+        if (err.status === 403 && err.error?.aguardandoAprovacao === true) {
+          this.authService.setPendingUser(credentials.username);
+          this.router.navigate(['/sala-de-espera']);
+          return;
+        }
         this.showToast("Usuário ou senha inválidos.");
       }
     });

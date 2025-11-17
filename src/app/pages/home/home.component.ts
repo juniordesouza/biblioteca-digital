@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuComponent } from '../../components/menu/menu.component';
+import { HomeHeaderComponent } from '../../components/home-header/home-header.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, MenuComponent],
+  imports: [CommonModule, HomeHeaderComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
