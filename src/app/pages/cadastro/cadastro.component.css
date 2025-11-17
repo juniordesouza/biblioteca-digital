@@ -1,7 +1,8 @@
 :host {
   display: flex;
   flex-direction: column;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2070&auto=format&fit=crop');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2070&auto=format&fit=crop");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -18,25 +19,23 @@
 
 .login-card {
   background-color: #282724;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 500px;
-  display: flex;
-  flex-direction: column;
   border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  padding-bottom: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+              rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 
-.title{
+.title {
   padding: 1rem;
   width: 100%;
-  background-color: #C38632;
-  border-top-right-radius: 20px;
+  background-color: #c38632;
   border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
-.body{
+.body {
   padding: 2rem;
   color: white;
 }
@@ -46,8 +45,10 @@ h2 {
   text-align: center;
   color: white;
   font-size: 50px;
-  font-family: 'Alumni Sans', sans-serif;
+  font-family: "Alumni Sans", sans-serif;
 }
+
+/* ------------- INPUTS --------------- */
 
 .form-group {
   margin-bottom: 1rem;
@@ -59,39 +60,46 @@ label {
   margin-bottom: 0.5rem;
 }
 
-input {
+input,
+select {
   width: 100%;
   padding: 0.7rem;
   background-color: #373634;
-  border-radius: 8px;
-  border: 0 none;
+  border-radius: 10px;
+  border: 2px solid transparent;
   outline: none;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   color: white;
-  transition: ease-in-out;
   font-weight: bold;
+  transition: 0.25s ease;
+  box-shadow: rgba(0, 0, 0, 0.18) 2px 2px 4px;
 }
 
-input:focus {
-  border-inline: 1px solid #C38632;
+/* *** FOCO MODERNO, CONFORTÁVEL E ELEGANTE *** */
+input:focus,
+select:focus {
+  border-color: #c38632;
+  box-shadow: 0 0 0 4px rgba(195, 134, 50, 0.25); /* glow suave */
+  background-color: #3f3e3b;
 }
 
+/* *** Hover leve (somente aparência, sem confundir com erro) *** */
+input:hover,
+select:hover {
+  background-color: #403f3c;
+}
+
+/* Radio group */
 .radio-group .radio-options {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 
-.radio-group label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
+.radio-group input[type="radio"] {
+  width: auto;
 }
 
-.radio-group input[type="radio"] {
-    width: auto;
-}
+/* ------------- BOTÃO --------------- */
 
 .button-container {
   display: flex;
@@ -101,17 +109,26 @@ input:focus {
 .login-button {
   width: 50%;
   padding: 1rem;
-  background-color: #C38632;
+  background-color: #c38632;
   color: white;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: 0.25s ease;
 }
 
 .login-button:hover {
   background-color: #774f18;
+  box-shadow: 0px 4px 12px rgba(195, 134, 50, 0.25);
 }
+
+.login-button:disabled {
+  background-color: #7a745b;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ------------- LINK --------------- */
 
 .signup-link {
   font-size: 14px;
@@ -119,6 +136,65 @@ input:focus {
   text-align: center;
 }
 
-.signup-link a{
-  color: #C38632;
+.signup-link a {
+  color: #c38632;
 }
+
+/* ------------- GRID ENDEREÇO --------------- */
+
+.address-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.address-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .address-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- REGRAS DE SENHA MODERNAS --- */
+.password-rules {
+  margin-top: 0.5rem;
+  padding-left: 0.2rem;
+}
+
+.password-rules .rule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #c0bdbb;
+  font-size: 13px;
+  margin-bottom: 4px;
+  transition: 0.25s ease;
+}
+
+.password-rules .rule .icon {
+  font-size: 14px;
+  transition: 0.25s ease;
+}
+
+/* Regras válidas ficam verdes e suaves */
+.password-rules .rule.valid {
+  color: #57e389;
+  font-weight: bold;
+}
+
+.password-rules .rule.valid .icon {
+  color: #57e389;
+}
+
+.error {
+  color: #C38632;
+  font-size: 13px;
+}
+
+

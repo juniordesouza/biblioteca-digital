@@ -1,67 +1,186 @@
 <app-home-header></app-home-header>
+
 <div class="login-container">
   <div class="login-card">
+
     <div class="title">
       <h2>CRIE SUA CONTA</h2>
     </div>
+
     <div class="body">
       <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
 
         <div class="form-group">
-          <label for="fullName">NOME COMPLETO</label>
-          <input id="fullName" type="text" formControlName="fullName" placeholder="Digite seu nome completo">
+          <label for="fullName">NOME COMPLETO *</label>
+          <input id="fullName" formControlName="fullName" required placeholder="Digite seu nome completo" />
         </div>
 
         <div class="form-group">
-          <label for="email">EMAIL</label>
-          <input id="email" type="email" formControlName="email" placeholder="Digite seu e-mail">
+          <label for="email">EMAIL *</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            required
+            placeholder="Digite seu e-mail"
+          />
+
+          <!-- Erro visual -->
+          <span
+            *ngIf="
+              cadastroForm.get('email')?.invalid &&
+              cadastroForm.get('email')?.touched
+            "
+            style="color:#C38632; font-size: 13px;"
+          >
+            Digite um e-mail válido no formato nome@dominio.com
+          </span>
+      </div>
+
+
+        <div class="form-group">
+          <label for="username">USERNAME *</label>
+          <input id="username" formControlName="username" required placeholder="Crie seu nome de usuário" />
         </div>
 
         <div class="form-group">
-          <label for="username">USERNAME</label>
-          <input id="username" type="text" formControlName="username" placeholder="Crie um nome de usuário">
+          <label for="cpf">CPF *</label>
+          <input id="cpf" formControlName="cpf" required placeholder="Digite seu CPF" />
         </div>
 
         <div class="form-group">
-          <label for="cpf">CPF</label>
-          <input id="cpf" type="text" formControlName="cpf" placeholder="Digite seu CPF (somente números)">
+          <label for="telefone">TELEFONE *</label>
+
+          <input
+            id="telefone"
+            formControlName="telefone"
+            required
+            placeholder="11951132291"
+            (input)="cadastroForm.get('telefone')?.setValue($event.target.value.replace(/\D/g,''))"
+            [value]="formatPhone()"
+          />
+
+          <!-- Erro: só números -->
+          <span
+            *ngIf="
+              cadastroForm.get('telefone')?.errors?.['onlyNumbers'] &&
+              cadastroForm.get('telefone')?.touched
+            "
+            class="error"
+          >
+            Digite apenas números (ex: 11951132291).
+          </span>
+
+          <!-- Erro: tamanho incorreto -->
+          <span
+            *ngIf="
+              cadastroForm.get('telefone')?.errors?.['invalidLength'] &&
+              cadastroForm.get('telefone')?.touched
+            "
+            class="error"
+          >
+            O telefone deve ter 10 ou 11 dígitos.
+          </span>
+
+          <!-- Erro: DDD inválido -->
+          <span
+            *ngIf="
+              cadastroForm.get('telefone')?.errors?.['invalidDDD'] &&
+              cadastroForm.get('telefone')?.touched
+            "
+            class="error"
+          >
+            DDD inválido.
+          </span>
+        </div>
+
+
+
+        <!-- ENDEREÇO -->
+        <div class="address-grid">
+
+          <div class="form-group">
+            <label for="rua">RUA *</label>
+            <input id="rua" formControlName="rua" required placeholder="Ex: Avenida Paulista" />
+          </div>
+
+          <div class="address-row">
+
+            <div class="form-group">
+              <label for="cep">CEP *</label>
+              <input id="cep" formControlName="cep" required placeholder="00000-000" />
+            </div>
+
+            <div class="form-group">
+              <label for="numero">NÚMERO *</label>
+              <input id="numero" formControlName="numero" required placeholder="123" />
+            </div>
+
+            <div class="form-group">
+              <label for="estado">UF *</label>
+              <select id="estado" formControlName="estado" required>
+                <option value="">Selecione</option>
+                <option *ngFor="let uf of estados" [value]="uf">{{ uf }}</option>
+              </select>
+            </div>
+
+          </div>
         </div>
 
         <div class="form-group">
-          <label for="birthDate">Data de Nascimento</label>
-          <input id="birthDate" type="text" formControlName="birthDate" placeholder="05/01/1999">
+          <label for="password">SENHA *</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            required
+            placeholder="Crie uma senha forte"
+          />
+
+          <!-- Validação dinâmica moderna -->
+          <div class="password-rules">
+            <div
+              class="rule"
+              *ngFor="let rule of passwordRules"
+              [class.valid]="rule.check()"
+            >
+              <span class="icon">{{ rule.check() ? "✔" : "✖" }}</span>
+              <span class="text">{{ rule.label }}</span>
+            </div>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="password">SENHA</label>
-          <input id="password" type="password" formControlName="password" placeholder="Crie uma senha forte">
-        </div>
 
         <div class="form-group">
-          <label for="confirmPassword">CONFIRMAR SENHA</label>
-          <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="Confirme sua senha">
+          <label for="confirmPassword">CONFIRMAR SENHA *</label>
+          <input id="confirmPassword" type="password" required formControlName="confirmPassword" placeholder="Repita a senha" />
+
+          <!-- Erro visual -->
+          <span *ngIf="cadastroForm.errors?.['passwordMismatch'] && cadastroForm.touched" style="color:#C38632; font-size: 13px;">
+            As senhas não coincidem.
+          </span>
         </div>
 
         <div class="form-group radio-group">
-          <label>SEXO</label>
+          <label>SEXO *</label>
           <div class="radio-options">
-            <label>
-              <input type="radio" value="F" formControlName="gender"> Feminino
-            </label>
-            <label>
-              <input type="radio" value="M" formControlName="gender"> Masculino
-            </label>
+            <label><input type="radio" value="F" formControlName="gender" required /> Feminino</label>
+            <label><input type="radio" value="M" formControlName="gender" required /> Masculino</label>
           </div>
         </div>
 
         <div class="button-container">
-          <button type="submit" class="login-button" [disabled]="cadastroForm.invalid">CADASTRAR</button>
+          <button type="submit" class="login-button" [disabled]="cadastroForm.invalid">
+            CADASTRAR
+          </button>
         </div>
 
       </form>
+
       <div class="signup-link">
         <p>Já tem uma conta? <a routerLink="/login">Faça o login</a></p>
       </div>
+
     </div>
   </div>
 </div>
