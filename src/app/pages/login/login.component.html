@@ -1,4 +1,5 @@
 <app-home-header></app-home-header>
+
 <!-- TOAST MODERNO -->
 <div class="modern-toast" *ngIf="showAlert">
   <div class="toast-content">
@@ -7,15 +8,16 @@
   </div>
 </div>
 
-
 <div class="main-wrapper">
   <div class="login-container">
     <div class="login-card">
+
       <div class="title">
         <h2>BEM-VINDO DE VOLTA</h2>
       </div>
 
       <div class="body">
+
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
           <div class="form-group">
@@ -28,8 +30,17 @@
             <input id="senha" type="password" formControlName="senha" placeholder="senha">
           </div>
 
+          <!-- 🔥 Link moderno de recuperar senha -->
+          <div class="restore-link">
+            <a routerLink="/redefinir-senha">Esqueceu sua senha?</a>
+          </div>
+
           <div class="button-container">
-            <button type="submit" class="login-button" [disabled]="loginForm.invalid">ENTRAR</button>
+            <button type="submit"
+                    class="login-button"
+                    [disabled]="loginForm.invalid">
+              ENTRAR
+            </button>
           </div>
 
         </form>
@@ -37,6 +48,7 @@
         <div class="signup-link">
           <p>Ainda não tem conta? <a routerLink="/cadastro">Cadastre-se</a></p>
         </div>
+
       </div>
 
     </div>

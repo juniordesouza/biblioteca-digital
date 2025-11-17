@@ -103,8 +103,32 @@ input:focus {
   background-color: #774f18;
 }
 
+.restore-link {
+  margin-top: -0.6rem;
+  margin-bottom: 1.2rem;
+  text-align: right;
+}
+
+.restore-link a {
+  font-family: 'Open Sans', sans-serif;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: underline;
+  opacity: 0.9;
+  transition: 0.2s ease;
+  
+}
+
+.restore-link a:hover {
+  color: #C38632;
+  opacity: 1;
+  cursor: pointer;
+}
+
+
 .signup-link {
-  font-size: 12px;
+  font-size: 13px;
   margin-top: 1rem;
   text-align: center;
 }
@@ -113,16 +137,7 @@ input:focus {
   color: #C38632;
 }
 
-.restore-link{
-  font-size: 12px;
-  text-align: right;
-  text-decoration: underline;
-  margin-bottom: 1.2rem;
-}
 
-.restore-link a{
-  color: #C38632;
-}
 
 /* ======= TOAST MODERNO ======= */
 
@@ -182,3 +197,4 @@ input:focus {
     padding: 0.7rem 1rem;
   }
 }
+
