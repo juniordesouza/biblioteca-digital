@@ -10,6 +10,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { CadastroComponent } from './pages/cadastro/cadastro.component';
 import { ResetPasswordComponent } from './pages/redefinir-senha/redefinir-senha.component';
 import { LivroDetailsComponent } from './pages/livro-details/livro-details.component';
+import { WaitingPageComponent } from './pages/waiting-page/waiting-page';
 
 
 export const routes: Routes = [
@@ -18,6 +19,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'cadastro', component: CadastroComponent },
     { path: 'redefinir-senha', component: ResetPasswordComponent },
+    { path: 'sala-de-espera', component: WaitingPageComponent },
     { path: 'catalogo', component: CatalogoComponent },
     { path: 'livros/:id', component: LivroDetailsComponent }, // Rota de detalhes do livro
     { path: 'sobre', component: SobreComponent },

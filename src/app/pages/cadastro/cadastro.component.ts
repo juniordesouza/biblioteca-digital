@@ -231,10 +231,9 @@ export class CadastroComponent {
     console.log("📤 Enviando payload:", payload);
 
     this.authService.register(payload).subscribe({
-      next: (response) => {
-        console.log("✅ Cadastro realizado com sucesso:");
-        console.log(response); // mantém na tela
-        this.showToast("Cadastro realizado (modo teste). Veja o console.");
+      next: () => {
+        console.log("✅ Cadastro realizado com sucesso.");
+        this.router.navigate(['/sala-de-espera']);   // <-- redireciona para a tela de espera
       },
       error: (err) => {
         console.error("❌ Erro no cadastro:", err);
