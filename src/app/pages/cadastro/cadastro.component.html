@@ -45,8 +45,47 @@
 
         <div class="form-group">
           <label for="cpf">CPF *</label>
-          <input id="cpf" formControlName="cpf" required placeholder="Digite seu CPF" />
+
+          <input
+            id="cpf"
+            formControlName="cpf"
+            required
+            placeholder="000.000.000-00"
+            (input)="onCPFInput($event)"
+            [value]="formatCPF()"
+          />
+
+          <span
+            *ngIf="
+              cadastroForm.get('cpf')?.errors?.['onlyNumbers'] &&
+              (cadastroForm.get('cpf')?.touched || cadastroForm.get('cpf')?.dirty)
+            "
+            class="error"
+          >
+            Digite apenas números.
+          </span>
+
+          <span
+            *ngIf="
+              cadastroForm.get('cpf')?.errors?.['invalidCPFLength'] &&
+              (cadastroForm.get('cpf')?.touched || cadastroForm.get('cpf')?.dirty)
+            "
+            class="error"
+          >
+            O CPF deve ter 11 dígitos.
+          </span>
+
+          <span
+            *ngIf="
+              cadastroForm.get('cpf')?.errors?.['invalidCPF'] &&
+              (cadastroForm.get('cpf')?.touched || cadastroForm.get('cpf')?.dirty)
+            "
+            class="error"
+          >
+            CPF inválido.
+          </span>
         </div>
+
 
         <div class="form-group">
           <label for="telefone">TELEFONE *</label>
@@ -56,9 +95,10 @@
             formControlName="telefone"
             required
             placeholder="11951132291"
-            (input)="cadastroForm.get('telefone')?.setValue($event.target.value.replace(/\D/g,''))"
+            (input)="onPhoneInput($event)"
             [value]="formatPhone()"
           />
+
 
           <!-- Erro: só números -->
           <span
