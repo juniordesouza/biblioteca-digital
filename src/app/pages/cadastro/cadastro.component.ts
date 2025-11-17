@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -9,6 +9,7 @@ import {
   ValidationErrors
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../auth.service';
 import { HomeHeaderComponent } from '../../components/home-header/home-header.component';
 
 /* -----------------------------------------------------
@@ -109,6 +110,10 @@ export class CadastroComponent {
 
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private authService = inject(AuthService);
+  serverError: string | null = null;
+  private cdr = inject(ChangeDetectorRef);
+
 
   estados: string[] = [
     "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG",
@@ -205,12 +210,64 @@ export class CadastroComponent {
   }
 
   onSubmit() {
-    if (this.cadastroForm.valid) {
-      this.sanitizeAll();
-      console.log("FORM:", this.cadastroForm.value);
-      this.router.navigate(['/catalogo']);
-    }
+    if (this.cadastroForm.invalid) return;
+
+    this.sanitizeAll(); // remove máscaras antes de enviar
+
+    const form = this.cadastroForm.value;
+
+    const payload = {
+      username: form.username,
+      nome: form.fullName,
+      email: form.email,
+      senha: form.password,
+      telefone: form.telefone,
+      cpf: form.cpf,
+      endereco: `${form.rua}, ${form.numero} - ${form.estado}`,
+      sexo: form.gender,
+      dtNascimento: form.birthDate ? form.birthDate : "1999-01-05"
+    };
+
+    console.log("📤 Enviando payload:", payload);
+
+    this.authService.register(payload).subscribe({
+      next: (response) => {
+        console.log("✅ Cadastro realizado com sucesso:");
+        console.log(response); // mantém na tela
+        this.showToast("Cadastro realizado (modo teste). Veja o console.");
+      },
+      error: (err) => {
+        console.error("❌ Erro no cadastro:", err);
+
+        let backendMessage = "Erro inesperado. Tente novamente.";
+
+        if (err.error?.mensagem) {
+          backendMessage = err.error.mensagem;
+        }
+
+        this.serverError = backendMessage;
+
+        this.cdr.markForCheck(); // <--- FORÇA ATUALIZAÇÃO DO HTML
+      }
+
+
+    });
   }
+
+
+  showAlert = false;
+  alertMessage = '';
+
+  showToast(message: string) {
+    this.alertMessage = message;
+    this.showAlert = true;
+
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 3500);
+  }
+
+
 
   /* regras da senha (dinâmicas) */
   get password() {
@@ -224,4 +281,13 @@ export class CadastroComponent {
     { label: "Número", check: () => /[0-9]/.test(this.password) },
     { label: "Caractere especial (!@#$%)", check: () => /[!@#$%^&*(),.?":{}|<>]/.test(this.password) }
   ];
+
+  ngOnInit() {
+    this.cadastroForm.valueChanges.subscribe(() => {
+      this.serverError = null;
+      this.cdr.markForCheck();
+    });
+  }
+
+
 }

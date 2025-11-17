@@ -22,6 +22,11 @@ export class AuthService {
     );
   }
 
+  register(payload: any) {
+    return this.http.post('http://localhost:8080/pessoas', payload);
+  }
+
+
   getToken(): string | null {
     return sessionStorage.getItem('token');
   }

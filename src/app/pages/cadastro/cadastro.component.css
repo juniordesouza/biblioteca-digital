@@ -197,4 +197,35 @@ select:hover {
   font-size: 13px;
 }
 
+.toast-error {
+  background-color: #b93727;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: bold;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.server-error {
+  margin-top: 1rem;
+  padding: 12px;
+  background-color: #b93727;
+  color: white;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 

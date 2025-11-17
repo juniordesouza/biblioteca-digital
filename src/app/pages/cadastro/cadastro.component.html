@@ -1,4 +1,7 @@
 <app-home-header></app-home-header>
+<div *ngIf="showAlert" class="toast-error">
+  {{ alertMessage }}
+</div>
 
 <div class="login-container">
   <div class="login-card">
@@ -214,6 +217,11 @@
             CADASTRAR
           </button>
         </div>
+
+        <div *ngIf="serverError" class="server-error">
+          {{ serverError }}
+        </div>
+
 
       </form>
 
