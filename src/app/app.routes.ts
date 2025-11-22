@@ -3,6 +3,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { CatalogoComponent } from './pages/catalogo/catalogo.component';
 import { SobreComponent } from './pages/sobre/sobre.component';
 import { AdminDashboardPage } from './pages/admin-dashboard-page/admin-dashboard-page';
+import { AdminListBooks } from './pages/admin-list-books/admin-list-books';
 import { AdminRegisterUserPage } from './pages/admin-register-user/admin-register-user';
 import { LoginComponent } from './pages/login/login.component';
 import { CadastroComponent } from './pages/cadastro/cadastro.component';
@@ -21,6 +22,7 @@ export const routes: Routes = [
     { path: 'livros/:id', component: LivroDetailsComponent, canActivate: [AuthGuard] },
     { path: 'sobre', component: SobreComponent, canActivate: [AuthGuard] },
     { path: 'admin/dashboard', component: AdminDashboardPage, canActivate: [AuthGuard] },
+    { path: 'admin/livros', component: AdminListBooks, canActivate: [AuthGuard] },
     { path: 'admin/register-user', component: AdminRegisterUserPage, canActivate: [AuthGuard] },
     {
     path: 'livro/ler/:id',

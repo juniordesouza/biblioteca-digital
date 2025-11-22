@@ -1,0 +1,64 @@
+<app-admin-header (toggleSidebar)="toggleSidebar()"></app-admin-header>
+<app-sidebar [isOpen]="sidebarOpen"></app-sidebar>
+
+<div class="main-layout" [class.sidebar-open]="sidebarOpen">
+  <main class="content">
+    <h2>Lista de Livros</h2>
+
+    <div class="bulk-actions">
+      <button class="btn-approve">Ativar Selecionados</button>
+      <button class="btn-reject">Desativar Selecionados</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <input
+                type="checkbox"
+                [checked]="allSelected"
+                (change)="toggleSelectAll($event)"
+              />
+            </th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Editora</th>
+            <th>Ano</th>
+            <th>Status</th>
+            <th>Ativo</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let livro of livros">
+            <td>
+              <input
+                type="checkbox"
+                [(ngModel)]="livro.selected"
+                (change)="updateSelectAllState()"
+              />
+            </td>
+
+            <td>{{ livro.titulo }}</td>
+            <td>{{ livro.autor }}</td>
+            <td>{{ livro.editora }}</td>
+            <td>{{ livro.anoLancamento }}</td>
+
+            <td>
+              <span>{{ livro.status }}</span>
+            </td>
+
+            <td>
+              <span [style.color]="livro.ativo ? 'green' : 'red'">
+                {{ livro.ativo ? 'SIM' : 'NÃO' }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+    
