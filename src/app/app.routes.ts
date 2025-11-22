@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { CatalogoComponent } from './pages/catalogo/catalogo.component';
 import { SobreComponent } from './pages/sobre/sobre.component';
-import { BookDetailsComponent } from './pages/book-detail/book-details.component';
 import { AdminDashboardPage } from './pages/admin-dashboard-page/admin-dashboard-page';
 import { AdminRegisterUserPage } from './pages/admin-register-user/admin-register-user';
 import { LoginComponent } from './pages/login/login.component';

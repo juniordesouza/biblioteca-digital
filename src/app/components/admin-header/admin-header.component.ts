@@ -11,6 +11,13 @@ import { CommonModule } from '@angular/common';
 export class AdminHeaderComponent {
   @Output() toggleSidebar = new EventEmitter<void>();
 
+  username: string | null = null; // 🔥 Nome do usuário
+
+  constructor() {
+    this.username = sessionStorage.getItem('username');
+    this.username = this.username ? this.username.toUpperCase() : null;
+  }
+
   onToggleSidebar() {
     this.toggleSidebar.emit();
   }

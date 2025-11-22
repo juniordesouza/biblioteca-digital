@@ -15,7 +15,6 @@
         <thead>
           <tr>
             <th>
-              <!-- ✅ Checkbox principal -->
               <input
                 type="checkbox"
                 [checked]="allSelected"
@@ -27,15 +26,15 @@
             <th>E-mail</th>
             <th>Dt_Nasc</th>
             <th>CPF</th>
-            <th>CEP</th>
-            <th>Num</th>
+            <th>Endereço</th>
             <th>Telefone</th>
+            <th>Status</th>
           </tr>
         </thead>
+
         <tbody>
           <tr *ngFor="let user of usuarios">
             <td>
-              <!-- ✅ Checkbox individual -->
               <input
                 type="checkbox"
                 [(ngModel)]="user.selected"
@@ -47,18 +46,17 @@
             <td>{{ user.email }}</td>
             <td>{{ user.birthDate }}</td>
             <td>{{ user.cpf }}</td>
-            <td>{{ user.cep }}</td>
-            <td>{{ user.number }}</td>
-            <td>{{ user.phone }}</td>
+            <td>{{ user.endereco }}</td>
+            <td>{{ user.telefone }}</td>
+            <td>
+              <span [style.color]="user.ativo ? 'green' : 'red'">
+                {{ user.ativo ? 'Ativo' : 'Inativo' }}
+              </span>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="pagination">
-      <button (click)="previousPage()">&lt;</button>
-      <span>Página {{ currentPage }} de {{ totalPages }}</span>
-      <button (click)="nextPage()">&gt;</button>
-    </div>
   </main>
 </div>

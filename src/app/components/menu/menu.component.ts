@@ -10,7 +10,14 @@ import { RouterModule } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuComponent {
+
   public isSearchVisible = signal(false);
+  public username = signal<string | null>(null); // 🔥 nome para exibir
+
+  constructor() {
+    const storedUser = sessionStorage.getItem('username');
+    this.username.set(storedUser); // 🔥 carrega no signal
+  }
 
   public toggleSearch(): void {
     this.isSearchVisible.set(!this.isSearchVisible());

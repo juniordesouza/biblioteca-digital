@@ -15,9 +15,7 @@ import { FormsModule } from '@angular/forms';
 export class AdminDashboardPage implements OnInit {
   sidebarOpen = true;
   usuarios: any[] = [];
-  currentPage = 1;
-  totalPages = 10;
-  allSelected = false; // ✅ controla o checkbox do cabeçalho
+  allSelected = false; 
 
   constructor(private http: HttpClient) {}
 
@@ -26,58 +24,62 @@ export class AdminDashboardPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadUsers(this.currentPage);
+    this.loadUsers();
   }
 
-  /** 🔹 Carrega usuários da API Random User */
-  loadUsers(page: number): void {
-    this.http
-      .get<any>(`https://randomuser.me/api/?page=${page}&results=10&seed=adminSeed`)
-      .subscribe({
-        next: (response) => {
-          this.usuarios = response.results.map((user: any) => ({
-            username: user.login.username,
-            fullName: `${user.name.first} ${user.name.last}`,
-            email: user.email,
-            birthDate: new Date(user.dob.date).toLocaleDateString(),
-            cpf: user.id.value || 'N/A',
-            cep: user.location.postcode || 'N/A',
-            number: user.location.street.number,
-            phone: user.phone,
-            selected: false // ✅ adiciona propriedade local
-          }));
+  /** 🔹 Carrega usuários do backend Spring */
+loadUsers(): void {
+  const token = sessionStorage.getItem('token');
 
-          // reset do "selecionar todos" ao mudar de página
-          this.allSelected = false;
-        },
-        error: (err) => console.error('Erro ao buscar usuários:', err),
-      });
+  this.http.get<any[]>(
+    'http://localhost:8080/funcionarios/usuarios',
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  )
+  .subscribe({
+    next: response => {
+      this.usuarios = response.map(user => ({
+        username: user.username,
+        fullName: user.nome,
+        email: user.email,
+        birthDate: this.formatDate(user.dtNascimento),
+        cpf: user.cpf,
+        endereco: user.endereco,
+        telefone: user.telefone,
+        sexo: user.sexo,
+        role: user.roleString,
+        ativo: user.flagAtivo,
+        selected: false
+      }));
+
+      this.allSelected = false;
+    },
+    error: err => console.error("Erro ao buscar usuários:", err)
+  });
+}
+
+
+  /** 🔹 Converte "yyyyMMdd" em "dd/MM/yyyy" */
+  formatDate(dateString: string): string {
+    if (!dateString || dateString.length !== 8) return dateString;
+
+    const year = dateString.substring(0, 4);
+    const month = dateString.substring(4, 6);
+    const day = dateString.substring(6, 8);
+
+    return `${day}/${month}/${year}`;
   }
 
-  /** 🔹 Alterna "selecionar todos" */
+  /** 🔹 Selecionar / desmarcar todos */
   toggleSelectAll(event: Event): void {
     const checked = (event.target as HTMLInputElement).checked;
     this.allSelected = checked;
     this.usuarios.forEach((u) => (u.selected = checked));
   }
 
-  /** 🔹 Atualiza o estado do checkbox principal conforme seleção individual */
+  /** 🔹 Atualiza checkbox principal */
   updateSelectAllState(): void {
     this.allSelected = this.usuarios.length > 0 && this.usuarios.every((u) => u.selected);
-  }
-
-  /** 🔹 Navegação de páginas */
-  nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.loadUsers(this.currentPage);
-    }
-  }
-
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.loadUsers(this.currentPage);
-    }
   }
 }
