@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, NgZone, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../auth.service';
-import { AuthGuard } from '../../auth.guard';
 import { HomeHeaderComponent } from '../../components/home-header/home-header.component';
 
 @Component({
@@ -20,6 +19,7 @@ export class LoginComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private zone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef); // 🔥 garante atualização de tela
 
   showAlert = false;
   alertMessage = '';
@@ -30,12 +30,13 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    // 🔥 Se já estiver logado, redireciona imediatamente
+
+    // Se já estiver logado → redireciona
     if (this.authService.isLogged()) {
       this.router.navigate(['/catalogo']);
     }
 
-    // Se está pendente → só pode esperar
+    // Se estiver pendente de aprovação
     if (sessionStorage.getItem('pendingUser')) {
       this.router.navigate(['/sala-de-espera']);
       return;
@@ -55,11 +56,15 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/catalogo']);
       },
       error: (err) => {
+
+        // Usuário pendente de aprovação
         if (err.status === 403 && err.error?.aguardandoAprovacao === true) {
           this.authService.setPendingUser(credentials.username);
           this.router.navigate(['/sala-de-espera']);
           return;
         }
+
+        // 🔥 Garantido: mostra toast em QUALQUER falha de login
         this.showToast("Usuário ou senha inválidos.");
       }
     });
@@ -69,10 +74,12 @@ export class LoginComponent implements OnInit {
     this.zone.run(() => {
       this.alertMessage = message;
       this.showAlert = true;
+      this.cdr.markForCheck(); // 🔥 força render
 
       setTimeout(() => {
         this.zone.run(() => {
           this.showAlert = false;
+          this.cdr.markForCheck(); // 🔥 força esconder
         });
       }, 3500);
     });

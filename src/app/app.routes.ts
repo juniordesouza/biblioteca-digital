@@ -13,11 +13,10 @@ import { WaitingPageComponent } from './pages/waiting-page/waiting-page';
 import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
-    { path: 'home', component: HomeComponent },
+    { path: '', component: HomeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'cadastro', component: CadastroComponent },
     { path: 'redefinir-senha', component: ResetPasswordComponent },
-
     { path: 'catalogo', component: CatalogoComponent, canActivate: [AuthGuard] },
     { path: 'sala-de-espera', component: WaitingPageComponent, canActivate: [AuthGuard] },
     { path: 'livros/:id', component: LivroDetailsComponent, canActivate: [AuthGuard] },
