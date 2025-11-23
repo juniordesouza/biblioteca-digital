@@ -101,3 +101,23 @@
   cursor: pointer;
   font-weight: bold;
 }
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.logout-btn span {
+  font-size: 1.7rem;
+}
+
+.logout-btn:hover {
+  background: #00000033;
+}

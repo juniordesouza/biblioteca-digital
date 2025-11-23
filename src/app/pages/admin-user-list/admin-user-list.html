@@ -1,0 +1,95 @@
+<app-admin-header (toggleSidebar)="toggleSidebar()"></app-admin-header>
+<app-sidebar [isOpen]="sidebarOpen"></app-sidebar>
+
+<div class="main-layout" [class.sidebar-open]="sidebarOpen">
+  <main class="content">
+    <h2>Lista de Usuários</h2>
+
+    <div class="bulk-actions">
+        <button class="btn-ban" (click)="banirSelecionados()">
+            Bloquear Selecionados
+        </button>
+
+        <button class="btn-unban" (click)="desbanirSelecionados()">
+            Desbloquear Selecionados
+        </button>
+    </div>
+
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)" /></th>
+
+            <th>Username</th>
+            <th>Status</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>CPF</th>
+            <th>Data Nasc.</th>
+            <th>Telefone</th>
+            <th>Endereço</th>
+            <th>CEP</th>
+            <th>Cadastro</th>
+            <th>Sexo</th>
+            <th>Role</th>
+            <th>Doc.</th>
+            <th>Desativação</th>
+            <th>Banimento</th>
+            <th>Slots</th>
+            <th>Capa</th>
+
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let user of usuarios">
+            <td>
+              <input type="checkbox" [(ngModel)]="user.selected" (change)="updateSelectAllState()" />
+            </td>
+
+            <td>{{ user.username }}</td>
+
+            <td>
+              <span
+                [ngStyle]="{
+                  color:
+                    user.status === 'ATIVO'
+                      ? 'green'
+                      : user.status === 'PENDENTE'
+                      ? 'goldenrod'
+                      : 'red'
+                }"
+              >
+                {{ user.status }}
+              </span>
+            </td>
+
+            <td>{{ user.nome }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.cpf }}</td>
+            <td>{{ formatDate(user.dtNascimento) }}</td>
+            <td>{{ user.telefone }}</td>
+            <td>{{ user.endereco }}</td>
+            <td>{{ user.cep }}</td>
+            <td>{{ user.dtCadastro | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ user.sexo }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.urlDocumento || '-' }}</td>
+            <td>{{ user.dtDesativacao || '-' }}</td>
+            <td>{{ user.dtBanimento || '-' }}</td>
+            <td>{{ user.limiteSlots }}</td>
+            <td>{{ user.urlCapa || '-' }}</td>
+
+            <td class="actions">
+                <button class="btn-ban" title="Banir usuário" (click)="banirUsuario(user.username)">🚫</button>
+                <button class="btn-unban" title="Desbanir usuário" (click)="desbanirUsuario(user.username)">🔓</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>

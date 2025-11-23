@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,15 +11,19 @@ import { CommonModule } from '@angular/common';
 })
 export class AdminHeaderComponent {
   @Output() toggleSidebar = new EventEmitter<void>();
+  username: string | null = null;
 
-  username: string | null = null; // 🔥 Nome do usuário
-
-  constructor() {
+  constructor(private router: Router) {
     this.username = sessionStorage.getItem('username');
     this.username = this.username ? this.username.toUpperCase() : null;
   }
 
   onToggleSidebar() {
     this.toggleSidebar.emit();
+  }
+
+  logout() {
+    sessionStorage.clear();
+    this.router.navigate(['/login']);
   }
 }

@@ -6,13 +6,13 @@ import { AdminHeaderComponent } from '../../components/admin-header/admin-header
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-admin-dashboard-page',
+  selector: 'app-admin-user-aprove',
   standalone: true,
   imports: [CommonModule, HttpClientModule, FormsModule, SidebarComponent, AdminHeaderComponent],
-  templateUrl: './admin-dashboard-page.html',
-  styleUrls: ['./admin-dashboard-page.css']
+  templateUrl: './admin-user-aprove.html',
+  styleUrl: './admin-user-aprove.css'
 })
-export class AdminDashboardPage implements OnInit {
+export class AdminUserAprove implements OnInit {
   sidebarOpen = true;
   usuarios: any[] = [];
   allSelected = false; 
@@ -27,37 +27,30 @@ export class AdminDashboardPage implements OnInit {
     this.loadUsers();
   }
 
-  /** 🔹 Carrega usuários do backend Spring */
-loadUsers(): void {
-  const token = sessionStorage.getItem('token');
+  loadUsers(): void {
+    const token = sessionStorage.getItem('token');
 
-  this.http.get<any[]>(
-    'http://localhost:8080/pessoas/usuarios',
-    {
-      headers: { Authorization: `Bearer ${token}` }
-    }
-  )
-  .subscribe({
-    next: response => {
-      this.usuarios = response.map(user => ({
-        username: user.username,
-        fullName: user.nome,
-        email: user.email,
-        birthDate: this.formatDate(user.dtNascimento),
-        cpf: user.cpf,
-        endereco: user.endereco,
-        telefone: user.telefone,
-        sexo: user.sexo,
-        role: user.roleString,
-        status: user.status,
-        selected: false
-      }));
+    this.http.get<any[]>(
+      'http://localhost:8080/pessoas/usuarios',
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    .subscribe({
+      next: response => {
 
-      this.allSelected = false;
-    },
-    error: err => console.error("Erro ao buscar usuários:", err)
-  });
-}
+        this.usuarios = response
+          .filter(user => user.status === 'PENDENTE')   // <<< 🔥 SOMENTE PENDENTES
+          .map(user => ({
+            ...user,
+            birthDate: this.formatDate(user.dtNascimento),
+            selected: false
+          }));
+
+        this.allSelected = false;
+      },
+
+      error: err => console.error("Erro ao buscar usuários:", err)
+    });
+  }
 
 
   /** 🔹 Converte "yyyyMMdd" em "dd/MM/yyyy" */

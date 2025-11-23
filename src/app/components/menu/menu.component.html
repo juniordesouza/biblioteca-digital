@@ -3,6 +3,7 @@
     <div class="logo">
       LOGO HERE
     </div>
+
     <div class="links">
       <ul>
         <li><a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
@@ -15,18 +16,22 @@
       </ul>
     </div>
   </div>
+
   <div class="search">
     <div class="search-icon" (click)="toggleSearch()">
-      <span class="material-symbols-outlined">
-        search
-      </span>
+      <span class="material-symbols-outlined">search</span>
     </div>
+
     <input type="text" placeholder="Pesquisar..." [class.visible]="isSearchVisible()" class="search-input">
-    <div class="user-info">
-      <span class="material-symbols-outlined">
-        person
-      </span>
-        <p>{{ username()?.toUpperCase() }}</p>
+
+    <div class="user-info" *ngIf="username()">
+      <span class="material-symbols-outlined">person</span>
+      <p>{{ username()?.toUpperCase() }}</p>
+
+      <!-- 🔥 BOTÃO LOGOUT -->
+      <button class="logout-btn" (click)="logout()">
+        <span class="material-symbols-outlined">logout</span>
+      </button>
     </div>
   </div>
 </nav>

@@ -49,8 +49,15 @@
             <td>{{ user.endereco }}</td>
             <td>{{ user.telefone }}</td>
             <td>
-              <span [style.color]="user.ativo ? 'green' : 'red'">
-                {{ user.ativo ? 'Ativo' : 'Inativo' }}
+              <span 
+                [ngStyle]="{
+                  'color': 
+                    user.status === 'ATIVO' ? 'green' :
+                    user.status === 'PENDENTE' ? 'goldenrod' :
+                    'red'
+                }"
+              >
+                {{ user.status }}
               </span>
             </td>
           </tr>

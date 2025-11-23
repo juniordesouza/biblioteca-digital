@@ -11,6 +11,8 @@ import { ResetPasswordComponent } from './pages/redefinir-senha/redefinir-senha.
 import { LivroDetailsComponent } from './pages/livro-details/livro-details.component';
 import { WaitingPageComponent } from './pages/waiting-page/waiting-page';
 import { AuthGuard } from './auth.guard';
+import { AdminUserAprove } from './pages/admin-user-aprove/admin-user-aprove';
+import { AdminUserList } from './pages/admin-user-list/admin-user-list';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -22,6 +24,8 @@ export const routes: Routes = [
     { path: 'livros/:id', component: LivroDetailsComponent, canActivate: [AuthGuard] },
     { path: 'sobre', component: SobreComponent, canActivate: [AuthGuard] },
     { path: 'admin/dashboard', component: AdminDashboardPage, canActivate: [AuthGuard] },
+    { path: 'admin/usuarios', component: AdminUserList, canActivate: [AuthGuard] },
+    { path: 'admin/aprovacoes', component: AdminUserAprove, canActivate: [AuthGuard] },
     { path: 'admin/livros', component: AdminListBooks, canActivate: [AuthGuard] },
     { path: 'admin/register-user', component: AdminRegisterUserPage, canActivate: [AuthGuard] },
     {

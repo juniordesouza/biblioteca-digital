@@ -1,0 +1,191 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+/* Layout principal */
+.main-layout {
+  display: flex;
+  transition: all 0.3s ease;
+  background: #1f1f1f;
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* Quando a sidebar estiver aberta */
+.main-layout.sidebar-open {
+  margin-left: 240px;
+  width: calc(100% - 240px);
+}
+
+/* Quando estiver fechada */
+.main-layout:not(.sidebar-open) {
+  margin-left: 0;
+  width: 100%;
+}
+
+/* Conteúdo principal */
+.content {
+  flex: 1;
+  padding: 2rem;
+  margin-top: 60px;
+  transition: all 0.3s ease;
+  overflow-x: auto;
+}
+
+/* Container da tabela */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  transition: width 0.3s ease;
+}
+
+/* Título */
+h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+/* Tabela */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #222;
+  border-radius: 6px;
+  overflow: hidden;
+  min-width: 900px;
+}
+
+thead {
+  background: #3a3a3a;
+}
+
+th,
+td {
+  padding: 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid #444;
+}
+
+tbody tr:hover {
+  background: #333;
+}
+
+/* Paginação */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.pagination button {
+  background: #3a3a3a;
+  border: none;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pagination button:hover {
+  background: #555;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+  .content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  table {
+    min-width: 700px;
+  }
+}
+
+/* 🔹 Ações em grupo */
+.bulk-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 1.2rem;
+}
+
+/* 🔒 Botão Bloquear Selecionados — PRETO E BRANCO */
+.btn-block {
+  padding: 0.6rem 1.4rem;
+  background: #000;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+}
+.btn-block:hover {
+  background: #222;
+  border-color: #e0e0e0;
+}
+
+/* 🔓 Botão Desbloquear Selecionados — DOURADO */
+.btn-unblock {
+  padding: 0.6rem 1.4rem;
+  background: linear-gradient(135deg, #f2c14e, #d4a017);
+  color: #1f1f1f;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+}
+.btn-unblock:hover {
+  background: linear-gradient(135deg, #ffd76b, #f2c14e);
+}
+
+/* Botões BANIR e DESBANIR */
+.btn-ban {
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #800f0f;
+  color: #fff;
+  font-size: 17px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: .2s;
+  border: 1px solid #acacac;
+}
+.btn-ban:hover {
+  background: #300303;
+}
+
+.btn-unban {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: #2c2c2c;
+  color: #fff;
+  font-size: 17px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: .2s;
+}
+.btn-unban:hover {
+  background: #644f18;
+}
+
+/* Ações alinhadas */
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 100px;
+}

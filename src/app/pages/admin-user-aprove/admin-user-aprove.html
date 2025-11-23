@@ -1,0 +1,79 @@
+<app-admin-header (toggleSidebar)="toggleSidebar()"></app-admin-header>
+<app-sidebar [isOpen]="sidebarOpen"></app-sidebar>
+
+<div class="main-layout" [class.sidebar-open]="sidebarOpen">
+  <main class="content">
+    <h2>Lista de Usuários Pendentes</h2>
+
+    <div class="bulk-actions">
+      <button class="btn-approve">Aprovar Selecionados</button>
+      <button class="btn-reject">Recusar Selecionados</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)" /></th>
+
+            <th>Username</th>
+            <th>Status</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>CPF</th>
+            <th>Data Nasc.</th>
+            <th>Telefone</th>
+            <th>Endereço</th>
+            <th>CEP</th>
+            <th>Cadastro</th>
+            <th>Sexo</th>
+            <th>Doc.</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let user of usuarios">
+            <td>
+              <input type="checkbox" [(ngModel)]="user.selected" (change)="updateSelectAllState()" />
+            </td>
+
+            <td>{{ user.username }}</td>
+
+            <td>
+              <span
+                [ngStyle]="{
+                  color:
+                    user.status === 'ATIVO'
+                      ? 'green'
+                      : user.status === 'PENDENTE'
+                      ? 'goldenrod'
+                      : 'red'
+                }"
+              >
+                {{ user.status }}
+              </span>
+            </td>
+
+            <td>{{ user.nome }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.cpf }}</td>
+            <td>{{ formatDate(user.dtNascimento) }}</td>
+            <td>{{ user.telefone }}</td>
+            <td>{{ user.endereco }}</td>
+            <td>{{ user.cep }}</td>
+            <td>{{ user.dtCadastro | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ user.sexo }}</td>
+            <td>{{ user.urlDocumento || '-' }}</td>
+
+            <td class="actions">
+              <button class="btn-single-approve">✔</button>
+              <button class="btn-single-reject">✖</button>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>

@@ -1,14 +1,17 @@
 <header class="admin-header">
-    <div class="header-left">
-      <button class="menu-btn" (click)="onToggleSidebar()">☰</button>
-      <span class="logo">LOGO E NOME DO SITE</span>
-      <input type="text" placeholder="Pesquisar..." />
-    </div>
-  
-    <div class="header-right">
-      <button class="btn">Bloquear Usuário</button>
-      <button class="btn">Histórico de Livros</button>
-      <span class="user">{{ username }}</span>
-    </div>
-  </header>
-  
+  <div class="header-left">
+    <button class="menu-btn" (click)="onToggleSidebar()">☰</button>
+    <span class="logo">LOGO E NOME DO SITE</span>
+    <input type="text" placeholder="Pesquisar..." />
+  </div>
+
+  <div class="header-right">
+    <button class="btn">Bloquear Usuário</button>
+    <button class="btn">Histórico de Livros</button>
+
+    <span class="user">
+      {{ username }}
+      <button class="logout-btn" (click)="logout()">⏻</button>
+    </span>
+  </div>
+</header>

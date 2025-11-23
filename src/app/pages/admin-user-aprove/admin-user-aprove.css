@@ -1,0 +1,157 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+/* Layout principal */
+.main-layout {
+  display: flex;
+  transition: all 0.3s ease;
+  background: #1f1f1f;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.main-layout.sidebar-open {
+  margin-left: 240px;
+  width: calc(100% - 240px);
+}
+
+.main-layout:not(.sidebar-open) {
+  margin-left: 0;
+  width: 100%;
+}
+
+/* Conteúdo */
+.content {
+  flex: 1;
+  padding: 2rem;
+  margin-top: 60px;
+  transition: all 0.3s ease;
+  overflow-x: auto;
+}
+
+/* Tabela */
+.table-container {
+  width: 100%;
+  overflow-x: auto; /* scroll só quando precisar */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #222;
+  border-radius: 6px;
+  overflow: hidden;
+
+  table-layout: auto !important; /* permite ajuste natural das colunas */
+}
+
+thead {
+  background: #3a3a3a;
+}
+
+th,
+td {
+  padding: 1rem 1.2rem;     /* MAIS ESPAÇAMENTO */
+  text-align: left;
+  border-bottom: 1px solid #444;
+  vertical-align: top;      /* importante para texto quebrado */
+  line-height: 1.35rem;     /* mais espaço entre linhas */
+}
+
+/* Quebra de linha suave */
+td {
+  white-space: normal !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 250px;       /* mais tolerância antes de quebrar */
+}
+
+th {
+  white-space: nowrap;
+}
+
+/* Hover */
+tbody tr:hover {
+  background: #333;
+}
+
+/* Botões principais */
+.bulk-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 1.2rem;
+}
+
+.bulk-actions button {
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-approve {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+}
+.btn-approve:hover {
+  background: linear-gradient(135deg, #3ee18a, #2ecc71);
+}
+
+.btn-reject {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: #fff;
+}
+.btn-reject:hover {
+  background: linear-gradient(135deg, #ff6b5a, #e74c3c);
+}
+
+/* -------------------------- */
+/* 🔥 Botões de Ação Individuais */
+/* -------------------------- */
+.actions {
+    display: flex;
+    justify-content: center;   /* alinhado ao centro — igual às outras células */
+    align-items: center;
+    gap: 8px;
+    min-height: 100px;
+}
+
+.btn-single-approve,
+.btn-single-reject {
+  padding: 6px 10px;          /* mais agradável e proporcional */
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s ease;
+}
+
+.btn-single-approve {
+  background: #2ecc71;
+  color: #fff;
+}
+.btn-single-approve:hover {
+  background: #27ae60;
+}
+
+.btn-single-reject {
+  background: #e74c3c;
+  color: #fff;
+}
+.btn-single-reject:hover {
+  background: #c0392b;
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  td {
+    max-width: 180px; /* só reduz em telas menores */
+  }
+}

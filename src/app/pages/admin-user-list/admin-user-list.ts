@@ -6,13 +6,13 @@ import { AdminHeaderComponent } from '../../components/admin-header/admin-header
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-admin-dashboard-page',
+  selector: 'app-admin-user-list',
   standalone: true,
   imports: [CommonModule, HttpClientModule, FormsModule, SidebarComponent, AdminHeaderComponent],
-  templateUrl: './admin-dashboard-page.html',
-  styleUrls: ['./admin-dashboard-page.css']
+  templateUrl: './admin-user-list.html',
+  styleUrl: './admin-user-list.css'
 })
-export class AdminDashboardPage implements OnInit {
+export class AdminUserList implements OnInit {
   sidebarOpen = true;
   usuarios: any[] = [];
   allSelected = false; 
@@ -82,4 +82,50 @@ loadUsers(): void {
   updateSelectAllState(): void {
     this.allSelected = this.usuarios.length > 0 && this.usuarios.every((u) => u.selected);
   }
+
+  banirUsuario(username: string) {
+    const token = sessionStorage.getItem('token');
+
+    this.http.put(
+      `http://localhost:8080/pessoas/${username}/bloquear`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    .subscribe({
+      next: () => this.loadUsers(),
+      error: err => console.error("Erro ao banir:", err)
+    });
+  }
+
+  desbanirUsuario(username: string) {
+    const token = sessionStorage.getItem('token');
+
+    this.http.put(
+      `http://localhost:8080/pessoas/${username}/desbanir`, // 🔥 você cria esse endpoint no backend
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    .subscribe({
+      next: () => this.loadUsers(),
+      error: err => console.error("Erro ao desbanir:", err)
+    });
+  }
+
+  banirSelecionados() {
+    const selecionados = this.usuarios.filter(u => u.selected);
+
+    if (selecionados.length === 0) return;
+
+    selecionados.forEach(u => this.banirUsuario(u.username));
+  }
+
+  desbanirSelecionados() {
+    const selecionados = this.usuarios.filter(u => u.selected);
+
+    if (selecionados.length === 0) return;
+
+    selecionados.forEach(u => this.desbanirUsuario(u.username));
+  }
+
+
 }

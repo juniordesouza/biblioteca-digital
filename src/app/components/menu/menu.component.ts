@@ -12,14 +12,19 @@ import { RouterModule } from '@angular/router';
 export class MenuComponent {
 
   public isSearchVisible = signal(false);
-  public username = signal<string | null>(null); // 🔥 nome para exibir
+  public username = signal<string | null>(null);
 
   constructor() {
     const storedUser = sessionStorage.getItem('username');
-    this.username.set(storedUser); // 🔥 carrega no signal
+    this.username.set(storedUser);
   }
 
   public toggleSearch(): void {
     this.isSearchVisible.set(!this.isSearchVisible());
+  }
+
+  public logout(): void {
+    sessionStorage.clear();
+    location.href = '/login';
   }
 }
