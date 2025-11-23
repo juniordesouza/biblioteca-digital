@@ -11,29 +11,71 @@ import { ResetPasswordComponent } from './pages/redefinir-senha/redefinir-senha.
 import { LivroDetailsComponent } from './pages/livro-details/livro-details.component';
 import { WaitingPageComponent } from './pages/waiting-page/waiting-page';
 import { AuthGuard } from './auth.guard';
+import { RoleGuard } from './role.guard';
 import { AdminUserAprove } from './pages/admin-user-aprove/admin-user-aprove';
 import { AdminUserList } from './pages/admin-user-list/admin-user-list';
 import { AdminRegisterBook } from './pages/admin-register-book/admin-register-book';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'cadastro', component: CadastroComponent },
-    { path: 'redefinir-senha', component: ResetPasswordComponent },
-    { path: 'catalogo', component: CatalogoComponent, canActivate: [AuthGuard] },
-    { path: 'sala-de-espera', component: WaitingPageComponent, canActivate: [AuthGuard] },
-    { path: 'livros/:id', component: LivroDetailsComponent, canActivate: [AuthGuard] },
-    { path: 'sobre', component: SobreComponent, canActivate: [AuthGuard] },
-    { path: 'admin/dashboard', component: AdminDashboardPage, canActivate: [AuthGuard] },
-    { path: 'admin/usuarios', component: AdminUserList, canActivate: [AuthGuard] },
-    { path: 'admin/aprovacoes', component: AdminUserAprove, canActivate: [AuthGuard] },
-    { path: 'admin/livros', component: AdminListBooks, canActivate: [AuthGuard] },
-    { path: 'admin/cadastrar-livros', component: AdminRegisterBook, canActivate: [AuthGuard] },
-    { path: 'admin/register-user', component: AdminRegisterUserPage, canActivate: [AuthGuard] },
-    {
+
+  /* ---------------------- PÚBLICAS ---------------------- */
+  { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'cadastro', component: CadastroComponent },
+  { path: 'redefinir-senha', component: ResetPasswordComponent },
+
+  /* ---------------------- PRIVADAS ---------------------- */
+  { path: 'catalogo', component: CatalogoComponent, canActivate: [AuthGuard] },
+  { path: 'sala-de-espera', component: WaitingPageComponent, canActivate: [AuthGuard] },
+  { path: 'livros/:id', component: LivroDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'sobre', component: SobreComponent, canActivate: [AuthGuard] },
+
+  /* ---------------------- ADMIN ---------------------- */
+  {
+    path: 'admin/dashboard',
+    component: AdminDashboardPage,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['ADMIN'] }
+  },
+  {
+    path: 'admin/usuarios',
+    component: AdminUserList,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['ADMIN'] }
+  },
+  {
+    path: 'admin/register-user',
+    component: AdminRegisterUserPage,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['ADMIN'] }
+  },
+
+  /* ---------------------- ADMIN + FUNCIONÁRIO ---------------------- */
+  {
+    path: 'admin/aprovacoes',
+    component: AdminUserAprove,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['ADMIN', 'FUNCIONARIO'] }
+  },
+  {
+    path: 'admin/livros',
+    component: AdminListBooks,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['ADMIN', 'FUNCIONARIO'] }
+  },
+  {
+    path: 'admin/cadastrar-livros',
+    component: AdminRegisterBook,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['ADMIN', 'FUNCIONARIO'] }
+  },
+
+  /* ---------------------- LEITOR DE LIVRO (privado) ---------------------- */
+  {
     path: 'livro/ler/:id',
-    loadComponent: () => import('./pages/book-reader-page/book-reader-page').then(m => m.BookReaderPage),
+    loadComponent: () => import('./pages/book-reader-page/book-reader-page')
+      .then(m => m.BookReaderPage),
     canActivate: [AuthGuard]
-    }
+  }
 
 ];

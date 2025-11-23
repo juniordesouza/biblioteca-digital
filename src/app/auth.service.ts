@@ -9,14 +9,15 @@ export class AuthService {
 
   private apiUrl = 'http://localhost:8080/auth/login';
 
-  // Estado global do usuário
   private userState = new BehaviorSubject<{
     token: string | null,
     username: string | null,
+    role: string | null,
     pendingUser: string | null
   }>({
     token: sessionStorage.getItem('token'),
     username: sessionStorage.getItem('username'),
+    role: sessionStorage.getItem('role'),
     pendingUser: sessionStorage.getItem('pendingUser')
   });
 
@@ -33,10 +34,21 @@ export class AuthService {
       tap(response => {
         if (response.token) {
           const token = response.token.replace("Bearer ", "");
-          this.setApprovedUser(token, credentials.username);
+          const role = this.extractRoleFromToken(token);
+          this.setApprovedUser(token, credentials.username, role);
         }
       })
     );
+  }
+
+  // Extrair role do token JWT
+  extractRoleFromToken(token: string): string | null {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.role || null;
+    } catch (e) {
+      return null;
+    }
   }
 
   // ============================
@@ -51,14 +63,17 @@ export class AuthService {
   // SET: Usuário aprovado
   // ============================
 
-  setApprovedUser(token: string, username: string) {
+  setApprovedUser(token: string, username: string, role: string | null) {
     sessionStorage.setItem('token', token);
     sessionStorage.setItem('username', username);
+    if (role) sessionStorage.setItem('role', role);
+
     sessionStorage.removeItem('pendingUser');
 
     this.userState.next({
       token,
       username,
+      role,
       pendingUser: null
     });
   }
@@ -71,20 +86,26 @@ export class AuthService {
     sessionStorage.setItem('pendingUser', username);
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('username');
+    sessionStorage.removeItem('role');
 
     this.userState.next({
       token: null,
       username: null,
+      role: null,
       pendingUser: username
     });
   }
 
   // ============================
-  // GETTERS SIMPLES
+  // GETTERS
   // ============================
 
   getToken(): string | null {
     return sessionStorage.getItem('token');
+  }
+
+  getUserRole(): string | null {
+    return sessionStorage.getItem('role');
   }
 
   isLogged(): boolean {
@@ -100,6 +121,7 @@ export class AuthService {
     this.userState.next({
       token: null,
       username: null,
+      role: null,
       pendingUser: null
     });
   }

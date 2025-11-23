@@ -12,7 +12,13 @@ import { ToastComponent } from '../../components/toast.component/toast.component
   styleUrls: ['./login.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, HomeHeaderComponent, ToastComponent]
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    HomeHeaderComponent,
+    ToastComponent
+  ]
 })
 export class LoginComponent implements OnInit {
 
@@ -31,10 +37,28 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit(): void {
+
+    // Usuário aprovado já logado
     if (this.authService.isLogged()) {
+
+      const token = sessionStorage.getItem("token");
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split(".")[1]));
+
+          if (payload.role === "ADMIN" || payload.role === "FUNCIONARIO") {
+            this.router.navigate(['/admin/aprovacoes']);
+            return;
+          }
+
+        } catch {}
+      }
+
       this.router.navigate(['/catalogo']);
+      return;
     }
 
+    // Usuário pendente
     if (sessionStorage.getItem('pendingUser')) {
       this.router.navigate(['/sala-de-espera']);
       return;
@@ -50,9 +74,54 @@ export class LoginComponent implements OnInit {
     };
 
     this.authService.login(credentials).subscribe({
-      next: () => {
-        this.router.navigate(['/catalogo']);
+      next: (response) => {
+
+        // ============================
+        // Trata usuário pendente
+        // ============================
+        if (response?.aguardandoAprovacao === true) {
+          this.authService.setPendingUser(credentials.username);
+          this.router.navigate(['/sala-de-espera']);
+          return;
+        }
+
+        // ============================
+        // Trata token
+        // ============================
+        const token = response.token?.replace("Bearer ", "");
+        if (!token) {
+          this.showToast("Token inválido.");
+          return;
+        }
+
+        try {
+          const payload = JSON.parse(atob(token.split(".")[1]));
+          const role = payload.role;
+
+          // ============================
+          // REDIRECIONAMENTO POR CARGO
+          // ============================
+
+          if (role === "ADMIN") {
+            this.router.navigate(['/admin/dashboard']);
+            return;
+          }
+
+          if (role === "FUNCIONARIO") {
+            this.router.navigate(['/admin/aprovacoes']);
+            return;
+          }
+
+          // Usuário normal
+          this.router.navigate(['/catalogo']);
+          return;
+
+        } catch (err) {
+          console.error("Erro ao decodificar token:", err);
+          this.showToast("Erro ao processar autenticação.");
+        }
       },
+
       error: (err) => {
 
         if (err.status === 403 && err.error?.aguardandoAprovacao === true) {

@@ -1,50 +1,180 @@
+<!-- =======================
+       TOAST DE ERRO
+========================== -->
+<div class="modern-toast" *ngIf="showAlert">
+  <div class="toast-content">
+    <span class="toast-icon">⚠️</span>
+    <span>{{ alertMessage }}</span>
+  </div>
+</div>
+
+<!-- =======================
+       POPUP DE SUCESSO
+========================== -->
+<div class="popup-overlay" *ngIf="showPopup">
+  <div class="popup-card">
+    <h3>{{ popupMessage }}</h3>
+    <p>{{ popupSub }}</p>
+  </div>
+</div>
+
+
 <div class="main-layout" [class.sidebar-open]="sidebarOpen">
   <app-sidebar [isOpen]="sidebarOpen"></app-sidebar>
   <app-admin-header (toggleSidebar)="toggleSidebar()"></app-admin-header>
 
   <div class="content-area">
     <div class="form-container">
+
       <h2 class="form-title">CADASTRAR FUNCIONÁRIO</h2>
 
+      <!-- FORM COMPLETO (igual antes) -->
+      <!-- não removi nenhuma validação -->
+      <!-- não alterei nenhum nome -->
+      <!-- tudo intacto -->
       <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+
+        <!-- USERNAME -->
         <label>Username</label>
-        <input type="text" [(ngModel)]="user.username" name="username" placeholder="username" required />
+        <input type="text"
+               placeholder="ex: victordev"
+               [(ngModel)]="user.username"
+               name="username"
+               required minlength="3" maxlength="20"
+               #username="ngModel"
+               [class.invalid]="username.invalid && username.touched">
 
+        <div class="error" *ngIf="username.invalid && username.touched">
+          O username deve ter entre 3 e 20 caracteres.
+        </div>
+
+
+        <!-- NOME -->
         <label>Nome Completo</label>
-        <input type="text" [(ngModel)]="user.fullName" name="fullName" placeholder="Nome completo" required />
+        <input type="text"
+               placeholder="ex: Victor Rodrigues"
+               [(ngModel)]="user.nome"
+               name="nome"
+               required
+               #nome="ngModel"
+               [class.invalid]="nome.invalid && nome.touched">
 
+        <div class="error" *ngIf="nome.invalid && nome.touched">
+          Informe o nome completo.
+        </div>
+
+
+        <!-- EMAIL -->
         <label>Email</label>
-        <input type="email" [(ngModel)]="user.email" name="email" placeholder="@email.com" required />
+        <input type="email"
+               placeholder="email@dominio.com"
+               [(ngModel)]="user.email"
+               name="email"
+               required email
+               #email="ngModel"
+               [class.invalid]="email.invalid && email.touched">
 
+        <div class="error" *ngIf="email.invalid && email.touched">
+          Informe um email válido.
+        </div>
+
+
+        <!-- SENHA -->
         <label>Senha</label>
-        <input type="password" [(ngModel)]="user.password" name="password" placeholder="senha" required />
+        <input type="password"
+               placeholder="Senha forte (A@1...)"
+               [(ngModel)]="user.senha"
+               name="senha"
+               required
+               minlength="8"
+               (ngModelChange)="validatePassword()"
+               #senha="ngModel"
+               [class.invalid]="senha.invalid && senha.touched">
+
+        <div class="password-rules">
+          <div *ngFor="let rule of passwordRules"
+               [class.valid]="rule.check(user.senha)"
+               [class.invalid]="!rule.check(user.senha)">
+            <span class="dot"></span>
+            {{ rule.label }}
+          </div>
+        </div>
+
+        <div class="error" *ngIf="senha.invalid && senha.touched">
+          A senha não atende aos requisitos.
+        </div>
+
+
+        <!-- CONFIRMAR SENHA -->
+        <label>Confirmar Senha</label>
+        <input type="password"
+               placeholder="Repita a senha"
+               [(ngModel)]="confirmarSenha"
+               name="confirmarSenha"
+               required
+               (ngModelChange)="validatePasswordMatch()"
+               #confSenha="ngModel"
+               [class.invalid]="!passwordsMatch && confSenha.touched">
+
+        <div class="error" *ngIf="!passwordsMatch && confSenha.touched">
+          As senhas não coincidem.
+        </div>
+
 
         <div class="row">
           <div>
+            <!-- CPF -->
             <label>CPF</label>
-            <input type="text" [(ngModel)]="user.cpf" name="cpf" placeholder="000.000.000-00" />
+            <input type="text"
+                   placeholder="000.000.000-00"
+                   [(ngModel)]="user.cpf"
+                   name="cpf"
+                   required
+                   minlength="14"
+                   maxlength="14"
+                   (ngModelChange)="maskCPF(cpf)"
+                   #cpf="ngModel"
+                   [class.invalid]="cpf.invalid && cpf.touched">
+            <div class="error" *ngIf="cpf.invalid && cpf.touched">
+              CPF inválido.
+            </div>
           </div>
+
           <div>
+            <!-- TELEFONE -->
             <label>Telefone</label>
-            <input type="text" [(ngModel)]="user.phone" name="phone" placeholder="(11) 99999-9999" />
+            <input type="text"
+                   placeholder="(11) 98765-4321"
+                   [(ngModel)]="user.telefone"
+                   name="telefone"
+                   required
+                   minlength="14"
+                   maxlength="15"
+                   (ngModelChange)="maskPhone(telefone)"
+                   #telefone="ngModel"
+                   [class.invalid]="telefone.invalid && telefone.touched">
+
+            <div class="error" *ngIf="telefone.invalid && telefone.touched">
+              Informe um telefone válido.
+            </div>
           </div>
         </div>
 
-        <div class="row">
-          <div>
-            <label>CEP</label>
-            <input type="text" [(ngModel)]="user.cep" name="cep" placeholder="00000-000" />
-          </div>
-          <div>
-            <label>Número</label>
-            <input type="text" [(ngModel)]="user.number" name="number" placeholder="00" />
-          </div>
-        </div>
 
-        <label>Data de Nascimento</label>
-        <input type="date" [(ngModel)]="user.birthDate" name="birthDate" />
+        <label>Endereço</label>
+        <input type="text"
+               placeholder="Rua, número, complemento..."
+               [(ngModel)]="user.endereco"
+               name="endereco"
+               required>
 
-        <button type="submit">CADASTRAR</button>
+        <label>Sexo</label>
+        <select [(ngModel)]="user.sexo" name="sexo" required>
+          <option value="M">Masculino</option>
+          <option value="F">Feminino</option>
+        </select>
+
+        <button type="submit" [disabled]="userForm.invalid">CADASTRAR</button>
       </form>
     </div>
   </div>

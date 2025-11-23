@@ -3,33 +3,49 @@
     <div class="logo">Menu</div>
 
     <div class="menu-section">
-      <!-- Grupo Usuários -->
-      <div class="menu-group">
+
+      <!-- ===================== USUÁRIOS ===================== -->
+      <div class="menu-group" *ngIf="isAdmin || isFuncionario">
         <p class="menu-category">
           <lucide-icon name="user" class="icon"></lucide-icon>
           Usuários
         </p>
         <ul>
-          <li routerLink="/admin/usuarios" routerLinkActive="active">Exibir Lista</li>
+          <!-- Lista disponível para Admin + Funcionário -->
+          <li *ngIf="isAdmin" routerLink="/admin/usuarios" routerLinkActive="active">Exibir Usuarios</li>
+
+          <!-- Aprovação: Admin + Funcionario -->
           <li routerLink="/admin/aprovacoes" routerLinkActive="active">Aprovação</li>
-          <li routerLink="/admin/register-user" routerLinkActive="active">Cadastrar Funcionario</li>
+
+          <!-- Cadastrar funcionário: SOMENTE ADMIN -->
+          <li *ngIf="isAdmin"
+              routerLink="/admin/register-user"
+              routerLinkActive="active">
+            Cadastrar Funcionário
+          </li>
         </ul>
       </div>
 
-      <!-- Grupo Livros -->
-      <div class="menu-group">
+
+      <!-- ===================== LIVROS ===================== -->
+      <div class="menu-group" *ngIf="isAdmin || isFuncionario">
         <p class="menu-category">
           <lucide-icon name="book" class="icon"></lucide-icon>
           Livros
         </p>
         <ul>
           <li routerLink="/admin/livros" routerLinkActive="active">Exibir Lista</li>
-          <li routerLink="/admin/cadastrar-livros" routerLinkActive="active">Cadastrar Livros</li>
+
+          <!-- Cadastrar livro: ADMIN + FUNCIONARIO -->
+          <li routerLink="/admin/cadastrar-livros" routerLinkActive="active">
+            Cadastrar Livros
+          </li>
         </ul>
       </div>
 
-      <!-- Grupo Status API -->
-      <div class="menu-group">
+
+      <!-- ===================== STATUS API (somente ADMIN) ===================== -->
+      <div class="menu-group" *ngIf="isAdmin">
         <p class="menu-category">
           <lucide-icon name="bar-chart-3" class="icon"></lucide-icon>
           Status API
@@ -38,6 +54,7 @@
           <li>Dashboard</li>
         </ul>
       </div>
+
     </div>
   </div>
 </div>
