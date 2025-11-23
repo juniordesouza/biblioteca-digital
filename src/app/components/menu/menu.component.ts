@@ -13,10 +13,16 @@ export class MenuComponent {
 
   public isSearchVisible = signal(false);
   public username = signal<string | null>(null);
+  public isPending = signal(false);
+  public isBanned = signal(false);
 
   constructor() {
     const storedUser = sessionStorage.getItem('username');
     this.username.set(storedUser);
+
+    // Estados especiais
+    this.isPending.set(sessionStorage.getItem('pendingUser') !== null);
+    this.isBanned.set(sessionStorage.getItem('bannedUser') !== null);
   }
 
   public toggleSearch(): void {

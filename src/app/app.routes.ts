@@ -20,6 +20,7 @@ export const routes: Routes = [
 
   /* ---------------------- PÚBLICAS ---------------------- */
   { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: CadastroComponent },
   { path: 'redefinir-senha', component: ResetPasswordComponent },

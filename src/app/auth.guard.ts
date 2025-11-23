@@ -12,6 +12,7 @@ export class AuthGuard implements CanActivate {
 
     const token = sessionStorage.getItem('token');
     const pending = sessionStorage.getItem('pendingUser');
+    const banned = sessionStorage.getItem('bannedUser');
 
     // =========================================
     // 1️⃣ Usuário APROVADO → pode tudo
@@ -29,7 +30,17 @@ export class AuthGuard implements CanActivate {
     }
 
     // =========================================
-    // 3️⃣ Não logado → rota pública? deixa passar
+    // 3️⃣ Usuário BANIDO → só pode /sala-de-espera
+    // =========================================
+    if (banned) {
+      if (state.url === '/sala-de-espera') return true;
+
+      this.router.navigate(['/sala-de-espera']);
+      return false;
+    }
+
+    // =========================================
+    // 4️⃣ Não logado → rota pública? deixa passar
     // =========================================
 
     const publicRoutes = ['/home', '/login', '/cadastro', '/redefinir-senha'];
@@ -38,7 +49,9 @@ export class AuthGuard implements CanActivate {
       return true; // rota pública → deixa entrar
     }
 
-    // Rota privada → mandar para login
+    // =========================================
+    // 5️⃣ Rota privada → mandar para login
+    // =========================================
     this.router.navigate(['/login']);
     return false;
   }

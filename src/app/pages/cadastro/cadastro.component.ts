@@ -114,7 +114,30 @@ export class CadastroComponent {
   serverError: string | null = null;
   private cdr = inject(ChangeDetectorRef);
 
-  
+  ngOnInit() {
+    // 🚫 BANIDO — não acessa cadastro
+    if (sessionStorage.getItem('bannedUser')) {
+      this.router.navigate(['/sala-de-espera']);
+      return;
+    }
+
+    // 🚫 PENDENTE — não acessa cadastro
+    if (sessionStorage.getItem('pendingUser')) {
+      this.router.navigate(['/sala-de-espera']);
+      return;
+    }
+
+    // 👍 Mantém o que você já tinha:
+    if (sessionStorage.getItem('pendingUser')) {
+      this.router.navigate(['/sala-de-espera']);
+    }
+
+    this.cadastroForm.valueChanges.subscribe(() => {
+      this.serverError = null;
+      this.cdr.markForCheck();
+    });
+  }
+
 
 
   estados: string[] = [
@@ -282,16 +305,5 @@ export class CadastroComponent {
     { label: "Número", check: () => /[0-9]/.test(this.password) },
     { label: "Caractere especial (!@#$%)", check: () => /[!@#$%^&*(),.?":{}|<>]/.test(this.password) }
   ];
-
-  ngOnInit() {
-    if (sessionStorage.getItem('pendingUser')) {
-      this.router.navigate(['/sala-de-espera']);
-    }
-    this.cadastroForm.valueChanges.subscribe(() => {
-      this.serverError = null;
-      this.cdr.markForCheck();
-    });
-  }
-
 
 }

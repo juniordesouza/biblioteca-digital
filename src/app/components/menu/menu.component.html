@@ -24,9 +24,9 @@
 
     <input type="text" placeholder="Pesquisar..." [class.visible]="isSearchVisible()" class="search-input">
 
-    <div class="user-info" *ngIf="username()">
+    <div class="user-info" *ngIf="username() || isPending() || isBanned()">
       <span class="material-symbols-outlined">person</span>
-      <p>{{ username()?.toUpperCase() }}</p>
+      <p>{{ username()?.toUpperCase()}}</p>
 
       <!-- 🔥 BOTÃO LOGOUT -->
       <button class="logout-btn" (click)="logout()">

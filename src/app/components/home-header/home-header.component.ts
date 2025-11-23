@@ -13,6 +13,7 @@ export class HomeHeaderComponent {
 
   token = sessionStorage.getItem('token');
   pendingUser = sessionStorage.getItem('pendingUser');
+  bannedUser = sessionStorage.getItem('bannedUser');
   username = sessionStorage.getItem('username');
 
   constructor(private router: Router) {}

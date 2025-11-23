@@ -46,13 +46,16 @@ export class AdminUserList implements OnInit {
       'http://localhost:8080/pessoas/usuarios',
       { headers: { Authorization: `Bearer ${token}` } }
     ).subscribe({
-      next: response => {
-        this.usuarios = response.map(user => ({
-          ...user,
-          birthDate: this.formatDate(user.dtNascimento),
-          selected: false
-        }));
-        this.allSelected = false;
+        next: response => {
+          this.usuarios = response
+            .filter(user => user.status !== 'PENDENTE') // remove codStatus=1
+            .map(user => ({
+              ...user,
+              birthDate: this.formatDate(user.dtNascimento),
+              selected: false
+            }));
+
+          this.allSelected = false;
       },
       error: err => console.error('Erro ao buscar usuários:', err)
     });
@@ -72,30 +75,35 @@ export class AdminUserList implements OnInit {
   banirUsuario(username: string) {
     const token = sessionStorage.getItem('token');
 
-    this.http.put(
+    this.http.put<any>(
       `http://localhost:8080/pessoas/${username}/bloquear`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     ).subscribe({
-      next: () => {
-        this.showToast(`Usuário ${username} bloqueado.`);
+      next: (response) => {
+        // response.message / response.username
+        this.showToast(response.message || `Usuário ${username} bloqueado.`);
         this.loadUsers();
       },
-      error: err => this.showToast("Erro ao bloquear usuário.")
+      error: err => {
+        this.showToast("Erro ao bloquear usuário.");
+        console.error(err);
+      }
     });
   }
+
 
   /** 🔥 Desbanir */
   desbanirUsuario(username: string) {
     const token = sessionStorage.getItem('token');
 
-    this.http.put(
-      `http://localhost:8080/pessoas/${username}/desbanir`,
+    this.http.put<{ message: string; username: string }>(
+      `http://localhost:8080/pessoas/${username}/desbloquear`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     ).subscribe({
-      next: () => {
-        this.showToast(`Usuário ${username} desbloqueado.`);
+      next: (response) => {
+        this.showToast(response.message || `Usuário ${username} desbloqueado.`);
         this.loadUsers();
       },
       error: err => this.showToast("Erro ao desbloquear usuário.")
@@ -104,22 +112,49 @@ export class AdminUserList implements OnInit {
 
   /** 🔥 Banir em massa */
   banirSelecionados() {
-    const selecionados = this.usuarios.filter(u => u.selected);
+    const selecionados = this.usuarios
+      .filter(u => u.selected)
+      .map(u => u.username);
 
     if (selecionados.length === 0)
       return this.showToast("Nenhum usuário selecionado.");
 
-    selecionados.forEach(u => this.banirUsuario(u.username));
+    const token = sessionStorage.getItem('token');
+
+    this.http.post<{ message: string; total: number }>(
+      'http://localhost:8080/pessoas/bloquear-multiplos',
+      { usernames: selecionados },
+      { headers: { Authorization: `Bearer ${token}` } }
+    ).subscribe({
+      next: (response) => {
+        this.showToast(`${response.total} usuário(s) bloqueado(s).`);
+        this.loadUsers();
+      },
+      error: () => this.showToast("Erro ao bloquear usuários.")
+    });
   }
 
-  /** 🔥 Desbanir em massa */
   desbanirSelecionados() {
-    const selecionados = this.usuarios.filter(u => u.selected);
+    const selecionados = this.usuarios
+      .filter(u => u.selected)
+      .map(u => u.username);
 
     if (selecionados.length === 0)
       return this.showToast("Nenhum usuário selecionado.");
 
-    selecionados.forEach(u => this.desbanirUsuario(u.username));
+    const token = sessionStorage.getItem('token');
+
+    this.http.post<{ message: string; total: number }>(
+      'http://localhost:8080/pessoas/desbloquear-multiplos',
+      { usernames: selecionados },
+      { headers: { Authorization: `Bearer ${token}` } }
+    ).subscribe({
+      next: (response) => {
+        this.showToast(`${response.total} usuário(s) desbloqueado(s).`);
+        this.loadUsers();
+      },
+      error: () => this.showToast("Erro ao desbloquear usuários.")
+    });
   }
 
   /** Formatador */

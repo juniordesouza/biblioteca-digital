@@ -31,7 +31,7 @@
         <thead>
           <tr>
             <th><input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)" /></th>
-
+            <th>Ações</th>
             <th>Username</th>
             <th>Status</th>
             <th>Nome</th>
@@ -49,8 +49,6 @@
             <th>Banimento</th>
             <th>Slots</th>
             <th>Capa</th>
-
-            <th>Ações</th>
           </tr>
         </thead>
 
@@ -59,6 +57,13 @@
             <td>
               <input type="checkbox" [(ngModel)]="user.selected" (change)="updateSelectAllState()" />
             </td>
+
+            <div class="actions-wrap">
+                <td class="actions">
+                <button class="btn-ban" (click)="banirUsuario(user.username)">🚫</button>
+                <button class="btn-unban" (click)="desbanirUsuario(user.username)">🔓</button>
+                </td>
+            </div>
 
             <td>{{ user.username }}</td>
 
@@ -88,12 +93,6 @@
             <td>{{ user.dtBanimento || '-' }}</td>
             <td>{{ user.limiteSlots }}</td>
             <td>{{ user.urlCapa || '-' }}</td>
-            <div class="actions-wrap">
-                <td class="actions">
-                <button class="btn-ban" (click)="banirUsuario(user.username)">🚫</button>
-                <button class="btn-unban" (click)="desbanirUsuario(user.username)">🔓</button>
-                </td>
-            </div>
           </tr>
         </tbody>
       </table>

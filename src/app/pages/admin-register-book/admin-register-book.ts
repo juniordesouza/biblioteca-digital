@@ -1,40 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { AdminHeaderComponent } from '../../components/admin-header/admin-header.component';
+import { ToastComponent } from '../../components/toast.component/toast.component';
 
 @Component({
   selector: 'app-admin-register-book',
   standalone: true,
   templateUrl: './admin-register-book.html',
   styleUrls: ['./admin-register-book.css'],
-  imports: [CommonModule, HttpClientModule, FormsModule, SidebarComponent, AdminHeaderComponent]
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, HttpClientModule, FormsModule, SidebarComponent, AdminHeaderComponent, ToastComponent]
 })
 export class AdminRegisterBook implements OnInit {
 
   sidebarOpen = true;
 
   editoras: any[] = [];
-  obras: any[] = [];
-  statusList: any[] = [];
 
   livro: any = {
     txt_titulo: '',
+    autor: '',
+    editora: '',
+    tema: '',
     ano_lancamento: '',
-    num_total_licencas: 0,
-    dt_validade: '',
-    url_livro: '',
-    uri_img_livro: '',
-    txt_sinopse: '',
-    cod_editora: null,
-    cod_obra: null,
-    cod_status: 1
+    quantidade_disponivel: 1,
+    txt_sinopse: ''
   };
 
-  constructor(private http: HttpClient) {}
+  capaFile: File | null = null;
+  pdfFile: File | null = null;
+  previewCapa: string | null = null;
+
+  // TOAST
+  showAlert = false;
+  alertMessage = '';
+
+  constructor(
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone
+  ) {}
 
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
@@ -42,8 +51,6 @@ export class AdminRegisterBook implements OnInit {
 
   ngOnInit(): void {
     this.loadEditoras();
-    this.loadObras();
-    this.loadStatus();
   }
 
   loadEditoras() {
@@ -51,48 +58,92 @@ export class AdminRegisterBook implements OnInit {
       .subscribe(resp => this.editoras = resp);
   }
 
-  loadObras() {
-    this.http.get<any[]>('http://localhost:8080/obras')
-      .subscribe(resp => this.obras = resp);
+  // CAPA
+  onCapaSelected(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    this.capaFile = file;
+
+    const reader = new FileReader();
+    reader.onload = () => this.previewCapa = reader.result as string;
+    reader.readAsDataURL(file);
   }
 
-  loadStatus() {
-    this.http.get<any[]>('http://localhost:8080/status-livro')
-      .subscribe(resp => this.statusList = resp);
+  // PDF
+  onPdfSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) this.pdfFile = file;
   }
 
+  // TOAST FUNCTION
+  showToast(message: string) {
+    this.zone.run(() => {
+      this.alertMessage = message;
+      this.showAlert = true;
+      this.cdr.markForCheck();
+
+      setTimeout(() => {
+        this.zone.run(() => {
+          this.showAlert = false;
+          this.cdr.markForCheck();
+        });
+      }, 3500);
+    });
+  }
+
+  // SALVAR
   salvarLivro() {
     const token = sessionStorage.getItem('token');
 
+    const dto = {
+      titulo: this.livro.txt_titulo,
+      autor: this.livro.autor,
+      editora: this.livro.editora,
+      tema: this.livro.tema,
+      tags: [],
+      anoLancamento: this.livro.ano_lancamento,
+      quantidadeDisponivel: this.livro.quantidade_disponivel,
+      sinopse: this.livro.txt_sinopse
+    };
+
+    const formData = new FormData();
+    formData.append("dto", new Blob([JSON.stringify(dto)], { type: "application/json" }));
+
+    if (this.capaFile) formData.append("capa", this.capaFile);
+    if (this.pdfFile) formData.append("pdf", this.pdfFile);
+
     this.http.post(
-      'http://localhost:8080/livros',
-      this.livro,
-      { headers: { Authorization: `Bearer ${token}` }}
+      "http://localhost:8080/livros/upload",
+      formData,
+      { headers: { Authorization: `Bearer ${token}` } }
     )
     .subscribe({
       next: () => {
-        alert('Livro cadastrado com sucesso!');
+        this.showToast("📚 Livro cadastrado com sucesso!");
         this.resetForm();
       },
       error: err => {
         console.error(err);
-        alert('Erro ao salvar.');
+        this.showToast("❌ Erro ao salvar o livro");
       }
     });
   }
 
+  // RESET
   resetForm() {
     this.livro = {
       txt_titulo: '',
+      autor: '',
+      editora: '',
+      tema: '',
       ano_lancamento: '',
-      num_total_licencas: 0,
-      dt_validade: '',
-      url_livro: '',
-      uri_img_livro: '',
-      txt_sinopse: '',
-      cod_editora: null,
-      cod_obra: null,
-      cod_status: 1
+      quantidade_disponivel: 1,
+      txt_sinopse: ''
     };
+
+    this.capaFile = null;
+    this.pdfFile = null;
+    this.previewCapa = null;
   }
 }

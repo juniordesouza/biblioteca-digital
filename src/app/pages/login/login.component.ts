@@ -38,7 +38,19 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // Usuário aprovado já logado
+    // 🚫 BANIDO — não acessa login
+    if (sessionStorage.getItem('bannedUser')) {
+      this.zone.run(() => this.router.navigate(['/sala-de-espera']));
+      return;
+    }
+
+    // 🚫 PENDENTE — não acessa login
+    if (sessionStorage.getItem('pendingUser')) {
+      this.zone.run(() => this.router.navigate(['/sala-de-espera']));
+      return;
+    }
+
+    // 🔐 Usuário aprovado já logado
     if (this.authService.isLogged()) {
 
       const token = sessionStorage.getItem("token");
@@ -47,23 +59,18 @@ export class LoginComponent implements OnInit {
           const payload = JSON.parse(atob(token.split(".")[1]));
 
           if (payload.role === "ADMIN" || payload.role === "FUNCIONARIO") {
-            this.router.navigate(['/admin/aprovacoes']);
+            this.zone.run(() => this.router.navigate(['/admin/aprovacoes']));
             return;
           }
 
         } catch {}
       }
 
-      this.router.navigate(['/catalogo']);
-      return;
-    }
-
-    // Usuário pendente
-    if (sessionStorage.getItem('pendingUser')) {
-      this.router.navigate(['/sala-de-espera']);
+      this.zone.run(() => this.router.navigate(['/catalogo']));
       return;
     }
   }
+
 
   onSubmit() {
     if (!this.loginForm.valid) return;
@@ -74,20 +81,18 @@ export class LoginComponent implements OnInit {
     };
 
     this.authService.login(credentials).subscribe({
+
       next: (response) => {
 
-        // ============================
-        // Trata usuário pendente
-        // ============================
+        // Usuário pendente (resposta direta do backend)
         if (response?.aguardandoAprovacao === true) {
           this.authService.setPendingUser(credentials.username);
-          this.router.navigate(['/sala-de-espera']);
+
+          this.zone.run(() => this.router.navigate(['/sala-de-espera']));
           return;
         }
 
-        // ============================
         // Trata token
-        // ============================
         const token = response.token?.replace("Bearer ", "");
         if (!token) {
           this.showToast("Token inválido.");
@@ -98,22 +103,27 @@ export class LoginComponent implements OnInit {
           const payload = JSON.parse(atob(token.split(".")[1]));
           const role = payload.role;
 
-          // ============================
-          // REDIRECIONAMENTO POR CARGO
-          // ============================
+          // Usuário BANIDO detectado dentro do payload
+          if (payload.codStatus === 3 || payload.status === "BLOQUEADO") {
+            sessionStorage.setItem("bannedUser", credentials.username);
 
+            this.zone.run(() => this.router.navigate(['/sala-de-espera']));
+            return;
+          }
+
+          // REDIRECIONAMENTO POR PERFIL
           if (role === "ADMIN") {
-            this.router.navigate(['/admin/dashboard']);
+            this.zone.run(() => this.router.navigate(['/admin/dashboard']));
             return;
           }
 
           if (role === "FUNCIONARIO") {
-            this.router.navigate(['/admin/aprovacoes']);
+            this.zone.run(() => this.router.navigate(['/admin/aprovacoes']));
             return;
           }
 
-          // Usuário normal
-          this.router.navigate(['/catalogo']);
+          // Usuário normal → catálogo
+          this.zone.run(() => this.router.navigate(['/catalogo']));
           return;
 
         } catch (err) {
@@ -124,9 +134,19 @@ export class LoginComponent implements OnInit {
 
       error: (err) => {
 
+        // Usuário BANIDO (erro do backend)
+        if (err.status === 403 && err.error?.banned === true) {
+          sessionStorage.setItem("bannedUser", credentials.username);
+
+          this.zone.run(() => this.router.navigate(['/sala-de-espera']));
+          return;
+        }
+
+        // Usuário pendente (erro do backend)
         if (err.status === 403 && err.error?.aguardandoAprovacao === true) {
           this.authService.setPendingUser(credentials.username);
-          this.router.navigate(['/sala-de-espera']);
+
+          this.zone.run(() => this.router.navigate(['/sala-de-espera']));
           return;
         }
 

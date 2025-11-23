@@ -1,30 +1,46 @@
 <app-home-header></app-home-header>
 
 <div class="wait-container">
-
   <div class="wait-card">
 
-    <div class="wait-title">
-      CADASTRO FINALIZADO COM SUCESSO
+    <!-- 🔥 Se estiver banido -->
+    <div *ngIf="banned; else pendingBlock" class="wait-content">
+
+      <div class="wait-title">
+        ACESSO BLOQUEADO
+      </div>
+
+      <div class="icon">⛔</div>
+
+      <h2>VOCÊ FOI BANIDO DA PLATAFORMA</h2>
+
+      <p>
+        Seu acesso foi suspenso por violar as políticas da plataforma.<br>
+        Caso você acredite que isso foi um engano, entre em contato com:<br><br>
+
+        <strong>midas-vault@gmail.com</strong>
+      </p>
     </div>
 
-    <div class="wait-content">
-        <div class="icon">
-            ⏳
-        </div>
+    <!-- 🔥 Caso NÃO esteja banido, mostra a lista de espera normal -->
+    <ng-template #pendingBlock>
+      <div class="wait-title">
+        CADASTRO FINALIZADO COM SUCESSO
+      </div>
+
+      <div class="wait-content">
+        <div class="icon">⏳</div>
 
         <h2>VOCÊ ESTÁ NA NOSSA LISTA DE ESPERA!</h2>
 
         <p>
-            Seu cadastro foi enviado com sucesso e já está na fila de aprovação.<br>
-            Nossa equipe está revisando tudo e em breve você receberá um e-mail<br>
-            com o resultado da análise.  
-            <br><br>
-            Obrigado por fazer parte da nossa comunidade! 📚✨
+          Seu cadastro foi enviado com sucesso e já está na fila de aprovação.<br>
+          Nossa equipe está revisando tudo e em breve você receberá um e-mail<br>
+          com o resultado da análise.<br><br>
+          Obrigado por fazer parte da nossa comunidade! 📚✨
         </p>
-    </div>
-
+      </div>
+    </ng-template>
 
   </div>
-
 </div>

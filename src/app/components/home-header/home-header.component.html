@@ -5,27 +5,45 @@
 
     <ul class="auth-links">
 
-      <!-- 🔹 Usuário logado (token) -->
-      <ng-container *ngIf="token; else notLogged">
-
+      <!-- 🔹 Usuário logado (token válido) -->
+      <ng-container *ngIf="token; else noToken">
         <li class="welcome-text">Olá, {{ username }}</li>
         <li><a (click)="logout()" class="button-secondary">Sair</a></li>
-
       </ng-container>
 
-      <!-- 🔹 Usuário pendente -->
-      <ng-template #notLogged>
-        <ng-container *ngIf="pendingUser; else loggedOut">
+      <!-- ==========================================================
+           🔹 Não há token → verificar se é PENDENTE ou BANIDO
+      =========================================================== -->
+      <ng-template #noToken>
 
+        <!-- 🔹 Usuário PENDENTE -->
+        <ng-container *ngIf="pendingUser; else checkBanned">
           <li class="welcome-text">
             Aguardando aprovação: {{ pendingUser }}
           </li>
+          <li><a (click)="logout()" class="button-secondary">Sair</a></li>
+        </ng-container>
+
+      </ng-template>
+
+      <!-- ==========================================================
+           🔹 Usuário BANIDO
+      =========================================================== -->
+      <ng-template #checkBanned>
+        <ng-container *ngIf="bannedUser; else loggedOut">
+
+          <li class="welcome-text" style="color: #d9534f; font-weight: bold;">
+            Conta bloqueada: {{ bannedUser }}
+          </li>
+
           <li><a (click)="logout()" class="button-secondary">Sair</a></li>
 
         </ng-container>
       </ng-template>
 
-      <!-- 🔹 Não logado -->
+      <!-- ==========================================================
+           🔹 Não logado
+      =========================================================== -->
       <ng-template #loggedOut>
         <li><a routerLink="/login" class="button">Login</a></li>
         <li><a routerLink="/cadastro" class="button-secondary">Cadastro</a></li>
