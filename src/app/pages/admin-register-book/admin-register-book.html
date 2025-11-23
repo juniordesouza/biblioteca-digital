@@ -4,7 +4,7 @@
 <!-- TOAST -->
 <app-toast [message]="alertMessage" [show]="showAlert"></app-toast>
 
-<!-- Modern Toast extra (como no login) -->
+<!-- Modern Toast extra -->
 <div class="modern-toast" *ngIf="showAlert">
   <div class="toast-content">
     <span class="toast-icon">⚠️</span>
@@ -15,101 +15,200 @@
 <div class="main-layout" [class.sidebar-open]="sidebarOpen">
   <main class="content">
 
-    <form class="book-wrapper" (ngSubmit)="salvarLivro()" enctype="multipart/form-data">
+    <form class="book-wrapper" (ngSubmit)="salvarLivro()" enctype="multipart/form-data" novalidate>
 
-      <!-- ===================== ESQUERDA ===================== -->
+      <!-- LEFT -->
       <div class="left-panel">
 
         <label class="section-title">FOTO CAPA</label>
 
         <div class="cover-box">
-          <img 
-            *ngIf="previewCapa"
-            [src]="previewCapa"
-            class="cover-preview"
-          />
-
+          <img *ngIf="previewCapa" [src]="previewCapa" class="cover-preview" />
           <div class="cover-placeholder" *ngIf="!previewCapa">
             <span>ANEXAR FOTO</span>
             <span class="material-icons">image</span>
           </div>
         </div>
 
-        <label class="upload-box">
+        <label class="upload-box file-btn">
           <span class="material-icons">attach_file</span>
           <span>Anexar Capa</span>
-          <input type="file" accept="image/*" (change)="onCapaSelected($event)" hidden />
+          <input type="file" accept="image/*" (change)="onCapaSelected($event)" />
         </label>
 
         <label class="section-title small">ANEXAR LIVRO (PDF)</label>
 
-        <label class="upload-box">
+        <label class="upload-box file-btn">
           <span class="material-icons">attach_file</span>
           <span>Anexar PDF</span>
-          <input type="file" accept="application/pdf" (change)="onPdfSelected($event)" hidden />
+          <input type="file" accept="application/pdf" (change)="onPdfSelected($event)" />
         </label>
+
+        <div class="meta-info">
+          <label class="meta-label">URL PÚBLICA DA CAPA (opcional)</label>
+          <input type="url" [(ngModel)]="livro.url_livro" name="url_livro" placeholder="https://..." />
+        </div>
 
       </div>
 
-      <!-- ===================== DIREITA ===================== -->
+      <!-- RIGHT -->
       <div class="right-panel">
 
+        <div class="page-title">Cadastrar novo livro</div>
+
+        <!-- Row 1 -->
         <div class="input-row">
           <div class="form-group">
-            <label>NOME LIVRO</label>
-            <input type="text" [(ngModel)]="livro.txt_titulo" name="titulo" required />
+            <label>NOME LIVRO *</label>
+            <input type="text" required [(ngModel)]="livro.txt_titulo" name="titulo" />
           </div>
 
-          <div class="form-group">
-            <label>NOME AUTOR</label>
-            <input type="text" [(ngModel)]="livro.autor" name="autor" placeholder="(caso exista na obra)" />
-          </div>
-        </div>
-
-        <div class="input-row">
-          <div class="form-group">
-            <label>EDITORA</label>
-            <select [(ngModel)]="livro.editora" name="editora">
-              <option [value]="null">Selecione...</option>
-              <option *ngFor="let e of editoras" [value]="e.nome">
-                {{ e.nome }}
-              </option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>TEMA</label>
-            <input type="text" [(ngModel)]="livro.tema" name="tema" placeholder="Tema" />
-          </div>
-        </div>
-
-        <div class="input-row">
-          <div class="form-group">
-            <label>DATA LANÇAMENTO</label>
-            <input 
+          <div class="form-group autocomplete">
+            <label>AUTOR</label>
+            <input
               type="text"
-              maxlength="10"
-              placeholder="dd/mm/aaaa"
-              [(ngModel)]="livro.ano_lancamento"
-              name="ano"
+              [(ngModel)]="livro.autor"
+              name="autor"
+              (input)="filterSuggestions('autores', livro.autor)"
+              (focus)="showDropdown('autores')"
+              (blur)="hideDropdownDelayed('autores')"
+              autocomplete="off"
+              placeholder="Digite para sugerir..."
             />
+            <ul class="suggestions" *ngIf="dropdownVisible.autores && suggestions.autores.length">
+              <li *ngFor="let s of suggestions.autores" (mousedown)="selectSuggestion('autor', s)">
+                {{ s }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="input-row">
+          <div class="form-group autocomplete">
+            <label>EDITORA</label>
+            <input
+              type="text"
+              [(ngModel)]="livro.editora"
+              name="editora"
+              (input)="filterSuggestions('editoras', livro.editora)"
+              (focus)="showDropdown('editoras')"
+              (blur)="hideDropdownDelayed('editoras')"
+              placeholder="Selecione ou digite..."
+              autocomplete="off"
+            />
+            <ul class="suggestions" *ngIf="dropdownVisible.editoras && suggestions.editoras.length">
+              <li *ngFor="let s of suggestions.editoras" (mousedown)="selectSuggestion('editora', s)">
+                {{ s }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="form-group autocomplete">
+            <label>TEMA</label>
+            <input
+              type="text"
+              [(ngModel)]="livro.tema"
+              name="tema"
+              (input)="filterSuggestions('temas', livro.tema)"
+              (focus)="showDropdown('temas')"
+              (blur)="hideDropdownDelayed('temas')"
+              autocomplete="off"
+              placeholder="Sugestões..."
+            />
+            <ul class="suggestions" *ngIf="dropdownVisible.temas && suggestions.temas.length">
+              <li *ngFor="let s of suggestions.temas" (mousedown)="selectSuggestion('tema', s)">
+                {{ s }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="input-row">
+          <div class="form-group autocomplete">
+            <label>OBRA</label>
+            <input
+              type="text"
+              [(ngModel)]="livro.obra"
+              name="obra"
+              (input)="filterSuggestions('obras', livro.obra)"
+              (focus)="showDropdown('obras')"
+              (blur)="hideDropdownDelayed('obras')"
+              autocomplete="off"
+              placeholder="Nome da obra (opcional)"
+            />
+            <ul class="suggestions" *ngIf="dropdownVisible.obras && suggestions.obras.length">
+              <li *ngFor="let s of suggestions.obras" (mousedown)="selectSuggestion('obra', s)">
+                {{ s }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="form-group">
+            <label>DATA DE VALIDADE (YYYYMMDD)</label>
+            <input
+              type="text"
+              maxlength="8"
+              [(ngModel)]="livro.dt_validade"
+              name="dt_validade"
+              placeholder="20401230"
+            />
+          </div>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="input-row">
+          <div class="form-group">
+            <label>ANO LANÇAMENTO</label>
+            <input type="text" maxlength="4" [(ngModel)]="livro.ano_lancamento" name="ano_lancamento" placeholder="2023" />
           </div>
 
           <div class="form-group">
             <label>QUANTIDADE DISPONÍVEL</label>
-            <input 
-              type="number"
-              min="1"
-              [(ngModel)]="livro.quantidade_disponivel"
-              name="quantidade_disponivel"
-              required
-            />
+            <input type="number" min="0" [(ngModel)]="livro.num_total_licencas" name="num_total_licencas" required />
           </div>
         </div>
 
+        <!-- TAGS -->
+        <div class="form-group">
+          <label>TAGS</label>
+
+          <div class="tags-input">
+
+            <ul class="chips">
+              <li class="chip" *ngFor="let t of livro.tags; let i = index">
+                {{ t }}
+                <button type="button" (click)="removeTag(i)">✕</button>
+              </li>
+            </ul>
+
+            <input
+              type="text"
+              placeholder="Digite e pressione Enter ou vírgula"
+              [(ngModel)]="tagBuffer"
+              name="tagBuffer"
+              (keydown.enter)="addTagFromBuffer($event)"
+              (keydown)="onTagKeydown($event)"
+              (input)="filterSuggestions('tags', tagBuffer)"
+              (focus)="showDropdown('tags')"
+              (blur)="hideDropdownDelayed('tags')"
+              autocomplete="off"
+            />
+
+            <ul class="suggestions tag-suggestions" *ngIf="dropdownVisible.tags && suggestions.tags.length">
+              <li *ngFor="let s of suggestions.tags" (mousedown)="addTagSuggestion(s)">
+                {{ s }}
+              </li>
+            </ul>
+
+          </div>
+        </div>
+
+        <!-- SINOPSE -->
         <div class="form-group wide">
           <label>SINOPSE</label>
-          <textarea rows="6" [(ngModel)]="livro.txt_sinopse" name="sinopse"></textarea>
+          <textarea rows="6" [(ngModel)]="livro.txt_sinopse" name="txt_sinopse"></textarea>
         </div>
 
         <div class="button-area">
