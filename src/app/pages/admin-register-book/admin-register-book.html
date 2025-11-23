@@ -1,1 +1,94 @@
-<p>admin-register-book works!</p>
+<app-admin-header (toggleSidebar)="toggleSidebar()"></app-admin-header>
+<app-sidebar [isOpen]="sidebarOpen"></app-sidebar>
+
+<div class="main-layout" [class.sidebar-open]="sidebarOpen">
+  <main class="content">
+
+    <form class="book-wrapper" (ngSubmit)="salvarLivro()">
+
+      <!-- ===================== ESQUERDA ===================== -->
+      <div class="left-panel">
+
+        <label class="section-title">FOTO CAPA</label>
+
+        <div class="cover-box">
+          <img 
+            *ngIf="livro.uri_img_livro"
+            [src]="livro.uri_img_livro"
+            class="cover-preview"
+          />
+
+          <div class="cover-placeholder" *ngIf="!livro.uri_img_livro">
+            <span>ANEXAR FOTO</span>
+            <span class="material-icons">image</span>
+          </div>
+        </div>
+
+        <label class="section-title small">ANEXAR LIVRO</label>
+
+        <label class="upload-box">
+          <span class="material-icons">attach_file</span>
+          <span>Anexar Arquivo</span>
+          <input type="file" hidden />
+        </label>
+
+      </div>
+
+      <!-- ===================== DIREITA ===================== -->
+      <div class="right-panel">
+
+        <div class="input-row">
+          <div class="form-group">
+            <label>NOME LIVRO</label>
+            <input type="text" [(ngModel)]="livro.txt_titulo" name="titulo" required />
+          </div>
+
+          <div class="form-group">
+            <label>NOME AUTOR</label>
+            <input type="text" name="autor" placeholder="(caso exista na obra)" />
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="form-group">
+            <label>EDITORA</label>
+            <select [(ngModel)]="livro.cod_editora" name="editora">
+              <option [value]="null">Selecione...</option>
+              <option *ngFor="let e of editoras" [value]="e.cod_editora">
+                {{ e.nome }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>TEMA</label>
+            <input type="text" name="tema" placeholder="Tema" />
+          </div>
+
+          <div class="form-group">
+            <label>DATA LANÇAMENTO</label>
+            <input 
+              type="text"
+              maxlength="10"
+              placeholder="dd/mm/aaaa"
+              [(ngModel)]="livro.ano_lancamento"
+              name="ano"
+            />
+          </div>
+        </div>
+
+        <div class="form-group wide">
+          <label>SINOPSE</label>
+          <textarea rows="6" [(ngModel)]="livro.txt_sinopse" name="sinopse"></textarea>
+        </div>
+
+        <div class="button-area">
+          <button class="btn-submit" type="submit">CADASTRAR</button>
+        </div>
+
+      </div>
+
+    </form>
+
+  </main>
+</div>

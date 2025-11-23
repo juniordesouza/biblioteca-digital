@@ -1,20 +1,36 @@
 <app-admin-header (toggleSidebar)="toggleSidebar()"></app-admin-header>
 <app-sidebar [isOpen]="sidebarOpen"></app-sidebar>
 
+<!-- 🔥 TOAST GLOBAL DO ADMIN -->
+<app-toast [message]="alertMessage" [show]="showAlert"></app-toast>
+
 <div class="main-layout" [class.sidebar-open]="sidebarOpen">
   <main class="content">
     <h2>Lista de Usuários Pendentes</h2>
 
-    <div class="bulk-actions">
+    <!-- 🔥 AÇÕES EM GRUPO (exibidas apenas se houver usuários) -->
+    <div class="bulk-actions" *ngIf="usuarios.length > 0">
       <button class="btn-approve">Aprovar Selecionados</button>
       <button class="btn-reject">Recusar Selecionados</button>
     </div>
 
-    <div class="table-container">
+    <!-- 🔥 MENSAGEM QUANDO NÃO EXISTEM PENDENTES -->
+    <div class="empty-box" *ngIf="usuarios.length === 0">
+      <p>Nenhum usuário pendente para aprovação.</p>
+    </div>
+
+    <!-- 🔥 TABELA SOMENTE QUANDO EXISTEM USUÁRIOS -->
+    <div class="table-container" *ngIf="usuarios.length > 0">
       <table>
         <thead>
           <tr>
-            <th><input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)" /></th>
+            <th>
+              <input
+                type="checkbox"
+                [checked]="allSelected"
+                (change)="toggleSelectAll($event)"
+              />
+            </th>
 
             <th>Username</th>
             <th>Status</th>
@@ -35,7 +51,11 @@
         <tbody>
           <tr *ngFor="let user of usuarios">
             <td>
-              <input type="checkbox" [(ngModel)]="user.selected" (change)="updateSelectAllState()" />
+              <input
+                type="checkbox"
+                [(ngModel)]="user.selected"
+                (change)="updateSelectAllState()"
+              />
             </td>
 
             <td>{{ user.username }}</td>
@@ -67,10 +87,14 @@
             <td>{{ user.urlDocumento || '-' }}</td>
 
             <td class="actions">
-              <button class="btn-single-approve">✔</button>
+              <button
+                class="btn-single-approve"
+                (click)="aprovarUsuario(user.username)"
+              >
+                ✔
+              </button>
               <button class="btn-single-reject">✖</button>
             </td>
-
           </tr>
         </tbody>
       </table>

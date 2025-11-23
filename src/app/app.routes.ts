@@ -13,6 +13,7 @@ import { WaitingPageComponent } from './pages/waiting-page/waiting-page';
 import { AuthGuard } from './auth.guard';
 import { AdminUserAprove } from './pages/admin-user-aprove/admin-user-aprove';
 import { AdminUserList } from './pages/admin-user-list/admin-user-list';
+import { AdminRegisterBook } from './pages/admin-register-book/admin-register-book';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -27,6 +28,7 @@ export const routes: Routes = [
     { path: 'admin/usuarios', component: AdminUserList, canActivate: [AuthGuard] },
     { path: 'admin/aprovacoes', component: AdminUserAprove, canActivate: [AuthGuard] },
     { path: 'admin/livros', component: AdminListBooks, canActivate: [AuthGuard] },
+    { path: 'admin/cadastrar-livros', component: AdminRegisterBook, canActivate: [AuthGuard] },
     { path: 'admin/register-user', component: AdminRegisterUserPage, canActivate: [AuthGuard] },
     {
     path: 'livro/ler/:id',

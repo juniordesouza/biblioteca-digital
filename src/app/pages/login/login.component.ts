@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../auth.service';
 import { HomeHeaderComponent } from '../../components/home-header/home-header.component';
+import { ToastComponent } from '../../components/toast.component/toast.component';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import { HomeHeaderComponent } from '../../components/home-header/home-header.co
   styleUrls: ['./login.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, HomeHeaderComponent]
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, HomeHeaderComponent, ToastComponent]
 })
 export class LoginComponent implements OnInit {
 
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private zone = inject(NgZone);
-  private cdr = inject(ChangeDetectorRef); // 🔥 garante atualização de tela
+  private cdr = inject(ChangeDetectorRef);
 
   showAlert = false;
   alertMessage = '';
@@ -30,13 +31,10 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit(): void {
-
-    // Se já estiver logado → redireciona
     if (this.authService.isLogged()) {
       this.router.navigate(['/catalogo']);
     }
 
-    // Se estiver pendente de aprovação
     if (sessionStorage.getItem('pendingUser')) {
       this.router.navigate(['/sala-de-espera']);
       return;
@@ -57,14 +55,12 @@ export class LoginComponent implements OnInit {
       },
       error: (err) => {
 
-        // Usuário pendente de aprovação
         if (err.status === 403 && err.error?.aguardandoAprovacao === true) {
           this.authService.setPendingUser(credentials.username);
           this.router.navigate(['/sala-de-espera']);
           return;
         }
 
-        // 🔥 Garantido: mostra toast em QUALQUER falha de login
         this.showToast("Usuário ou senha inválidos.");
       }
     });
@@ -74,12 +70,12 @@ export class LoginComponent implements OnInit {
     this.zone.run(() => {
       this.alertMessage = message;
       this.showAlert = true;
-      this.cdr.markForCheck(); // 🔥 força render
+      this.cdr.markForCheck();
 
       setTimeout(() => {
         this.zone.run(() => {
           this.showAlert = false;
-          this.cdr.markForCheck(); // 🔥 força esconder
+          this.cdr.markForCheck();
         });
       }, 3500);
     });

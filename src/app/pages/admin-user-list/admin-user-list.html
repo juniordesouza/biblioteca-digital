@@ -3,20 +3,30 @@
 
 <div class="main-layout" [class.sidebar-open]="sidebarOpen">
   <main class="content">
+
     <h2>Lista de Usuários</h2>
 
-    <div class="bulk-actions">
-        <button class="btn-ban" (click)="banirSelecionados()">
-            Bloquear Selecionados
-        </button>
-
-        <button class="btn-unban" (click)="desbanirSelecionados()">
-            Desbloquear Selecionados
-        </button>
+    <!-- 🔥 EMPTY STATE -->
+    <div class="empty-box" *ngIf="usuarios.length === 0">
+      <p>Nenhum usuário encontrado.</p>
     </div>
 
+    <!-- 🔥 AÇÕES SUPERIORES -->
+    <div class="bulk-actions" *ngIf="usuarios.length > 0">
 
-    <div class="table-container">
+      <button class="btn-block" (click)="banirSelecionados()">
+        Bloquear Selecionados
+      </button>
+
+      <button class="btn-unblock" (click)="desbanirSelecionados()">
+        Desbloquear Selecionados
+      </button>
+
+    </div>
+
+    <!-- 🔥 TABELA COMPLETA -->
+    <div class="table-container" *ngIf="usuarios.length > 0">
+
       <table>
         <thead>
           <tr>
@@ -53,24 +63,20 @@
             <td>{{ user.username }}</td>
 
             <td>
-              <span
-                [ngStyle]="{
-                  color:
-                    user.status === 'ATIVO'
-                      ? 'green'
-                      : user.status === 'PENDENTE'
-                      ? 'goldenrod'
-                      : 'red'
-                }"
-              >
+              <span [ngStyle]="{
+                color:
+                  user.status === 'ATIVO' ? 'green' :
+                  user.status === 'PENDENTE' ? 'goldenrod' :
+                  'red'
+              }">
                 {{ user.status }}
               </span>
             </td>
 
-            <td>{{ user.nome }}</td>
+            <td>{{ user.fullName }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.cpf }}</td>
-            <td>{{ formatDate(user.dtNascimento) }}</td>
+            <td>{{ user.birthDate }}</td>
             <td>{{ user.telefone }}</td>
             <td>{{ user.endereco }}</td>
             <td>{{ user.cep }}</td>
@@ -82,14 +88,20 @@
             <td>{{ user.dtBanimento || '-' }}</td>
             <td>{{ user.limiteSlots }}</td>
             <td>{{ user.urlCapa || '-' }}</td>
-
-            <td class="actions">
-                <button class="btn-ban" title="Banir usuário" (click)="banirUsuario(user.username)">🚫</button>
-                <button class="btn-unban" title="Desbanir usuário" (click)="desbanirUsuario(user.username)">🔓</button>
-            </td>
+            <div class="actions-wrap">
+                <td class="actions">
+                <button class="btn-ban" (click)="banirUsuario(user.username)">🚫</button>
+                <button class="btn-unban" (click)="desbanirUsuario(user.username)">🔓</button>
+                </td>
+            </div>
           </tr>
         </tbody>
       </table>
+
     </div>
+
+    <!-- 🔥 TOAST -->
+    <app-toast [message]="alertMessage" [show]="showAlert"></app-toast>
+
   </main>
 </div>

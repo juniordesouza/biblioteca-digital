@@ -155,3 +155,20 @@ tbody tr:hover {
     max-width: 180px; /* só reduz em telas menores */
   }
 }
+
+.empty-box {
+  margin-top: 2rem;
+  padding: 2rem;
+  text-align: center;
+  background: #2a2a2a;
+  border-radius: 12px;
+  color: #d4d4d4;
+  font-size: 1.2rem;
+  border: 1px solid #444;
+  animation: fadeIn .3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

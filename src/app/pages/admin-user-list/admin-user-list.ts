@@ -4,18 +4,30 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { AdminHeaderComponent } from '../../components/admin-header/admin-header.component';
 import { FormsModule } from '@angular/forms';
+import { ToastComponent } from '../../components/toast.component/toast.component';
 
 @Component({
   selector: 'app-admin-user-list',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, FormsModule, SidebarComponent, AdminHeaderComponent],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    FormsModule,
+    SidebarComponent,
+    AdminHeaderComponent,
+    ToastComponent
+  ],
   templateUrl: './admin-user-list.html',
   styleUrl: './admin-user-list.css'
 })
 export class AdminUserList implements OnInit {
+
   sidebarOpen = true;
   usuarios: any[] = [];
-  allSelected = false; 
+  allSelected = false;
+
+  showAlert = false;
+  alertMessage = '';
 
   constructor(private http: HttpClient) {}
 
@@ -27,62 +39,36 @@ export class AdminUserList implements OnInit {
     this.loadUsers();
   }
 
-  /** 🔹 Carrega usuários do backend Spring */
-loadUsers(): void {
-  const token = sessionStorage.getItem('token');
+  loadUsers(): void {
+    const token = sessionStorage.getItem('token');
 
-  this.http.get<any[]>(
-    'http://localhost:8080/pessoas/usuarios',
-    {
-      headers: { Authorization: `Bearer ${token}` }
-    }
-  )
-  .subscribe({
-    next: response => {
-      this.usuarios = response.map(user => ({
-        username: user.username,
-        fullName: user.nome,
-        email: user.email,
-        birthDate: this.formatDate(user.dtNascimento),
-        cpf: user.cpf,
-        endereco: user.endereco,
-        telefone: user.telefone,
-        sexo: user.sexo,
-        role: user.roleString,
-        status: user.status,
-        selected: false
-      }));
-
-      this.allSelected = false;
-    },
-    error: err => console.error("Erro ao buscar usuários:", err)
-  });
-}
-
-
-  /** 🔹 Converte "yyyyMMdd" em "dd/MM/yyyy" */
-  formatDate(dateString: string): string {
-    if (!dateString || dateString.length !== 8) return dateString;
-
-    const year = dateString.substring(0, 4);
-    const month = dateString.substring(4, 6);
-    const day = dateString.substring(6, 8);
-
-    return `${day}/${month}/${year}`;
+    this.http.get<any[]>(
+      'http://localhost:8080/pessoas/usuarios',
+      { headers: { Authorization: `Bearer ${token}` } }
+    ).subscribe({
+      next: response => {
+        this.usuarios = response.map(user => ({
+          ...user,
+          birthDate: this.formatDate(user.dtNascimento),
+          selected: false
+        }));
+        this.allSelected = false;
+      },
+      error: err => console.error('Erro ao buscar usuários:', err)
+    });
   }
 
-  /** 🔹 Selecionar / desmarcar todos */
-  toggleSelectAll(event: Event): void {
-    const checked = (event.target as HTMLInputElement).checked;
-    this.allSelected = checked;
-    this.usuarios.forEach((u) => (u.selected = checked));
+  /** 🔥 Toast */
+  showToast(msg: string) {
+    this.alertMessage = msg;
+    this.showAlert = true;
+
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 3500);
   }
 
-  /** 🔹 Atualiza checkbox principal */
-  updateSelectAllState(): void {
-    this.allSelected = this.usuarios.length > 0 && this.usuarios.every((u) => u.selected);
-  }
-
+  /** 🔥 Banir */
   banirUsuario(username: string) {
     const token = sessionStorage.getItem('token');
 
@@ -90,42 +76,68 @@ loadUsers(): void {
       `http://localhost:8080/pessoas/${username}/bloquear`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
-    )
-    .subscribe({
-      next: () => this.loadUsers(),
-      error: err => console.error("Erro ao banir:", err)
+    ).subscribe({
+      next: () => {
+        this.showToast(`Usuário ${username} bloqueado.`);
+        this.loadUsers();
+      },
+      error: err => this.showToast("Erro ao bloquear usuário.")
     });
   }
 
+  /** 🔥 Desbanir */
   desbanirUsuario(username: string) {
     const token = sessionStorage.getItem('token');
 
     this.http.put(
-      `http://localhost:8080/pessoas/${username}/desbanir`, // 🔥 você cria esse endpoint no backend
+      `http://localhost:8080/pessoas/${username}/desbanir`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
-    )
-    .subscribe({
-      next: () => this.loadUsers(),
-      error: err => console.error("Erro ao desbanir:", err)
+    ).subscribe({
+      next: () => {
+        this.showToast(`Usuário ${username} desbloqueado.`);
+        this.loadUsers();
+      },
+      error: err => this.showToast("Erro ao desbloquear usuário.")
     });
   }
 
+  /** 🔥 Banir em massa */
   banirSelecionados() {
     const selecionados = this.usuarios.filter(u => u.selected);
 
-    if (selecionados.length === 0) return;
+    if (selecionados.length === 0)
+      return this.showToast("Nenhum usuário selecionado.");
 
     selecionados.forEach(u => this.banirUsuario(u.username));
   }
 
+  /** 🔥 Desbanir em massa */
   desbanirSelecionados() {
     const selecionados = this.usuarios.filter(u => u.selected);
 
-    if (selecionados.length === 0) return;
+    if (selecionados.length === 0)
+      return this.showToast("Nenhum usuário selecionado.");
 
     selecionados.forEach(u => this.desbanirUsuario(u.username));
   }
 
+  /** Formatador */
+  formatDate(dateString: string): string {
+    if (!dateString || dateString.length !== 8) return dateString;
+
+    return `${dateString.substring(6, 8)}/${dateString.substring(4, 6)}/${dateString.substring(0, 4)}`;
+  }
+
+  toggleSelectAll(event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    this.allSelected = checked;
+    this.usuarios.forEach(u => u.selected = checked);
+  }
+
+  updateSelectAllState(): void {
+    this.allSelected = this.usuarios.length > 0 &&
+                       this.usuarios.every(u => u.selected);
+  }
 
 }
