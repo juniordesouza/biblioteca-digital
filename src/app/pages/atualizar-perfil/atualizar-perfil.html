@@ -1,0 +1,107 @@
+<app-menu></app-menu>
+
+<div class="page-wrapper">
+  <div class="container">
+
+    <div class="card">
+      <div class="card-title">
+        <h2>MEUS DADOS</h2>
+      </div>
+
+      <form [formGroup]="perfilForm" (ngSubmit)="onSubmit()" class="card-body">
+
+        <div class="grid">
+
+          <!-- USERNAME -->
+          <div class="form-group full with-icon">
+            <label>USERNAME</label>
+            <input readonly class="blocked" formControlName="username" />
+            <span class="icon">🔒</span>
+          </div>
+
+          <!-- NOME -->
+          <div class="form-group full with-icon">
+            <label>NOME COMPLETO</label>
+            <input readonly class="blocked" formControlName="nome" />
+            <span class="icon">🔒</span>
+          </div>
+
+          <!-- EMAIL -->
+          <div class="form-group with-icon">
+            <label>EMAIL</label>
+            <input formControlName="email" [readonly]="!edit.email" class="{{ edit.email ? '' : 'blocked' }}"
+                   (focus)="ativarEdicao('email')" />
+            <span class="icon">{{ edit.email ? '✔️' : '✏️' }}</span>
+          </div>
+
+          <!-- TELEFONE -->
+          <div class="form-group with-icon">
+            <label>TELEFONE</label>
+            <input formControlName="telefone" (input)="onPhoneInput($event)"
+                   [readonly]="!edit.telefone" class="{{ edit.telefone ? '' : 'blocked' }}"
+                   (focus)="ativarEdicao('telefone')" />
+            <span class="icon">{{ edit.telefone ? '✔️' : '✏️' }}</span>
+          </div>
+
+          <!-- CPF -->
+          <div class="form-group full with-icon">
+            <label>CPF</label>
+            <input readonly class="blocked" formControlName="cpf" />
+            <span class="icon">🔒</span>
+          </div>
+
+          <!-- CEP -->
+          <div class="form-group with-icon">
+            <label>CEP</label>
+            <input formControlName="cep" (input)="onCEPInput($event)"
+                   [readonly]="!edit.cep" class="{{ edit.cep ? '' : 'blocked' }}"
+                   (focus)="ativarEdicao('cep')" />
+            <span class="icon">{{ edit.cep ? '✔️' : '✏️' }}</span>
+          </div>
+
+          <!-- NUMERO -->
+          <div class="form-group with-icon">
+            <label>NÚMERO</label>
+            <input formControlName="numero" [readonly]="!edit.numero"
+                   class="{{ edit.numero ? '' : 'blocked' }}"
+                   (focus)="ativarEdicao('numero')" />
+            <span class="icon">{{ edit.numero ? '✔️' : '✏️' }}</span>
+          </div>
+
+          <!-- NASCIMENTO -->
+          <div class="form-group full with-icon">
+            <label>DATA DE NASCIMENTO</label>
+            <input readonly class="blocked" formControlName="nascimento" />
+            <span class="icon">🔒</span>
+          </div>
+
+          <!-- SENHA -->
+          <div class="form-group full with-icon">
+            <label>NOVA SENHA</label>
+            <input type="password" formControlName="senha"
+                   [readonly]="!edit.senha" class="{{ edit.senha ? '' : 'blocked' }}"
+                   (focus)="ativarEdicao('senha')" />
+            <span class="icon">{{ edit.senha ? '✔️' : '✏️' }}</span>
+          </div>
+
+          <!-- CONFIRMAR SENHA -->
+          <div class="form-group full" *ngIf="edit.senha">
+            <label>CONFIRMAR SENHA</label>
+            <input type="password" formControlName="confirmarSenha" />
+            <small *ngIf="perfilForm.errors?.['senhaMismatch']" style="color:#FF8080;">
+              As senhas não coincidem.
+            </small>
+          </div>
+
+        </div>
+
+        <div class="button-container">
+          <button class="btn-salvar" type="submit">SALVAR</button>
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+</div>

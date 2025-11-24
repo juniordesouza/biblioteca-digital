@@ -1,0 +1,134 @@
+.page-wrapper {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2070&auto=format&fit=crop");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.card {
+  background-color: #282724;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+              rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.card-title {
+  background-color: #c38632;
+  padding: 1rem;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  text-align: center;
+}
+
+.card-title h2 {
+  margin: 0;
+  font-size: 38px;
+  color: white;
+  font-family: "Alumni Sans", sans-serif;
+  text-transform: uppercase;
+}
+
+.card-body {
+  padding: 2rem;
+  color: white;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+
+.full {
+  grid-column: span 2;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+label {
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+  color: white;
+}
+
+input {
+  padding: 0.7rem;
+  background-color: #373634;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  outline: none;
+  color: white;
+  font-weight: bold;
+  transition: 0.25s ease;
+  box-shadow: rgba(0, 0, 0, 0.18) 2px 2px 4px;
+}
+
+input:focus {
+  border-color: #c38632;
+  box-shadow: 0 0 0 4px rgba(195, 134, 50, 0.25);
+  background-color: #3f3e3b;
+}
+
+input.blocked {
+  background-color: #2d2c2a !important;
+  color: #b3b3b3 !important;
+  border: 1px solid #555 !important;
+}
+
+.with-icon {
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  right: 12px;
+  top: 38px;
+  font-size: 20px;
+  user-select: none;
+  opacity: 0.8;
+}
+
+.button-container {
+  text-align: center;
+  margin-top: 1.8rem;
+}
+
+.btn-salvar {
+  width: 60%;
+  padding: 1rem;
+  background-color: #c38632;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  transition: 0.25s ease;
+}
+
+.btn-salvar:hover {
+  background-color: #774f18;
+  box-shadow: 0px 4px 12px rgba(195, 134, 50, 0.25);
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .full {
+    grid-column: span 1;
+  }
+}

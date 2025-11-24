@@ -15,6 +15,7 @@ import { RoleGuard } from './role.guard';
 import { AdminUserAprove } from './pages/admin-user-aprove/admin-user-aprove';
 import { AdminUserList } from './pages/admin-user-list/admin-user-list';
 import { AdminRegisterBook } from './pages/admin-register-book/admin-register-book';
+import { AtualizarPerfilComponent } from './pages/atualizar-perfil/atualizar-perfil';
 
 export const routes: Routes = [
 
@@ -30,6 +31,7 @@ export const routes: Routes = [
   { path: 'sala-de-espera', component: WaitingPageComponent, canActivate: [AuthGuard] },
   { path: 'livros/:id', component: LivroDetailsComponent, canActivate: [AuthGuard] },
   { path: 'sobre', component: SobreComponent, canActivate: [AuthGuard] },
+  { path: 'atualizar-perfil', component: AtualizarPerfilComponent, canActivate: [AuthGuard] },
 
   /* ---------------------- ADMIN ---------------------- */
   {
