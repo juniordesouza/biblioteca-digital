@@ -71,12 +71,11 @@ export const routes: Routes = [
     data: { roles: ['ADMIN', 'FUNCIONARIO'] }
   },
 
-  /* ---------------------- LEITOR DE LIVRO (privado) ---------------------- */
+  /* ---------------------- LEITOR DE LIVRO ---------------------- */
   {
     path: 'livro/ler/:id',
     loadComponent: () => import('./pages/book-reader-page/book-reader-page')
       .then(m => m.BookReaderPage),
     canActivate: [AuthGuard]
   }
-
 ];

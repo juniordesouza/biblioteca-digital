@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MenuComponent } from '../../components/menu/menu.component';
 
 @Component({
@@ -9,30 +11,61 @@ import { MenuComponent } from '../../components/menu/menu.component';
   templateUrl: './book-details.component.html',
   styleUrls: ['./book-details.component.css']
 })
-export class BookDetailsComponent {
-  book = {
-    title: 'Harry Potter e a Pedra Filosofal',
-    author: 'J.K. Rowling (Autor)',
-    publisher: 'Rocco - 19 de Agosto de 2017',
-    theme: 'Fantasia',
-    cover: 'assets/harry-potter-capa.jpg', // mock
-    rating: 4,
-    description: `Harry Potter é um garoto cujos pais, feiticeiros, foram assassinados por um poderosíssimo bruxo quando ele ainda era um bebê. 
-    Ele foi levado, então, para a casa dos tios que nada tinham a ver com o sobrenatural. Pelo contrário. Até os 10 anos, 
-    Harry foi uma espécie de gata borralheira: maltratado pelos tios, herdava roupas velhas do primo gorducho, tinha óculos remendados 
-    e era tratado como um estorvo. No dia de seu aniversário de 11 anos, entretanto, ele parece deslizar por um buraco sem fundo, 
-    como o de Alice no país das maravilhas, que o conduz a um mundo mágico. Descobre sua verdadeira história e seu destino: 
-    ser um aprendiz de feiticeiro até o dia em que terá que enfrentar a pior força do mal.`,
-    stock: 3
-  };
+export class BookDetailsComponent implements OnInit {
 
+  book: any = null; // será preenchido pelo backend
   showFullDescription = false;
+
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient
+  ) {}
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) return;
+
+    this.loadBook(Number(id));
+  }
+
+  loadBook(id: number) {
+    const token = sessionStorage.getItem('token') || '';
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    this.http.get<any>(`http://localhost:8080/livros/${id}`, { headers })
+      .subscribe({
+        next: (res) => {
+          const data = res.data;
+
+          /** 
+           * Mapeamento do backend → frontend 
+           */
+          this.book = {
+            title: data.titulo,
+            author: data.autor,
+            publisher: data.editora,
+            theme: data.tema,
+            cover: data.uriImgLivro || 'assets/default-cover.png',
+            rating: 4, // por enquanto fictício
+            description: data.sinopse,
+            stock: data.quantidadeDisponivel
+          };
+        },
+        error: (err) => {
+          console.error('Erro ao carregar livro:', err);
+        }
+      });
+  }
 
   toggleDescription() {
     this.showFullDescription = !this.showFullDescription;
   }
 
   get truncatedDescription(): string {
+    if (!this.book) return '';
     const maxLength = 450;
     if (this.book.description.length <= maxLength || this.showFullDescription) {
       return this.book.description;

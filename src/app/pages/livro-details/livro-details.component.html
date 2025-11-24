@@ -1,40 +1,83 @@
 <app-menu></app-menu>
+
 <main class="page-wrapper" *ngIf="!loading(); else loadingTpl">
   <section class="book-section">
+
+    <!-- LEFT -->
     <div class="left">
       <img [src]="book().cover" alt="Capa do livro" class="cover" />
     </div>
 
+    <!-- RIGHT -->
     <div class="right">
+
       <h1 class="book-title">{{ book().title }}</h1>
 
+      <!-- Rating -->
       <div class="rating">
         @for (i of [].constructor(5); track i) {
           <span class="star" [class.filled]="i < book().rating">★</span>
         }
       </div>
 
-      <p><strong>Autor(a):</strong> {{ book().author }}</p>
+      <!-- Dados principais -->
+      <p><strong>Autor Principal:</strong> {{ book().author }}</p>
       <p><strong>Editora:</strong> {{ book().publisher }}</p>
-      <p><strong>Tema:</strong> {{ book().theme }}</p>
+      <p><strong>Obra:</strong> {{ book().obra }}</p>
+      <p><strong>Tema Principal:</strong> {{ book().theme }}</p>
+      <p><strong>Ano de lançamento:</strong> {{ book().anoLancamento }}</p>
 
+      <!-- Status -->
+      <p><strong>Status:</strong>
+        <span 
+          class="status-chip" 
+          [class.status-ok]="book().status === 'DISPONIVEL'"
+          [class.status-other]="book().status !== 'DISPONIVEL'">
+          {{ book().status }}
+        </span>
+      </p>
+
+
+      <!-- Lista completa de autores -->
+      <div class="list-box" *ngIf="book().autores?.length">
+        <strong style="width:100%">Autores:</strong>
+        <span class="chip" *ngFor="let a of book().autores">{{ a }}</span>
+      </div>
+
+      <!-- Lista completa de temas -->
+      <div class="list-box" *ngIf="book().temas?.length">
+        <strong style="width:100%">Temas:</strong>
+        <span class="chip-alt" *ngFor="let t of book().temas">{{ t }}</span>
+      </div>
+
+      <!-- Tags -->
+      <div class="list-box" *ngIf="book().tags?.length">
+        <strong style="width:100%">Tags:</strong>
+        <span class="chip" *ngFor="let t of book().tags">#{{ t }}</span>
+      </div>
+
+      <!-- Descrição -->
       <p><strong>Descrição:</strong></p>
       <p class="description">
         {{ truncatedDescription() }}
-        @if (book().description.length > 450) {
+        @if (book().description?.length > 450) {
           <a (click)="toggleDescription()" class="read-more">
             {{ showFullDescription() ? 'Ler menos' : 'Ler mais' }}
           </a>
         }
       </p>
 
-      <p class="stock">Quantidades restantes: {{ book().stock }}</p>
+      <!-- Quantidade -->
+      <p class="stock">Quantidade disponível: {{ book().stock }}</p>
 
+      <!-- Botão -->
       <button class="btn-obter">OBTER LIVRO</button>
+
     </div>
+
   </section>
 </main>
 
 <ng-template #loadingTpl>
-  <p style="color:white;text-align:center;">Carregando detalhes do livro...</p>
+  <p style="color:white;text-align:center;margin-top:50px">Carregando detalhes do livro...</p>
 </ng-template>

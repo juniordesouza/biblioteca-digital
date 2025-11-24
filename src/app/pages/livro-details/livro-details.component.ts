@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../../components/menu/menu.component';
 
-
 @Component({
   selector: 'app-livro-details',
   standalone: true,
@@ -13,64 +12,82 @@ import { MenuComponent } from '../../components/menu/menu.component';
   styleUrls: ['./livro-details.component.css'],
 })
 export class LivroDetailsComponent {
+
   private route = inject(ActivatedRoute);
   private http = inject(HttpClient);
 
-  // estado principal
   book = signal<any>({
     cover: '',
     title: '',
     author: '',
+    authors: [],
     publisher: '',
+    obra: '',
+    themes: [],
     theme: '',
+    tags: [],
+    year: '',
     description: '',
     stock: 0,
-    rating: 0,
+    status: '',
+    pdf: '',
+    rating: 4
   });
 
   loading = signal<boolean>(true);
   showFullDescription = signal<boolean>(false);
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      const id = params.get('id') || 'zyTCAlFPjgYC';
-      this.loadBook(id);
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) this.loadBook(id);
     });
   }
 
   loadBook(id: string) {
     this.loading.set(true);
-    const apiUrl = `https://www.googleapis.com/books/v1/volumes/${id}`;
 
-    this.http.get(apiUrl).subscribe({
-      next: (data: any) => {
-        const v = data.volumeInfo;
+    const token = sessionStorage.getItem('token');
+    const url = `http://localhost:8080/livros/${id}`;
+    const base = 'http://localhost:8080';
 
-        // Simulando dados ausentes com fallback
-        this.book.set({
-          cover: v.imageLinks?.thumbnail ?? 'https://via.placeholder.com/300x450?text=Sem+Capa',
-          title: v.title ?? 'Título não encontrado',
-          author: v.authors?.join(', ') ?? 'Autor desconhecido',
-          publisher: v.publisher ?? 'Editora não informada',
-          theme: v.categories?.[0] ?? 'Sem tema definido',
-          description: v.description ?? 'Sem descrição disponível.',
-          stock: Math.floor(Math.random() * 10) + 1, // mock de estoque
-          rating: Math.floor(Math.random() * 5) + 1, // mock de avaliação
-        });
+    this.http.get<any>(url, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: resp => {
+
+        const d = resp.data;
+
+      this.book.set({
+        cover: d.uriImgLivro ? `http://localhost:8080${d.uriImgLivro}` : 'https://via.placeholder.com/300x450?text=Sem+Capa',
+        title: d.titulo,
+        author: d.autor,
+        autores: d.autores,
+        publisher: d.editora,
+        obra: d.obra,
+        theme: d.tema,
+        temas: d.temas,
+        tags: d.tags,
+        anoLancamento: d.anoLancamento,
+        description: d.sinopse,
+        stock: d.quantidadeDisponivel,
+        status: d.status?.nome || d.status,
+        urlLivro: d.urlLivro,
+        rating: 4
+      });
+
 
         this.loading.set(false);
       },
-      error: (err) => {
-        console.error('Erro ao buscar livro:', err);
+      error: err => {
+        console.error(err);
         this.loading.set(false);
-      },
+      }
     });
   }
 
-  // getter calculado com truncamento
   truncatedDescription = computed(() => {
-    const desc = this.book().description;
-    if (!desc) return '';
+    const desc = this.book()?.description || '';
     return this.showFullDescription() ? desc : desc.slice(0, 450);
   });
 
