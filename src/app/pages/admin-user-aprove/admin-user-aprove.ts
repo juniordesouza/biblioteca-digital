@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
@@ -22,9 +22,13 @@ export class AdminUserAprove implements OnInit {
   usuarios: any[] = [];
   allSelected = false;
 
-  // 🔥 Toast signals
+  // 🔥 Toast
   showAlert = false;
   alertMessage = '';
+
+  // 🔥 Popup de confirmação
+  popupRejectVisible = false;
+  popupRejectUser: string | null = null;
 
   constructor(private http: HttpClient) {}
 
@@ -36,6 +40,9 @@ export class AdminUserAprove implements OnInit {
     this.loadUsers();
   }
 
+  // ============================================================
+  // 🔄 Carregar lista de pendentes
+  // ============================================================
   loadUsers(): void {
     const token = sessionStorage.getItem('token');
 
@@ -59,7 +66,9 @@ export class AdminUserAprove implements OnInit {
     });
   }
 
-  /** 🔥 Toast reutilizável */
+  // ============================================================
+  // 🔥 Toast global
+  // ============================================================
   showToast(msg: string) {
     this.alertMessage = msg;
     this.showAlert = true;
@@ -69,7 +78,9 @@ export class AdminUserAprove implements OnInit {
     }, 3000);
   }
 
-  /** 🔥 Aprovar usuário individual */
+  // ============================================================
+  // ✔ Aprovar usuário (individual)
+  // ============================================================
   aprovarUsuario(username: string): void {
     const token = sessionStorage.getItem('token');
 
@@ -83,17 +94,23 @@ export class AdminUserAprove implements OnInit {
         this.showToast(res.mensagem || "Usuário aprovado.");
         this.loadUsers();
       },
-      error: () => {
+      error: (err) => {
         this.showToast("Erro ao aprovar usuário.");
       }
     });
   }
 
+  // ============================================================
+  // 📅 Formatar datas
+  // ============================================================
   formatDate(dateString: string): string {
     if (!dateString || dateString.length !== 8) return dateString;
     return `${dateString.substring(6,8)}/${dateString.substring(4,6)}/${dateString.substring(0,4)}`;
   }
 
+  // ============================================================
+  // 🔘 Selecionar tudo
+  // ============================================================
   toggleSelectAll(event: Event): void {
     const checked = (event.target as HTMLInputElement).checked;
     this.allSelected = checked;
@@ -103,5 +120,48 @@ export class AdminUserAprove implements OnInit {
   updateSelectAllState(): void {
     this.allSelected = this.usuarios.length > 0 &&
                        this.usuarios.every(u => u.selected);
+  }
+
+  // ============================================================
+  // ❌ POPUP — abrir para um usuário
+  // ============================================================
+  openRejectPopup(username: string) {
+    this.popupRejectUser = username;
+    this.popupRejectVisible = true;
+  }
+
+  // ============================================================
+  // ❌ POPUP — fechar
+  // ============================================================
+  closeRejectPopup() {
+    this.popupRejectVisible = false;
+    this.popupRejectUser = null;
+  }
+
+  // ============================================================
+  // ❌ Confirmar exclusão do usuário
+  // ============================================================
+  confirmReject() {
+    if (!this.popupRejectUser) return;
+
+    const token = sessionStorage.getItem('token');
+
+    this.http.delete(
+      `http://localhost:8080/pessoas/${this.popupRejectUser}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    .subscribe({
+      next: (res: any) => {
+        this.showToast(res.message || "Usuário deletado.");
+        this.loadUsers();
+      },
+      error: err => {
+        this.showToast("Erro ao deletar usuário.");
+        console.error(err);
+      },
+      complete: () => {
+        this.closeRejectPopup();
+      }
+    });
   }
 }

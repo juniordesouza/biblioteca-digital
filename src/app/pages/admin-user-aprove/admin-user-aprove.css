@@ -172,3 +172,94 @@ tbody tr:hover {
   from { opacity: 0; transform: translateY(-5px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* 🔥 BACKDROP */
+.popup-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  animation: fadeIn .25s ease;
+}
+
+/* 🔥 POPUP BOX */
+.popup-box {
+  background: #2a2a2a;
+  color: #fff;
+  padding: 2rem;
+  width: 95%;
+  max-width: 420px;
+  border-radius: 16px;
+  border: 1px solid #444;
+  box-shadow: 0 0 25px rgba(0,0,0,0.4);
+  animation: scaleIn .25s ease;
+}
+
+.popup-box h3 {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.user-tag {
+  background: #444;
+  padding: 3px 7px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.warning {
+  color: #ff6b6b;
+  font-size: .95rem;
+  margin-top: .5rem;
+  text-align: center;
+}
+
+/* BOTÕES */
+.popup-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.btn-cancel,
+.btn-confirm {
+  flex: 1;
+  padding: .8rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.btn-cancel {
+  background: #555;
+}
+.btn-cancel:hover {
+  background: #666;
+}
+
+.btn-confirm {
+  background: #c0392b;
+  color: white;
+}
+.btn-confirm:hover {
+  background: #e74c3c;
+}
+
+/* ANIMAÇÕES */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

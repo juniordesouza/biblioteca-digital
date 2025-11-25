@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap } from 'rxjs';
+import { PerfilService } from './services/perfil.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,10 @@ export class AuthService {
 
   userState$ = this.userState.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private perfilService: PerfilService
+  ) {}
 
   // ============================
   // LOGIN
@@ -35,18 +39,18 @@ export class AuthService {
         if (response.token) {
           const token = response.token.replace("Bearer ", "");
           const role = this.extractRoleFromToken(token);
+
           this.setApprovedUser(token, credentials.username, role);
         }
       })
     );
   }
 
-  // Extrair role do token JWT
   extractRoleFromToken(token: string): string | null {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       return payload.role || null;
-    } catch (e) {
+    } catch {
       return null;
     }
   }
@@ -118,6 +122,10 @@ export class AuthService {
 
   logout() {
     sessionStorage.clear();
+
+    // 🔥 limpa também o cache do perfil
+    this.perfilService.limparCache();
+
     this.userState.next({
       token: null,
       username: null,

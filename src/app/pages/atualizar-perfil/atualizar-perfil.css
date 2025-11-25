@@ -132,3 +132,34 @@ input.blocked {
     grid-column: span 1;
   }
 }
+
+/* --- REGRAS DE SENHA MODERNAS (ADAPTADO DO CADASTRO) --- */
+.password-rules {
+  margin-top: 0.5rem;
+  padding-left: 0.2rem;
+}
+
+.password-rules .rule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #c0bdbb;
+  font-size: 13px;
+  margin-bottom: 4px;
+  transition: 0.25s ease;
+}
+
+.password-rules .rule .icon {
+  font-size: 14px;
+  transition: 0.25s ease;
+}
+
+/* Quando válido → verde suave */
+.password-rules .rule.valid {
+  color: #57e389;
+  font-weight: bold;
+}
+
+.password-rules .rule.valid .icon {
+  color: #57e389;
+}

@@ -1,5 +1,11 @@
 <app-menu></app-menu>
 
+<app-toast 
+  [message]="toastMessage" 
+  [show]="toastShow">
+</app-toast>
+
+
 <main class="page-wrapper" *ngIf="!loading(); else loadingTpl">
   <section class="book-section">
 
@@ -12,13 +18,6 @@
     <div class="right">
 
       <h1 class="book-title">{{ book().title }}</h1>
-
-      <!-- Rating -->
-      <div class="rating">
-        @for (i of [].constructor(5); track i) {
-          <span class="star" [class.filled]="i < book().rating">★</span>
-        }
-      </div>
 
       <!-- Dados principais -->
       <p><strong>Autor Principal:</strong> {{ book().author }}</p>
@@ -68,10 +67,32 @@
       </p>
 
       <!-- Quantidade -->
-      <p class="stock">Quantidade disponível: {{ book().stock }}</p>
+      <p class="stock" *ngIf="!livroObtido()">
+        Quantidade disponível: {{ book().stock }}
+      </p>
+
 
       <!-- Botão -->
-      <button class="btn-obter">OBTER LIVRO</button>
+      <div>
+        <!-- Se ainda não pegou o livro -->
+        <button 
+          *ngIf="!livroObtido()" 
+          class="btn-obter" 
+          (click)="obterLivro()">
+          OBTER LIVRO
+        </button>
+
+        <!-- Após sucesso no empréstimo -->
+        <a 
+          *ngIf="livroObtido()" 
+          class="btn-obter" 
+          style="color:#000;text-align:center;display:inline-block;text-decoration: none;"
+          href="https://meusistema.com/mock-leitor" 
+          target="_blank">
+          LER AGORA
+        </a>
+      </div>
+
 
     </div>
 

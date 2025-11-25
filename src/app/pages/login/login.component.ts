@@ -5,6 +5,8 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../auth.service';
 import { HomeHeaderComponent } from '../../components/home-header/home-header.component';
 import { ToastComponent } from '../../components/toast.component/toast.component';
+import { PerfilService } from '../../services/perfil.service';
+import { EmprestimoService } from '../../services/emprestimo.service';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +29,8 @@ export class LoginComponent implements OnInit {
   private router = inject(Router);
   private zone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
+  private perfilService = inject(PerfilService);
+  private emprestimoService = inject(EmprestimoService);
 
   showAlert = false;
   alertMessage = '';
@@ -110,6 +114,10 @@ export class LoginComponent implements OnInit {
             this.zone.run(() => this.router.navigate(['/sala-de-espera']));
             return;
           }
+
+          this.perfilService.carregarPerfil(credentials.username).subscribe();
+          this.emprestimoService.carregarHistorico(credentials.username).subscribe();
+
 
           // REDIRECIONAMENTO POR PERFIL
           if (role === "ADMIN") {

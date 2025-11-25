@@ -1,0 +1,27 @@
+<div class="dialog-backdrop">
+  <div class="dialog-box">
+
+    <h2>Consultar Histórico</h2>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Username do Usuário</label>
+        <input 
+          type="text" 
+          [(ngModel)]="username"
+          placeholder="Digite o username..."
+        />
+      </div>
+
+    </div>
+
+    <div class="actions">
+      <button class="cancel" (click)="close.emit()">Cancelar</button>
+      <button class="confirm" (click)="buscar()" [disabled]="loading">
+        {{ loading ? "Buscando..." : "Buscar" }}
+      </button>
+    </div>
+
+  </div>
+</div>

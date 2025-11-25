@@ -4,6 +4,25 @@
 <!-- 🔥 TOAST GLOBAL DO ADMIN -->
 <app-toast [message]="alertMessage" [show]="showAlert"></app-toast>
 
+<!-- 🔥 POPUP DE CONFIRMAÇÃO DE REJEIÇÃO -->
+<div class="popup-backdrop" *ngIf="popupRejectVisible">
+  <div class="popup-box">
+    <h3>Confirmar Rejeição?</h3>
+
+    <p>
+      Você está prestes a <b>recusar e deletar</b> o usuário:
+      <span class="user-tag">{{ popupRejectUser }}</span>
+    </p>
+
+    <p class="warning">Esta ação é permanente e não pode ser desfeita.</p>
+
+    <div class="popup-actions">
+      <button class="btn-cancel" (click)="closeRejectPopup()">Cancelar</button>
+      <button class="btn-confirm" (click)="confirmReject()">Sim, deletar</button>
+    </div>
+  </div>
+</div>
+
 <div class="main-layout" [class.sidebar-open]="sidebarOpen">
   <main class="content">
     <h2>Lista de Usuários Pendentes</h2>
@@ -93,7 +112,13 @@
               >
                 ✔
               </button>
-              <button class="btn-single-reject">✖</button>
+              <button 
+                class="btn-single-reject"
+                (click)="openRejectPopup(user.username)"
+              >
+                ✖
+              </button>
+
             </td>
           </tr>
         </tbody>

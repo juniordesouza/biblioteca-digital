@@ -75,7 +75,7 @@ export const routes: Routes = [
 
   /* ---------------------- LEITOR DE LIVRO ---------------------- */
   {
-    path: 'livro/ler/:id',
+    path: 'livros/ler/:id',
     loadComponent: () => import('./pages/book-reader-page/book-reader-page')
       .then(m => m.BookReaderPage),
     canActivate: [AuthGuard]

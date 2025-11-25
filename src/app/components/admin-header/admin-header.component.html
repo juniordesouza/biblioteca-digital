@@ -6,8 +6,8 @@
   </div>
 
   <div class="header-right">
-    <button class="btn">Bloquear Usuário</button>
-    <button class="btn">Histórico de Livros</button>
+    <button class="btn" (click)="abrirPopupTrocarCargo()">Trocar Cargo</button>
+    <button class="btn" (click)="abrirPopupHistorico()">Histórico de Livros</button>
 
     <span class="user">
       {{ username }}
@@ -15,3 +15,40 @@
     </span>
   </div>
 </header>
+
+<!-- toast simples local (pode ser substituído pelo ToastComponent global) -->
+<div class="header-toast" *ngIf="showAlert">
+  {{ alertMessage }}
+</div>
+
+<!-- mantém o popup genérico antigo (usado pelo histórico neste arquivo) -->
+<div class="popup-backdrop" *ngIf="popupVisible">
+  <div class="popup-box">
+    <h2>{{ popupTitle }}</h2>
+
+    <input
+      class="popup-input"
+      type="text"
+      [(ngModel)]="inputValue"
+      placeholder="Digite aqui..."
+    />
+
+    <div class="popup-actions">
+      <button class="cancel" (click)="fecharPopup()">Cancelar</button>
+      <button class="confirm" (click)="confirmarPopup()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- usa o componente criado para trocar cargo -->
+<app-cargo-dialog
+  *ngIf="showCargoDialog"
+  (close)="showCargoDialog = false"
+  (submitted)="onCargoSubmitted($event)"
+></app-cargo-dialog>
+
+<app-historico-dialog
+  *ngIf="showHistoricoDialog"
+  (close)="showHistoricoDialog = false"
+  (submitted)="onHistoricoSubmitted($event)"
+></app-historico-dialog>

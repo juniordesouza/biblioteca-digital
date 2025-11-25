@@ -1,0 +1,202 @@
+/* cargo-dialog.component.css
+   Modern, minimalista — paleta alinhada à referência (#282724 / #c38632)
+*/
+
+/* BACKDROP: leve blur e degrade para destacar o modal */
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.65));
+  backdrop-filter: blur(6px) saturate(1.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* BOX: card moderno, cantos maiores e sombra suave */
+.dialog-box {
+  width: 100%;
+  max-width: 520px;
+  background: linear-gradient(180deg, #2b2927, #262322);
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 20px 22px;
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.55),
+    0 2px 6px rgba(0,0,0,0.35);
+  color: #f3f2f1;
+  transform-origin: center;
+  transition: transform .16s ease, opacity .16s ease;
+}
+
+/* Título: discreto, uppercase opcional */
+.dialog-box h2 {
+  margin: 0 0 14px 0;
+  font-size: 18px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Form layout: grid para distribuir campos (se o HTML tiver 3 campos, fica ótimo) */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+/* Grouping for label + control */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Label: leve e discreto */
+label {
+  font-size: 13px;
+  color: #d8d6d4;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Inputs e selects: aparência moderna com borda invisível, sombra suave e foco com a cor de destaque */
+input,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.04);
+  background: linear-gradient(180deg, #23211f, #1f1d1b);
+  color: #f5f4f3;
+  font-size: 14px;
+  outline: none;
+  transition: box-shadow .18s ease, border-color .18s ease, background .18s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.45) inset;
+}
+
+/* Placeholder mais suave */
+input::placeholder {
+  color: #9d9b98;
+  font-weight: 500;
+}
+
+/* Select arrow minimal */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #bba36f 50%),
+                    linear-gradient(135deg, #bba36f 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 36px;
+}
+
+/* Foco: anel suave com cor de destaque (#c38632) */
+input:focus,
+select:focus {
+  border-color: #c38632;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.55), 0 0 0 6px rgba(195,134,50,0.12);
+  background: linear-gradient(180deg, #2b2a28, #242322);
+}
+
+/* Placeholder for disabled/blocked state */
+input.blocked,
+select.blocked {
+  background: #1e1d1c;
+  color: #9e9b98;
+  border-color: rgba(255,255,255,0.02);
+}
+
+/* Small helper / hint text (se usar) */
+.helper {
+  font-size: 12px;
+  color: #bfbcb9;
+  margin-top: 6px;
+}
+
+/* Actions: botão centralizado no mobile, à direita em desktop */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+  align-items: center;
+}
+
+/* Botões modernos: primary em dourado do site, secondary escuro translúcido */
+.cancel,
+.confirm {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: 110px;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+
+/* Cancel: ghost style */
+.cancel {
+  background: rgba(255,255,255,0.03);
+  color: #d9d7d5;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.cancel:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.45); }
+
+/* Confirm: destaque com cor principal do site */
+.confirm {
+  background: linear-gradient(180deg, #c38632, #a86f22);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(163,108,36,0.16);
+}
+.confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(163,108,36,0.22);
+}
+
+/* Disabled state */
+.confirm[disabled],
+.cancel[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive: reduz o modal em telas pequenas */
+@media (max-width: 520px) {
+  .dialog-box { padding: 16px; border-radius: 12px; max-width: 420px; }
+  .actions { justify-content: center; gap: 8px; }
+  .confirm, .cancel { min-width: 40%; }
+}
+
+/* Small accessibility improvements */
+input:invalid {
+  box-shadow: 0 0 0 4px rgba(255, 60, 60, 0.06);
+}
+
+/* Optional: subtle divider if needed */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.03));
+  margin: 14px 0;
+}
+
+/* Firefox ONLY */
+select {
+  appearance: none;
+  -moz-appearance: none;
+}
+
+select option {
+  background: #2b2927 !important;
+  color: white !important;
+  padding: 10px;
+}

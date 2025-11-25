@@ -1,0 +1,28 @@
+<div class="dialog-backdrop">
+  <div class="dialog-box">
+
+    <h2>Alterar Cargo</h2>
+
+    <label>Username</label>
+    <input type="text" [(ngModel)]="username" />
+
+    <label>CPF</label>
+    <input type="text" [(ngModel)]="cpf" />
+
+    <label>Nova Função</label>
+    <select [(ngModel)]="role">
+      <option value="admin">Administrador</option>
+      <option value="funcionario">Funcionário</option>
+      <option value="usuario">Usuário</option>
+    </select>
+
+    <div class="actions">
+      <button class="cancel" (click)="close.emit()">Cancelar</button>
+
+      <button class="confirm" (click)="submit()" [disabled]="loading">
+        {{ loading ? "Enviando..." : "Confirmar" }}
+      </button>
+    </div>
+
+  </div>
+</div>
