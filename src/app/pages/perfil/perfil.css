@@ -275,3 +275,35 @@
   opacity: 0.7 !important;
   transform: none !important;
 }
+
+.livro-card {
+  position: relative;
+  cursor: pointer !important;
+}
+
+/* Tooltip com nome do livro */
+.livro-title-hover {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  text-align: center;
+  padding: 6px 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+  transform-origin: bottom;
+  transform: translateX(-50%) translateY(8px);
+}
+
+/* Só aparece quando passa o mouse */
+.livro-card:hover .livro-title-hover {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0px);
+}

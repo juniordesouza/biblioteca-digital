@@ -9,24 +9,23 @@
 
     @for (livro of seusLivrosMock(); track livro.id) {
 
-      <div class="livro-card">
+      <div class="livro-card" (click)="openBookDetails(livro.id)">
 
         <img [src]="livro.thumbnail" class="livro-img" />
 
         @if (livro.status === 'RESERVADO') {
           <span class="badge badge-reservado">RESERVADO</span>
-          <span class="fila">POSIÇÃO NA FILA: #{{ livro.posicaoFila }}</span>
         }
 
         @if (livro.status === 'EM_ABERTO') {
-          <button class="btn-ler" (click)="openBookDetails(livro.id)">LER LIVRO</button>
+          <button class="btn-ler" (click)="openBookDetails(livro.livroId)">LER LIVRO</button>
         }
       </div>
     }
 
     <!-- CARD DE ADICIONAR / BLOQUEADO -->
     @if (slotsLivres > 0) {
-      <div class="livro-card add-card" [attr.data-slots]="slotsLivres">
+      <div class="livro-card add-card" [attr.data-slots]="slotsLivres" (click)="goToCatalog()">
         <span class="add-plus">+</span>
       </div>
     } @else {

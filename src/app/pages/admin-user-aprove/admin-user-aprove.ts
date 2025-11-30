@@ -26,7 +26,7 @@ export class AdminUserAprove implements OnInit {
   showAlert = false;
   alertMessage = '';
 
-  // 🔥 Popup de confirmação
+  // 🔥 Popup de confirmação para rejeição individual
   popupRejectVisible = false;
   popupRejectUser: string | null = null;
 
@@ -123,23 +123,20 @@ export class AdminUserAprove implements OnInit {
   }
 
   // ============================================================
-  // ❌ POPUP — abrir para um usuário
+  // ❌ POPUP — abrir para um usuário (individual)
   // ============================================================
   openRejectPopup(username: string) {
     this.popupRejectUser = username;
     this.popupRejectVisible = true;
   }
 
-  // ============================================================
-  // ❌ POPUP — fechar
-  // ============================================================
   closeRejectPopup() {
     this.popupRejectVisible = false;
     this.popupRejectUser = null;
   }
 
   // ============================================================
-  // ❌ Confirmar exclusão do usuário
+  // ❌ Confirmar exclusão individual
   // ============================================================
   confirmReject() {
     if (!this.popupRejectUser) return;
@@ -157,11 +154,75 @@ export class AdminUserAprove implements OnInit {
       },
       error: err => {
         this.showToast("Erro ao deletar usuário.");
-        console.error(err);
       },
       complete: () => {
         this.closeRejectPopup();
       }
     });
   }
+
+  // ============================================================
+  // ✔ APROVAR SELECIONADOS (em massa)
+  // ============================================================
+  aprovarSelecionados(): void {
+    const selecionados = this.usuarios
+      .filter(u => u.selected)
+      .map(u => u.username);
+
+    if (selecionados.length === 0) {
+      this.showToast("Nenhum usuário selecionado.");
+      return;
+    }
+
+    const token = sessionStorage.getItem('token');
+
+    this.http.post(
+      'http://localhost:8080/funcionarios/aprovar-multiplos',
+      { usernames: selecionados },
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    .subscribe({
+      next: (res: any) => {
+        this.showToast(res.message || "Usuários aprovados.");
+        this.loadUsers();
+      },
+      error: err => {
+        this.showToast("Erro ao aprovar usuários.");
+        console.error(err);
+      }
+    });
+  }
+
+  // ============================================================
+  // ❌ RECUSAR SELECIONADOS (em massa)
+  // ============================================================
+  recusarSelecionados(): void {
+    const selecionados = this.usuarios
+      .filter(u => u.selected)
+      .map(u => u.username);
+
+    if (selecionados.length === 0) {
+      this.showToast("Nenhum usuário selecionado.");
+      return;
+    }
+
+    const token = sessionStorage.getItem('token');
+
+    this.http.post(
+      'http://localhost:8080/funcionarios/recusar-multiplos',
+      { usernames: selecionados },
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    .subscribe({
+      next: (res: any) => {
+        this.showToast(res.message || "Usuários recusados.");
+        this.loadUsers();
+      },
+      error: err => {
+        this.showToast("Erro ao recusar usuários.");
+        console.error(err);
+      }
+    });
+  }
+
 }

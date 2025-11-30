@@ -55,13 +55,16 @@ export class Perfil {
     try { reservas = reservasRaw ? JSON.parse(reservasRaw) : []; }
     catch { reservas = []; }
 
-    const reservasConvertidas = reservas.map((item: any) => ({
+    const reservasConvertidas = reservas
+    .filter((r: any) => r.status === 'ATIVA')   // 👈 só reservas ativas!
+    .map((item: any) => ({
       id: item.livroId,
       title: `Livro ${item.livroId}`,
-      thumbnail: 'https://via.placeholder.com/150x220?text=Livro',
-      status: item.status === 'ATIVA' ? 'RESERVADO' : item.status,
+      thumbnail: this.normalizeThumb(item.uriImgLivro),
+      status: 'RESERVADO',
       posicaoFila: 0
     }));
+
 
     this.reservasMock.set(reservasConvertidas);
 
@@ -102,5 +105,9 @@ export class Perfil {
 
   openBookDetails(id: number | string) {
     if (id) this.router.navigate(['/livros', id]);
+  }
+
+  goToCatalog() {
+    this.router.navigate(['/catalogo']);
   }
 }

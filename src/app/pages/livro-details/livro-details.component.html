@@ -1,10 +1,10 @@
+<!-- src/app/pages/livro-details/livro-details.component.html -->
 <app-menu></app-menu>
 
 <app-toast 
   [message]="toastMessage" 
   [show]="toastShow">
 </app-toast>
-
 
 <main class="page-wrapper" *ngIf="!loading(); else loadingTpl">
   <section class="book-section">
@@ -19,14 +19,12 @@
 
       <h1 class="book-title">{{ book().title }}</h1>
 
-      <!-- Dados principais -->
       <p><strong>Autor Principal:</strong> {{ book().author }}</p>
       <p><strong>Editora:</strong> {{ book().publisher }}</p>
       <p><strong>Obra:</strong> {{ book().obra }}</p>
       <p><strong>Tema Principal:</strong> {{ book().theme }}</p>
       <p><strong>Ano de lançamento:</strong> {{ book().anoLancamento }}</p>
 
-      <!-- Status -->
       <p><strong>Status:</strong>
         <span 
           class="status-chip" 
@@ -36,63 +34,79 @@
         </span>
       </p>
 
-
-      <!-- Lista completa de autores -->
       <div class="list-box" *ngIf="book().autores?.length">
         <strong style="width:100%">Autores:</strong>
         <span class="chip" *ngFor="let a of book().autores">{{ a }}</span>
       </div>
 
-      <!-- Lista completa de temas -->
       <div class="list-box" *ngIf="book().temas?.length">
         <strong style="width:100%">Temas:</strong>
         <span class="chip-alt" *ngFor="let t of book().temas">{{ t }}</span>
       </div>
 
-      <!-- Tags -->
       <div class="list-box" *ngIf="book().tags?.length">
         <strong style="width:100%">Tags:</strong>
         <span class="chip" *ngFor="let t of book().tags">#{{ t }}</span>
       </div>
 
-      <!-- Descrição -->
       <p><strong>Descrição:</strong></p>
       <p class="description">
         {{ truncatedDescription() }}
-        @if (book().description?.length > 450) {
+        <ng-container *ngIf="book().description?.length > 450">
           <a (click)="toggleDescription()" class="read-more">
             {{ showFullDescription() ? 'Ler menos' : 'Ler mais' }}
           </a>
-        }
+        </ng-container>
       </p>
 
-      <!-- Quantidade -->
       <p class="stock" *ngIf="!livroObtido()">
         Quantidade disponível: {{ book().stock }}
       </p>
 
-
-      <!-- Botão -->
       <div>
-        <!-- Se ainda não pegou o livro -->
+
+        <!-- 📗 BOTÃO DE PEGAR LIVRO (só aparece se houver unidades disponíveis) -->
         <button 
-          *ngIf="!livroObtido()" 
+          *ngIf="!livroObtido() && book().stock > 0" 
           class="btn-obter" 
           (click)="obterLivro()">
           OBTER LIVRO
         </button>
 
-        <!-- Após sucesso no empréstimo -->
+        <!-- 📘 BOTÃO DE RESERVAR (se não houver unidades + status != DISPONIVEL) -->
+        <button
+          *ngIf="!livroObtido() && book().stock === 0"
+          class="btn-reservar"
+          (click)="reservarLivro()">
+          RESERVAR LIVRO
+        </button>
+
+        <!-- MENSAGEM DE INFO -->
+        <p 
+          *ngIf="!livroObtido() && book().stock === 0"
+          style="margin-top:8px;color:#ffb100;font-size:14px;">
+          Todos os exemplares estão emprestados.  
+          Você pode realizar uma reserva.
+        </p>
+
+        <!-- 📚 BOTÃO LER AGORA -->
         <a 
           *ngIf="livroObtido()" 
-          class="btn-obter" 
-          style="color:#000;text-align:center;display:inline-block;text-decoration: none;"
-          href="https://meusistema.com/mock-leitor" 
-          target="_blank">
+          class="btn-obter"
+          style="color:#000;text-align:center;display:inline-block;text-decoration:none;margin-right:10px"
+          [routerLink]="['/livros/ler', book().id]">
           LER AGORA
         </a>
-      </div>
 
+        <!-- 🔥 BOTÃO DEVOLVER LIVRO -->
+        <button
+          *ngIf="livroObtido()"
+          class="btn-devolver"
+          (click)="devolverLivro()">
+          DEVOLVER LIVRO
+        </button>
+
+      </div>
 
     </div>
 
@@ -100,5 +114,7 @@
 </main>
 
 <ng-template #loadingTpl>
-  <p style="color:white;text-align:center;margin-top:50px">Carregando detalhes do livro...</p>
+  <p style="color:white;text-align:center;margin-top:50px">
+    Carregando detalhes do livro...
+  </p>
 </ng-template>

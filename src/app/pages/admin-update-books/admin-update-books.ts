@@ -90,7 +90,10 @@ export class AdminUpdateBooks implements OnInit {
 
       anoLancamento: this.livro.anoLancamento || "",
       sinopse: this.livro.sinopse || "",
-      quantidadeDisponivel: Number(this.livro.quantidadeDisponivel ?? 0),
+      quantidadeDisponivel: this.livro.quantidadeDisponivel === "" 
+      ? null 
+      : Number(this.livro.quantidadeDisponivel),
+
 
       // campo especial
       codObra: this.livro.codObra ?? null,

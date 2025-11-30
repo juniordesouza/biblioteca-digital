@@ -43,6 +43,37 @@ export class AdminHeaderComponent {
     this.username = this.username ? this.username.toUpperCase() : null;
   }
 
+  // 🔥 Flags de permissão
+  isAdmin = false;
+  isFuncionario = false;
+
+  ngOnInit() {
+    const token = sessionStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      // Decodificação simples do JWT
+      const payload = JSON.parse(atob(token.split('.')[1]));
+
+      // O JWT do backend tem "role" (ex: "ADMIN" ou "FUNCIONARIO")
+      const role =
+        payload.role ||
+        payload.authorities ||
+        payload.perfil ||
+        payload.roles ||
+        "";
+
+      this.isAdmin = role === "ADMIN";
+      this.isFuncionario = role === "FUNCIONARIO";
+
+      // (Opcional) console para debug
+      // console.log("Cargo detectado:", role);
+
+    } catch (e) {
+      console.error("Erro ao decodificar token:", e);
+    }
+  }
+
   // sidebar
   onToggleSidebar() {
     this.toggleSidebar.emit();

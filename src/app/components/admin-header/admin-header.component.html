@@ -2,11 +2,10 @@
   <div class="header-left">
     <button class="menu-btn" (click)="onToggleSidebar()">☰</button>
     <span class="logo">Midas Vault - Painel</span>
-    <input type="text" placeholder="Pesquisar..." />
   </div>
 
   <div class="header-right">
-    <button class="btn" (click)="abrirPopupTrocarCargo()">Trocar Cargo</button>
+    <button *ngIf="isAdmin" class="btn" (click)="abrirPopupTrocarCargo()">Trocar Cargo</button>
     <button class="btn" (click)="abrirPopupHistorico()">Histórico de Livros</button>
 
     <span class="user">

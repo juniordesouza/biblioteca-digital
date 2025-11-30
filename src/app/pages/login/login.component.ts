@@ -125,7 +125,7 @@ export class LoginComponent implements OnInit {
 
           // REDIRECIONAMENTO POR PERFIL
           if (role === "ADMIN") {
-            this.zone.run(() => this.router.navigate(['/admin/dashboard']));
+            this.zone.run(() => this.router.navigate(['/admin/usuarios']));
             return;
           }
 

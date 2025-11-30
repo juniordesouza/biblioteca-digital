@@ -12,13 +12,10 @@
 
   <!-- 📖 LEITOR -->
   <div *ngIf="acessoPermitido" class="pdf-frame">
-    <h1 class="title">{{ bookTitle }}</h1>
-
     <iframe 
       *ngIf="pdfUrl"
       class="pdf-viewer"
       [src]="pdfUrl">
     </iframe>
   </div>
-
 </div>

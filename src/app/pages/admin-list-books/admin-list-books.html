@@ -1,10 +1,18 @@
 <app-admin-header (toggleSidebar)="toggleSidebar()"></app-admin-header>
 <app-sidebar [isOpen]="sidebarOpen"></app-sidebar>
 
+<app-toast [message]="alertMessage" [show]="showAlert"></app-toast>
+
 <div class="main-layout" [class.sidebar-open]="sidebarOpen">
   <main class="content">
 
     <h2>Lista de Livros</h2>
+
+    <div class="bulk-actions">
+      <button class="btn-disable" (click)="desativarSelecionados()">
+        Desativar Selecionados
+      </button>
+    </div>
 
     <div class="table-container">
       <table>
