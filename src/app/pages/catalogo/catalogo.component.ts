@@ -16,69 +16,96 @@ export class CatalogoComponent {
   private http = inject(HttpClient);
   private router = inject(Router);
 
+  // Ajuste aqui para os temas que você quer exibir (devem existir no banco)
   categories = signal<string[]>([
-    'Fiction',
-    'Science',
-    'Technology',
-    'History',
-    'Fantasy',
-    'Mystery',
+    'Tecnologia',
+    'Ficção',
+    'Fantasia',
+    'História',
+    'Aventura',
+    'Mistério'
   ]);
 
-  booksByCategory = signal<Record<string, any[]>>({});
+  // guarda os livros por categoria (todos os livros retornados pelo endpoint)
+  booksByCategory = signal<Record<string, Array<{ id: number; title: string; author: string; thumbnail: string }>>>({});
 
   ngOnInit() {
-    this.loadBooks();
+    this.loadBooksByThemes();
   }
 
-  /** Corrige URLs de imagens quebradas (HTTP → HTTPS + fallback) */
-  private normalizeThumbnail(url?: string): string {
-    if (!url) return 'https://via.placeholder.com/150x220?text=Sem+Capa';
-    return url.startsWith('http://')
-      ? url.replace('http://', 'https://')
-      : url;
+  /**
+   * Normaliza a URI de capa retornada pelo backend.
+   * - Se for /uploads/... -> prefixa base do servidor
+   * - Se for caminho Windows (C:\...) -> converte backslashes (pode não ser acessível do browser)
+   * - Se for já um URL absoluto (http(s)://) -> retorna direto
+   */
+  private normalizeThumbnail(uri?: string): string {
+    if (!uri) {
+      return 'https://via.placeholder.com/150x220?text=Sem+Capa';
+    }
+
+    // converte backslashes para slash
+    const cleaned = uri.replace(/\\/g, '/').trim();
+
+    // já é uma URL absoluta
+    if (/^https?:\/\//i.test(cleaned)) {
+      return cleaned;
+    }
+
+    // caminho relativo público que começa com /uploads ou uploads
+    if (cleaned.startsWith('/uploads') || cleaned.startsWith('uploads')) {
+      // ajuste base se necessário (troque host/porta se o backend estiver em outro lugar)
+      return `http://localhost:8080${cleaned.startsWith('/') ? cleaned : '/' + cleaned}`;
+    }
+
+    // caminho Windows convertido -> provavelmente não acessível via HTTP,
+    // mas tentamos retornar como-is (com barras) caso você sirva arquivos por rota especial
+    if (/^[a-zA-Z]:\//.test(cleaned)) {
+      // opcional: se você tiver um endpoint que converte paths locais, adapte aqui
+      return cleaned;
+    }
+
+    // fallback: placeholder
+    return 'https://via.placeholder.com/150x220?text=Sem+Capa';
   }
 
-  /** Busca livros reais da API do Google Books */
-  loadBooks() {
-    this.categories().forEach((category) => {
-      const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=subject:${category}&maxResults=10`;
+  /**
+   * Carrega, para cada tema listado em `categories`, todos os livros vindos do endpoint:
+   * GET http://localhost:8080/livros/tema/{tema}
+   */
+  loadBooksByThemes() {
+    const token = sessionStorage.getItem('token');
 
-      this.http.get(apiUrl).subscribe({
-        next: (data: any) => {
-          const books = (data.items ?? []).map((item: any) => {
-            const info = item.volumeInfo ?? {};
-            const images = info.imageLinks ?? {};
+    this.categories().forEach((tema) => {
+      const url = `http://localhost:8080/livros/tema/${encodeURIComponent(tema)}`;
 
-            const thumbnail =
-              this.normalizeThumbnail(images.thumbnail) ||
-              this.normalizeThumbnail(images.smallThumbnail);
+      this.http.get<any>(url, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      }).subscribe({
+        next: (res) => {
+          const arr: any[] = Array.isArray(res?.data) ? res.data : [];
 
-            return {
-              id: item.id,
-              title: info.title ?? 'Título não informado',
-              author: info.authors?.join(', ') ?? 'Autor desconhecido',
-              thumbnail,
-            };
-          });
-
-          this.booksByCategory.update((prev) => ({
-            ...prev,
-            [category]: books,
+          const books = arr.map(livro => ({
+            id: livro.id,
+            title: livro.titulo ?? 'Título não informado',
+            author: livro.autor ?? (livro.autores ? livro.autores.join(', ') : 'Autor desconhecido'),
+            thumbnail: this.normalizeThumbnail(livro.uriImgLivro)
           }));
+
+          this.booksByCategory.update(prev => ({ ...prev, [tema]: books }));
         },
-        error: (err) =>
-          console.error(`Erro ao buscar livros de ${category}:`, err),
+        error: (err) => {
+          console.error(`Erro ao carregar tema ${tema}:`, err);
+          // mantém a chave presente mesmo se der erro, evitando undefined no template
+          this.booksByCategory.update(prev => ({ ...prev, [tema]: [] }));
+        }
       });
     });
   }
 
-  /** Navega para página de detalhes do livro */
-  openBookDetails(bookId: string) {
-    if (!bookId) {
-      console.warn('ID do livro inválido:', bookId);
-      return;
-    }
+  openBookDetails(bookId: number | string) {
+    if (!bookId) return;
     this.router.navigate(['/livros', bookId]);
   }
 }
+  

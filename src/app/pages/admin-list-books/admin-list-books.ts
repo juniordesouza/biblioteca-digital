@@ -28,54 +28,44 @@ export class AdminListBooks implements OnInit {
     this.sidebarOpen = !this.sidebarOpen;
   }
 
-  /** 🔹 Carrega livros do backend Spring */
+  /** 🔹 Carrega livros (EXCETO capa) */
   loadBooks(): void {
     const token = sessionStorage.getItem('token');
 
     this.http.get<any>(
-      'http://localhost:8080/livros?page=0&size=100',
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      }
+      'http://localhost:8080/livros?page=0&size=1000',
+      { headers: { Authorization: `Bearer ${token}` } }
     )
     .subscribe({
-      next: response => {
-
-        // conteúdo real fica dentro de: response.data.content
-        this.livros = response.data.content.map((book: any) => ({
-          titulo: book.titulo,
-          autor: book.autor ?? '—',
-          editora: book.editora,
-          tema: book.tema ?? '—',
-          anoLancamento: book.anoLancamento,
-          sinopse: book.sinopse,
-          status: this.extractStatus(book.status),
-          ativo: book.flagAtivo,
+      next: res => {
+        this.livros = res.data.content.map((b: any) => ({
+          id: b.id,
+          titulo: b.titulo,
+          autor: b.autor ?? '—',
+          editora: b.editora ?? '—',
+          tema: b.tema ?? '—',
+          obra: b.obra ?? '—',
+          tags: Array.isArray(b.tags) ? b.tags.join(', ') : '—',
+          anoLancamento: b.anoLancamento ?? '—',
+          quantidadeDisponivel: b.quantidadeDisponivel ?? 0,
+          status: b.status ?? '—',
+          ativo: b.flagAtivo,
           selected: false
         }));
 
         this.allSelected = false;
       },
-      error: err => console.error("Erro ao buscar livros:", err)
+      error: err => console.error("Erro ao carregar livros:", err)
     });
   }
 
-  /** 🔹 Extrai nome do status do formato esquisito "StatusLivro{id=1, nome='DISPONIVEL'}" */
-  extractStatus(statusString: string): string {
-    if (!statusString) return 'Desconhecido';
-
-    const match = statusString.match(/nome='([^']+)'/);
-    return match ? match[1] : statusString;
-  }
-
-  /** 🔹 Selecionar / desmarcar todos */
+  /** Selecionar / desmarcar todos */
   toggleSelectAll(event: Event): void {
     const checked = (event.target as HTMLInputElement).checked;
     this.allSelected = checked;
     this.livros.forEach(l => l.selected = checked);
   }
 
-  /** 🔹 Atualiza checkbox principal */
   updateSelectAllState(): void {
     this.allSelected = this.livros.length > 0 && this.livros.every(l => l.selected);
   }

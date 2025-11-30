@@ -7,6 +7,7 @@ import { HomeHeaderComponent } from '../../components/home-header/home-header.co
 import { ToastComponent } from '../../components/toast.component/toast.component';
 import { PerfilService } from '../../services/perfil.service';
 import { EmprestimoService } from '../../services/emprestimo.service';
+import { ReservaService } from '../../services/reserva.service';
 
 @Component({
   selector: 'app-login',
@@ -31,6 +32,8 @@ export class LoginComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private perfilService = inject(PerfilService);
   private emprestimoService = inject(EmprestimoService);
+  private reservaService = inject(ReservaService);
+
 
   showAlert = false;
   alertMessage = '';
@@ -117,6 +120,7 @@ export class LoginComponent implements OnInit {
 
           this.perfilService.carregarPerfil(credentials.username).subscribe();
           this.emprestimoService.carregarHistorico(credentials.username).subscribe();
+          this.reservaService.carregarHistorico(credentials.username).subscribe();
 
 
           // REDIRECIONAMENTO POR PERFIL

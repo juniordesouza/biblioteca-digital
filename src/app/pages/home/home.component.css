@@ -13,7 +13,8 @@
 
 .home-container {
   color: #fff;
-  font-family: 'Alumni Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
 }
 
 /* === HERO === */
@@ -54,6 +55,15 @@
   font-weight: bold;
   color: #fff;
 }
+
+.hero-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(212, 161, 90, 0.6));
+  padding: 20px;
+}
+
 
 .hero-right {
   flex: 1;

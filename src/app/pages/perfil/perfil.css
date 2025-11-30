@@ -1,0 +1,277 @@
+.perfil-wrapper {
+  background: #1e1e1e;
+  padding: 30px;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 25px 0 15px;
+  color: #d4a15a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* SEÇÃO SEUS LIVROS */
+.seus-livros-container {
+  display: flex;
+  gap: 20px;
+  padding: 15px 0 30px;
+  align-items: flex-start;
+}
+
+.livro-card {
+  width: 180px;
+  height: 260px;
+  background: #111;
+  border-radius: 10px;
+  position: relative;
+  padding: 10px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.livro-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.btn-ler {
+  position: absolute;
+  bottom: 10px;
+  background: #d4a15a;
+  padding: 6px 15px;
+  border-radius: 6px;
+  border: none;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.badge-reservado {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: #d4a15a;
+  color: #000;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.fila {
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+  width: 100%;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* CARD DE ADIÇÃO */
+.add-card {
+  background: #000;
+}
+
+.add-plus {
+  font-size: 4rem;
+  opacity: 0.3;
+  user-select: none;
+}
+
+/* CARROSSEL */
+.empty {
+  text-align: center;
+  opacity: 0.6;
+  margin-top: 20px;
+}
+
+/* ============================
+   SEUS LIVROS – HOVER EFFECTS
+   ============================ */
+
+.livro-card {
+  width: 180px;
+  height: 260px;
+  background: #111;
+  border-radius: 10px;
+  position: relative;
+  padding: 10px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* animações modernas */
+  transition: 
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+.livro-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 10px 20px rgba(212,161,90,0.25);
+  filter: brightness(1.1);
+}
+
+/* capa */
+.livro-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  transition: transform 0.3s ease;
+}
+
+.livro-card:hover .livro-img {
+  transform: scale(1.05);
+}
+
+/* ========== BADGES ========== */
+
+.badge-reservado {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: #d4a15a;
+  color: #000;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  transition: transform 0.2s ease;
+}
+
+.livro-card:hover .badge-reservado {
+  transform: scale(1.05);
+}
+
+/* botão de leitura */
+.btn-ler {
+  position: absolute;
+  bottom: 10px;
+  background: #d4a15a;
+  padding: 6px 15px;
+  border-radius: 6px;
+  border: none;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-ler:hover {
+  background: #f0c27a;
+  transform: translateY(-2px);
+}
+
+/* fila */
+.fila {
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+  width: 100%;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: opacity 0.2s ease;
+}
+
+.livro-card:hover .fila {
+  opacity: 0.9;
+}
+
+/* ============================
+   CARD “+” COM TEXTO AO HOVER
+   ============================ */
+
+.add-card {
+  background: #000;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.add-card:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+}
+
+/* símbolo + */
+.add-plus {
+  font-size: 2rem;
+  text-align: center;
+  opacity: 0.25;
+  user-select: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.add-card:hover .add-plus {
+  opacity: 0.05;
+  transform: scale(0.9);
+}
+
+/* texto aparecendo no hover */
+/* texto dinâmico vindo do atributo data-slots */
+.add-card::after {
+  content: attr(data-slots) " slot" attr(data-slots s) " livre" attr(data-slots s);
+  position: absolute;
+  bottom: -30px;
+  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #d4a15a;
+  opacity: 0;
+  transition: 
+    opacity 0.3s ease,
+    bottom 0.3s ease;
+}
+
+/* aparição suave */
+.add-card:hover::after {
+  bottom: 20px;
+  opacity: 1;
+}
+
+/* plural automático */
+.add-card[data-slots="1"]::after {
+  content: "+ 1 slot livre";
+}
+
+.add-card[data-slots]:not([data-slots="1"])::after {
+  content: "+ " attr(data-slots) " slots livres";
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.bloqueado {
+  background: #2b2b2b !important;
+  cursor: not-allowed !important;
+  opacity: 0.5;
+}
+
+.bloqueado:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.bloqueado .add-plus {
+  opacity: 0.7 !important;
+  transform: none !important;
+}

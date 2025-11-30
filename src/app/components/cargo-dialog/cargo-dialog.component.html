@@ -1,28 +1,48 @@
 <div class="dialog-backdrop">
-  <div class="dialog-box">
+  <div class="dialog-box" [ngClass]="{ 'success-mode': success }">
 
-    <h2>Alterar Cargo</h2>
+    <!-- TOAST -->
+    <app-toast [message]="alertMessage" [show]="showAlert"></app-toast>
 
-    <label>Username</label>
-    <input type="text" [(ngModel)]="username" />
+    <!-- MODO SUCESSO -->
+    <ng-container *ngIf="success; else formMode">
+      <div class="success-container">
+        <div class="success-check">✔</div>
+        <h2>Cargo atualizado!</h2>
 
-    <label>CPF</label>
-    <input type="text" [(ngModel)]="cpf" />
+        <p class="success-line"><strong>Usuário:</strong> {{ responseData?.username }}</p>
+        <p class="success-line"><strong>CPF:</strong> {{ responseData?.cpf }}</p>
+        <p class="success-line"><strong>Novo Cargo:</strong> {{ responseData?.novoCargo }}</p>
 
-    <label>Nova Função</label>
-    <select [(ngModel)]="role">
-      <option value="admin">Administrador</option>
-      <option value="funcionario">Funcionário</option>
-      <option value="usuario">Usuário</option>
-    </select>
+        <p class="success-msg">{{ responseData?.mensagem }}</p>
+      </div>
+    </ng-container>
 
-    <div class="actions">
-      <button class="cancel" (click)="close.emit()">Cancelar</button>
+    <!-- MODO FORMULÁRIO -->
+    <ng-template #formMode>
+      <h2>Alterar Cargo</h2>
 
-      <button class="confirm" (click)="submit()" [disabled]="loading">
-        {{ loading ? "Enviando..." : "Confirmar" }}
-      </button>
-    </div>
+      <label>Username</label>
+      <input type="text" [(ngModel)]="username" [ngClass]="{'invalid': invalid.username}" />
+
+      <label>CPF</label>
+      <input type="text" [(ngModel)]="cpf" [ngClass]="{'invalid': invalid.cpf}" />
+
+      <label>Nova Função</label>
+      <select [(ngModel)]="role" [ngClass]="{'invalid': invalid.role}">
+        <option value="ADMIN">Administrador</option>
+        <option value="FUNCIONARIO">Funcionário</option>
+        <option value="USUARIO">Usuário</option>
+      </select>
+
+      <div class="actions">
+        <button class="cancel" (click)="close.emit()">Cancelar</button>
+
+        <button class="confirm" (click)="submit()" [disabled]="loading">
+          {{ loading ? "Enviando..." : "Confirmar" }}
+        </button>
+      </div>
+    </ng-template>
 
   </div>
 </div>

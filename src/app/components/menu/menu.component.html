@@ -1,18 +1,21 @@
 <nav class="menu-container">
   <div class="selection-container">
     <div class="logo">
-      LOGO HERE
+      Midas Vault
     </div>
 
     <div class="links">
       <ul>
-        <li><a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
-        <li><a routerLink="/catalogo" routerLinkActive="active-link">Catálogo</a></li>
-        <li><a routerLink="/sobre" routerLinkActive="active-link">Sobre</a></li>
-        <li><a routerLink="/favoritos" routerLinkActive="active-link">Favoritos</a></li>
-        <li><a routerLink="/login" routerLinkActive="active-link">Login</a></li>
-        <li><a routerLink="/cadastro" routerLinkActive="active-link">Cadastro</a></li>
-        <li><a routerLink="/reset-password" routerLinkActive="active-link">Redefinir Senha</a></li>
+        <li>
+          <a routerLink="/catalogo" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+            Home
+          </a>
+        </li>
+        <li>
+          <a routerLink="/meu-perfil" routerLinkActive="active-link">
+            Minha Biblioteca
+          </a>
+        </li>
       </ul>
     </div>
   </div>
@@ -22,11 +25,23 @@
       <span class="material-symbols-outlined">search</span>
     </div>
 
-    <input type="text" placeholder="Pesquisar..." [class.visible]="isSearchVisible()" class="search-input">
+    <input type="text"
+           placeholder="Pesquisar..."
+           [class.visible]="isSearchVisible()"
+           class="search-input">
 
+    <!-- 🔥 USER AREA (nome + engrenagem + logout) -->
     <div class="user-info" *ngIf="username() || isPending() || isBanned()">
-      <span class="material-symbols-outlined">person</span>
-      <p>{{ username()?.toUpperCase()}}</p>
+
+      <!-- 🔥 nome clicável -->
+      <p (click)="goToConfig()">{{ username()?.toUpperCase() }}</p>
+
+      <!-- 🔥 engrenagem substituindo o ícone de pessoa -->
+      <span class="material-symbols-outlined"
+            style="cursor:pointer;"
+            (click)="goToConfig()">
+        settings
+      </span>
 
       <!-- 🔥 BOTÃO LOGOUT -->
       <button class="logout-btn" (click)="logout()">

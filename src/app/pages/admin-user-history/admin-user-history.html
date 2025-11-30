@@ -1,0 +1,85 @@
+<app-admin-header (toggleSidebar)="toggleSidebar()"></app-admin-header>
+<app-sidebar [isOpen]="sidebarOpen"></app-sidebar>
+
+<div class="main-layout" [class.sidebar-open]="sidebarOpen">
+  <main class="content">
+
+    <h2>Histórico de Empréstimos</h2>
+
+    <!-- 🔥 Busca -->
+    <div class="search-box">
+      <input 
+        type="text" 
+        [(ngModel)]="usernameSearch"
+        placeholder="Buscar por username..."
+      />
+      <button (click)="buscarHistorico()">Buscar</button>
+    </div>
+
+    <!-- 🔥 EMPTY STATE -->
+    <div class="empty-box" *ngIf="historico.length === 0">
+      <p>Nenhum histórico encontrado.</p>
+    </div>
+
+    <!-- 🔥 TABELA -->
+    <div class="table-container" *ngIf="historico.length > 0">
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Usuário</th>
+            <th>Livro</th>
+            <th>Título</th>
+            <th>Início</th>
+            <th>Prevista Devolução</th>
+            <th>Renovações</th>
+            <th>Status</th>
+            <th>Capa</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let h of historico">
+
+            <td>{{ h.id }}</td>
+            <td>{{ h.usuarioId }}</td>
+            <td>{{ h.livroId }}</td>
+
+            <td>{{ h.tituloLivro }}</td>
+
+            <td>{{ h.dtInicio }}</td>
+            <td>{{ h.dtPrevistaDevolucao }}</td>
+
+            <td>{{ h.numRenovacoes }}</td>
+
+            <td>
+              <span [ngStyle]="{
+                color:
+                  h.status === 'FINALIZADO' ? 'green' :
+                  h.status === 'ATRASADO' ? 'red' :
+                  'goldenrod'
+              }">
+                {{ h.status }}
+              </span>
+            </td>
+
+            <td>
+              <img *ngIf="h.uriImgLivro"
+                [src]="h.uriImgLivro"
+                class="thumb" />
+
+              <span *ngIf="!h.uriImgLivro">-</span>
+            </td>
+
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+
+    <!-- 🔥 TOAST -->
+    <app-toast [message]="alertMessage" [show]="showAlert"></app-toast>
+
+  </main>
+</div>

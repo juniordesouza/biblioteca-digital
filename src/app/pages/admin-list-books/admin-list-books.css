@@ -1,173 +1,76 @@
-:host {
-  display: block;
-  height: 100%;
-}
-
-/* Layout principal */
 .main-layout {
-  display: flex;
-  transition: all 0.3s ease;
-  background: #1f1f1f;
+  background: #1b1b1b;
   color: #fff;
   min-height: 100vh;
+  transition: margin-left 0.3s ease;
+  margin-top: -10px;  /* sidebar fechada */
+  padding: 20px;
+  overflow-x: hidden;
 }
 
-/* Quando a sidebar estiver aberta */
 .main-layout.sidebar-open {
   margin-left: 240px;
-  width: calc(100% - 240px);
 }
 
-/* Quando estiver fechada */
-.main-layout:not(.sidebar-open) {
-  margin-left: 0;
-  width: 100%;
-}
-
-/* Conteúdo principal */
 .content {
-  flex: 1;
-  padding: 2rem;
-  margin-top: 60px;
-  transition: all 0.3s ease;
-  overflow-x: auto;
+  max-width: 1300px;
+  margin: 0 auto;
 }
 
-/* Container da tabela para permitir adaptação fluida */
 .table-container {
-  width: 100%;
+  margin-top: 20px;
   overflow-x: auto;
-  transition: width 0.3s ease;
 }
 
-/* Título */
-h2 {
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-}
-
-/* Tabela */
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #222;
-  border-radius: 6px;
+  background: #222;
+  border-radius: 10px;
   overflow: hidden;
-  min-width: 900px; /* evita quebra excessiva em telas pequenas */
 }
 
-thead {
-  background: #3a3a3a;
+th, td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #333;
 }
 
-th,
-td {
-  padding: 0.6rem;
-  text-align: left;
-  border-bottom: 1px solid #444;
+th {
+  background: #2d2d2d;
+  font-weight: bold;
 }
 
-tbody tr:hover {
-  background: #333;
+tr:hover {
+  background: #2a2a2a;
 }
 
-/* Paginação */
-.pagination {
+.bulk-actions {
+  margin-bottom: 15px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
-  gap: 1rem;
+  gap: 10px;
 }
 
-.pagination button {
-  background: #3a3a3a;
+.btn-approve {
+  padding: 8px 16px;
+  background: #3a8f3a;
+  color: white;
   border: none;
-  color: #fff;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
-.pagination button:hover {
-  background: #555;
-}
-
-/* Responsividade */
-@media (max-width: 1200px) {
-  .content {
-    padding: 1.5rem;
-  }
+.btn-reject {
+  padding: 8px 16px;
+  background: #b33a3a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 @media (max-width: 900px) {
-  table {
-    min-width: 700px;
-  }
-}
-
-
-/* 🔹 Estilo dos botões de ação em grupo */
-.bulk-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-bottom: 1.2rem;
-}
-
-.bulk-actions button {
-  padding: 0.5rem 1.3rem;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  letter-spacing: 0.3px;
-}
-
-/* Botão de aprovar */
-.btn-approve {
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
-  color: #fff;
-  box-shadow: 0 0 8px rgba(46, 204, 113, 0.3);
-}
-
-.btn-approve:hover {
-  background: linear-gradient(135deg, #3ee18a, #2ecc71);
-  box-shadow: 0 0 10px rgba(46, 204, 113, 0.6);
-  transform: translateY(-1px);
-}
-
-/* Botão de recusar */
-.btn-reject {
-  background: linear-gradient(135deg, #e74c3c, #c0392b);
-  color: #fff;
-  box-shadow: 0 0 8px rgba(231, 76, 60, 0.3);
-}
-
-.btn-reject:hover {
-  background: linear-gradient(135deg, #ff6b5a, #e74c3c);
-  box-shadow: 0 0 10px rgba(231, 76, 60, 0.6);
-  transform: translateY(-1px);
-}
-
-/* Efeito de foco para acessibilidade */
-.bulk-actions button:focus {
-  outline: 2px solid #00b4d8;
-  outline-offset: 3px;
-}
-
-/* Responsividade dos botões */
-@media (max-width: 700px) {
-  .bulk-actions {
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .bulk-actions button {
-    padding: 0.45rem 1rem;
-    font-size: 0.9rem;
+  .main-layout,
+  .main-layout.sidebar-open {
+    margin-left: 0;
   }
 }

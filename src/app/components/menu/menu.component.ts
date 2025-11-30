@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -16,17 +16,21 @@ export class MenuComponent {
   public isPending = signal(false);
   public isBanned = signal(false);
 
-  constructor() {
+  constructor(private router: Router) {
     const storedUser = sessionStorage.getItem('username');
     this.username.set(storedUser);
 
-    // Estados especiais
     this.isPending.set(sessionStorage.getItem('pendingUser') !== null);
     this.isBanned.set(sessionStorage.getItem('bannedUser') !== null);
   }
 
   public toggleSearch(): void {
     this.isSearchVisible.set(!this.isSearchVisible());
+  }
+
+  // 🔥 REDIRECIONAR PARA CONFIGURAÇÕES / ALTERAR PERFIL
+  public goToConfig(): void {
+    this.router.navigate(['/atualizar-perfil']);
   }
 
   public logout(): void {

@@ -1,8 +1,4 @@
-/* cargo-dialog.component.css
-   Modern, minimalista — paleta alinhada à referência (#282724 / #c38632)
-*/
-
-/* BACKDROP: leve blur e degrade para destacar o modal */
+/* BACKDROP */
 .dialog-backdrop {
   position: fixed;
   inset: 0;
@@ -13,10 +9,9 @@
   align-items: center;
   z-index: 9999;
   padding: 20px;
-  -webkit-font-smoothing: antialiased;
 }
 
-/* BOX: card moderno, cantos maiores e sombra suave */
+/* BOX */
 .dialog-box {
   width: 100%;
   max-width: 520px;
@@ -28,43 +23,26 @@
     0 6px 18px rgba(0,0,0,0.55),
     0 2px 6px rgba(0,0,0,0.35);
   color: #f3f2f1;
-  transform-origin: center;
-  transition: transform .16s ease, opacity .16s ease;
+  transition: all .18s ease;
 }
 
-/* Título: discreto, uppercase opcional */
+/* TÍTULO */
 .dialog-box h2 {
   margin: 0 0 14px 0;
   font-size: 18px;
-  letter-spacing: 0.6px;
   text-transform: uppercase;
   font-weight: 700;
   color: #fff;
 }
 
-/* Form layout: grid para distribuir campos (se o HTML tiver 3 campos, fica ótimo) */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-
-/* Grouping for label + control */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-/* Label: leve e discreto */
+/* LABEL + INPUTS */
 label {
   font-size: 13px;
   color: #d8d6d4;
   font-weight: 600;
-  margin: 0;
+  margin-top: 10px;
 }
 
-/* Inputs e selects: aparência moderna com borda invisível, sombra suave e foco com a cor de destaque */
 input,
 select {
   width: 100%;
@@ -76,127 +54,158 @@ select {
   font-size: 14px;
   outline: none;
   transition: box-shadow .18s ease, border-color .18s ease, background .18s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.45) inset;
 }
 
-/* Placeholder mais suave */
-input::placeholder {
-  color: #9d9b98;
-  font-weight: 500;
-}
-
-/* Select arrow minimal */
+/* SELECT ARROW */
 select {
   appearance: none;
-  -webkit-appearance: none;
   background-image: linear-gradient(45deg, transparent 50%, #bba36f 50%),
                     linear-gradient(135deg, #bba36f 50%, transparent 50%);
-  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px);
-  background-size: 6px 6px, 6px 6px;
+  background-position: calc(100% - 18px) calc(1em + 2px),
+                       calc(100% - 13px) calc(1em + 2px);
+  background-size: 6px 6px;
   background-repeat: no-repeat;
   padding-right: 36px;
 }
 
-/* Foco: anel suave com cor de destaque (#c38632) */
+/* FOCUS */
 input:focus,
 select:focus {
   border-color: #c38632;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.55), 0 0 0 6px rgba(195,134,50,0.12);
-  background: linear-gradient(180deg, #2b2a28, #242322);
+  box-shadow: 0 0 0 6px rgba(195,134,50,0.12);
 }
 
-/* Placeholder for disabled/blocked state */
-input.blocked,
-select.blocked {
-  background: #1e1d1c;
-  color: #9e9b98;
-  border-color: rgba(255,255,255,0.02);
-}
-
-/* Small helper / hint text (se usar) */
-.helper {
-  font-size: 12px;
-  color: #bfbcb9;
-  margin-top: 6px;
-}
-
-/* Actions: botão centralizado no mobile, à direita em desktop */
+/* ACTIONS */
 .actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
   margin-top: 18px;
-  align-items: center;
 }
 
-/* Botões modernos: primary em dourado do site, secondary escuro translúcido */
-.cancel,
-.confirm {
+/* BOTÕES */
+.cancel, .confirm {
   padding: 10px 14px;
-  border: none;
   border-radius: 10px;
   font-weight: 700;
   cursor: pointer;
   font-size: 14px;
   min-width: 110px;
-  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  transition: 0.15s;
 }
 
-/* Cancel: ghost style */
 .cancel {
   background: rgba(255,255,255,0.03);
   color: #d9d7d5;
   border: 1px solid rgba(255,255,255,0.03);
 }
-.cancel:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.45); }
 
-/* Confirm: destaque com cor principal do site */
+.cancel:hover { transform: translateY(-2px); }
+
 .confirm {
   background: linear-gradient(180deg, #c38632, #a86f22);
   color: #fff;
-  box-shadow: 0 6px 20px rgba(163,108,36,0.16);
-}
-.confirm:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(163,108,36,0.22);
 }
 
-/* Disabled state */
-.confirm[disabled],
-.cancel[disabled] {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+.confirm:hover { transform: translateY(-2px); }
+
+/* --- MODO SUCESSO --- */
+.dialog-box.success-mode {
+  text-align: center;
+  padding: 32px 24px;
 }
 
-/* Responsive: reduz o modal em telas pequenas */
-@media (max-width: 520px) {
-  .dialog-box { padding: 16px; border-radius: 12px; max-width: 420px; }
-  .actions { justify-content: center; gap: 8px; }
-  .confirm, .cancel { min-width: 40%; }
+.success-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
 }
 
-/* Small accessibility improvements */
-input:invalid {
-  box-shadow: 0 0 0 4px rgba(255, 60, 60, 0.06);
+.success-check {
+  width: 70px;
+  height: 70px;
+  background: #28c76f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 8px;
+  box-shadow: 0 0 20px rgba(40,199,111,0.45);
 }
 
-/* Optional: subtle divider if needed */
-.divider {
-  height: 1px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.03));
-  margin: 14px 0;
+.success-line {
+  font-size: 15px;
+  color: #f0efee;
 }
 
-/* Firefox ONLY */
-select {
-  appearance: none;
-  -moz-appearance: none;
+.success-msg {
+  margin-top: 6px;
+  font-size: 14px;
+  opacity: .8;
+  color: #cfcac7;
 }
 
+/* FIX: fundo escuro no dropdown */
 select option {
-  background: #2b2927 !important;
-  color: white !important;
-  padding: 10px;
+  background: #23211f !important;
+  color: #ffffff !important;
+}
+
+/* (Opcional, mas recomendado) remove contraste branco do Chrome */
+select optgroup {
+  background: #23211f !important;
+  color: #ffffff !important;
+}
+
+/* --- VALIDAÇÃO VISUAL --- */
+.invalid {
+  border-color: #ff4d4d !important;
+  box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.20) !important;
+  animation: shake .25s ease;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+/* Modern Toast */
+.modern-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(180deg, #2b2927, #262322);
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 12px 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.55);
+  z-index: 10000;
+  color: #fff;
+  animation: toastFade .25s ease;
+}
+
+@keyframes toastFade {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.toast-icon {
+  font-size: 18px;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
 }

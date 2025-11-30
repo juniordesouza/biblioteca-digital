@@ -3,12 +3,8 @@
 
 <div class="main-layout" [class.sidebar-open]="sidebarOpen">
   <main class="content">
-    <h2>Lista de Livros</h2>
 
-    <div class="bulk-actions">
-      <button class="btn-approve">Ativar Selecionados</button>
-      <button class="btn-reject">Desativar Selecionados</button>
-    </div>
+    <h2>Lista de Livros</h2>
 
     <div class="table-container">
       <table>
@@ -21,10 +17,15 @@
                 (change)="toggleSelectAll($event)"
               />
             </th>
+            <th>ID</th>
             <th>Título</th>
             <th>Autor</th>
             <th>Editora</th>
+            <th>Tema</th>
+            <th>Obra</th>
+            <th>Tags</th>
             <th>Ano</th>
+            <th>Qtd</th>
             <th>Status</th>
             <th>Ativo</th>
           </tr>
@@ -40,17 +41,20 @@
               />
             </td>
 
+            <td>{{ livro.id }}</td>
             <td>{{ livro.titulo }}</td>
             <td>{{ livro.autor }}</td>
             <td>{{ livro.editora }}</td>
+            <td>{{ livro.tema }}</td>
+            <td>{{ livro.obra }}</td>
+            <td>{{ livro.tags }}</td>
             <td>{{ livro.anoLancamento }}</td>
+            <td>{{ livro.quantidadeDisponivel }}</td>
+
+            <td>{{ livro.status }}</td>
 
             <td>
-              <span>{{ livro.status }}</span>
-            </td>
-
-            <td>
-              <span [style.color]="livro.ativo ? 'green' : 'red'">
+              <span [style.color]="livro.ativo ? 'lightgreen' : 'red'">
                 {{ livro.ativo ? 'SIM' : 'NÃO' }}
               </span>
             </td>
@@ -61,4 +65,3 @@
 
   </main>
 </div>
-    

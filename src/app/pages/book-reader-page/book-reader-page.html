@@ -1,40 +1,24 @@
-<div class="reader-layout" [class.dark]="isDarkMode">
-    <!-- Header fixo -->
-    <header class="reader-header">
-      <div class="left">
-        <button class="icon-btn" (click)="toggleSidebar()">☰</button>
-        <span class="site-name">NOME E O LOGO DO SITE</span>
-      </div>
-      <div class="right">
-        <button class="icon-btn" (click)="toggleTheme()">
-          <span *ngIf="!isDarkMode">🌙</span>
-          <span *ngIf="isDarkMode">☀️</span>
-        </button>
-      </div>
-    </header>
-  
-    <!-- Conteúdo principal -->
-    <main class="reader-content">
-      <h1 class="book-title">{{ bookTitle }}</h1>
-  
-      <!-- PDF ou texto -->
-      <div *ngIf="pdfUrl" class="pdf-viewer">
-        <ngx-extended-pdf-viewer
-          [src]="pdfUrl"
-          useBrowserLocale="true"
-          [showSidebarButton]="false"
-          [height]="'85vh'">
-        </ngx-extended-pdf-viewer>
-      </div>
-  
-      <!-- Texto alternativo (fallback) -->
-      <div *ngIf="!pdfUrl" class="book-text">
-        <h2>A Biblioteca das Sombras</h2>
-        <p>
-          Em uma cidade esquecida pelo tempo, ergue-se uma biblioteca onde cada livro guarda mais do que palavras...
-        </p>
-        <p>Sumário, capítulos, e muito mais...</p>
-      </div>
-    </main>
+<app-menu></app-menu>
+
+<div class="reader-wrapper">
+
+  <!-- 🚫 ACESSO NEGADO -->
+  <div *ngIf="!acessoPermitido" class="forbidden-box">
+    <h1>🔒 Acesso Restrito</h1>
+    <p>Você não possui um empréstimo ativo deste livro.</p>
+
+    <button class="btn" routerLink="/catalogo">Voltar ao Catálogo</button>
   </div>
-  
+
+  <!-- 📖 LEITOR -->
+  <div *ngIf="acessoPermitido" class="pdf-frame">
+    <h1 class="title">{{ bookTitle }}</h1>
+
+    <iframe 
+      *ngIf="pdfUrl"
+      class="pdf-viewer"
+      [src]="pdfUrl">
+    </iframe>
+  </div>
+
+</div>

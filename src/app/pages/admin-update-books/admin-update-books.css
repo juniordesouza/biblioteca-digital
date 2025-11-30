@@ -1,0 +1,135 @@
+/* ================================
+   LAYOUT — EXATAMENTE COMO O REFERENCIA
+================================ */
+:host {
+  display: block;
+  height: 100%;
+}
+
+.main-layout {
+  display: flex;
+  flex-direction: column;
+
+  background-color: #1b1b1b;
+  color: white;
+
+  margin-top: -70px;           /* igual ao componente referência */
+  min-height: 100vh;
+
+  transition: margin-left 0.3s ease;
+  overflow-x: hidden;          /* remove scroll lateral */
+}
+
+.main-layout.sidebar-open {
+  margin-left: 240px;          /* sidebar aberta empurra o conteúdo */
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  margin-top: 60px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* ================================
+   RESTO DO SEU CSS INALTERADO
+================================ */
+
+.search-box {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.search-box input {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+  background: #23211f;
+  color: #f5f4f3;
+  font-size: 14px;
+  width: 180px;
+  outline: none;
+}
+
+.search-box button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  background: linear-gradient(180deg, #c38632, #a86f22);
+  color: #fff;
+  cursor: pointer;
+}
+
+.empty-box {
+  opacity: 0.6;
+  margin-top: 10px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 25px;
+  background: #262322;
+  padding: 25px;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 1100px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.55);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+label {
+  font-size: 13px;
+  color: #d8d6d4;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.04);
+  background: #23211f;
+  color: #f5f4f3;
+}
+
+textarea {
+  height: 120px;
+  resize: none;
+}
+
+.thumb {
+  width: 140px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.save-btn {
+  padding: 14px 20px;
+  background: linear-gradient(180deg, #c38632, #a86f22);
+  color: #fff;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.15rem;
+  margin-top: 25px;
+}
+
+/* MOBILE: sidebar desaparece → conteúdo ocupa largura total */
+@media (max-width: 900px) {
+  .main-layout,
+  .main-layout.sidebar-open {
+    margin-left: 0 !important;
+  }
+}

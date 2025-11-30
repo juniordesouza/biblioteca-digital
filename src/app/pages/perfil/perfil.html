@@ -1,0 +1,55 @@
+<app-menu></app-menu>
+
+<main class="perfil-wrapper">
+
+  <!-- SEUS LIVROS -->
+  <h2 class="section-title">SEUS LIVROS:</h2>
+
+  <div class="seus-livros-container">
+
+    @for (livro of seusLivrosMock(); track livro.id) {
+
+      <div class="livro-card">
+
+        <img [src]="livro.thumbnail" class="livro-img" />
+
+        @if (livro.status === 'RESERVADO') {
+          <span class="badge badge-reservado">RESERVADO</span>
+          <span class="fila">POSIÇÃO NA FILA: #{{ livro.posicaoFila }}</span>
+        }
+
+        @if (livro.status === 'EM_ABERTO') {
+          <button class="btn-ler" (click)="openBookDetails(livro.id)">LER LIVRO</button>
+        }
+      </div>
+    }
+
+    <!-- CARD DE ADICIONAR / BLOQUEADO -->
+    @if (slotsLivres > 0) {
+      <div class="livro-card add-card" [attr.data-slots]="slotsLivres">
+        <span class="add-plus">+</span>
+      </div>
+    } @else {
+      <div class="livro-card add-card bloqueado">
+        <span class="add-plus">0 slots livres</span>
+      </div>
+    }
+
+
+
+  </div>
+
+  <!-- CARROSSEL DE HISTÓRICO -->
+  <h2 class="section-title">HISTÓRICO DE LIVROS:</h2>
+
+  <app-carousel-netflix
+    title=""
+    [books]="historicoFormatado()"
+    (bookSelected)="openBookDetails($event)"
+  ></app-carousel-netflix>
+
+  @if (historicoFormatado().length === 0) {
+    <p class="empty">Nenhum empréstimo encontrado.</p>
+  }
+
+</main>

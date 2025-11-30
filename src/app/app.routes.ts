@@ -16,6 +16,9 @@ import { AdminUserAprove } from './pages/admin-user-aprove/admin-user-aprove';
 import { AdminUserList } from './pages/admin-user-list/admin-user-list';
 import { AdminRegisterBook } from './pages/admin-register-book/admin-register-book';
 import { AtualizarPerfilComponent } from './pages/atualizar-perfil/atualizar-perfil';
+import { AdminUserHistory } from './pages/admin-user-history/admin-user-history';
+import { Perfil } from './pages/perfil/perfil';
+import { AdminUpdateBooks } from './pages/admin-update-books/admin-update-books';
 
 export const routes: Routes = [
 
@@ -32,6 +35,7 @@ export const routes: Routes = [
   { path: 'livros/:id', component: LivroDetailsComponent, canActivate: [AuthGuard] },
   { path: 'sobre', component: SobreComponent, canActivate: [AuthGuard] },
   { path: 'atualizar-perfil', component: AtualizarPerfilComponent, canActivate: [AuthGuard] },
+  { path: 'meu-perfil', component: Perfil, canActivate: [AuthGuard] },
 
   /* ---------------------- ADMIN ---------------------- */
   {
@@ -72,12 +76,27 @@ export const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: ['ADMIN', 'FUNCIONARIO'] }
   },
+  {
+    path: 'admin/historico/:id',
+    component: AdminUserHistory,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['ADMIN', 'FUNCIONARIO'] }
+  },
+  {
+    path: 'admin/atualizar-livros',
+    component: AdminUpdateBooks,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['ADMIN', 'FUNCIONARIO'] }
+  },
+
 
   /* ---------------------- LEITOR DE LIVRO ---------------------- */
   {
-    path: 'livros/ler/:id',
-    loadComponent: () => import('./pages/book-reader-page/book-reader-page')
+  path: 'livros/ler/:id',
+  loadComponent: () =>
+    import('./pages/book-reader-page/book-reader-page')
       .then(m => m.BookReaderPage),
-    canActivate: [AuthGuard]
-  }
+  canActivate: [AuthGuard]
+}
+
 ];

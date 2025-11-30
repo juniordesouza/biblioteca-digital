@@ -1,0 +1,107 @@
+<app-admin-header (toggleSidebar)="toggleSidebar()"></app-admin-header>
+<app-sidebar [isOpen]="sidebarOpen"></app-sidebar>
+
+<div class="main-layout" [class.sidebar-open]="sidebarOpen">
+  <main class="content">
+
+    <h2>Atualizar Livro</h2>
+
+    <!-- 🔍 BUSCA -->
+    <div class="search-box">
+      <input 
+        type="text"
+        [(ngModel)]="searchId"
+        placeholder="ID do livro..."
+      />
+      <button (click)="buscarLivro()">Buscar</button>
+    </div>
+
+    <!-- ESTADO VAZIO -->
+    <div class="empty-box" *ngIf="!livro">
+      <p>Busque um livro pelo ID.</p>
+    </div>
+
+    <!-- FORMULÁRIO -->
+    <form class="form-grid" *ngIf="livro">
+
+      <div class="form-group">
+        <label>ID</label>
+        <input type="text" [value]="livro.id" readonly>
+      </div>
+
+      <div class="form-group">
+        <label>Título</label>
+        <input type="text" [(ngModel)]="livro.titulo" name="titulo">
+      </div>
+
+      <div class="form-group">
+        <label>Autor</label>
+        <input type="text" [(ngModel)]="livro.autor" name="autor">
+      </div>
+
+      <div class="form-group">
+        <label>Editora</label>
+        <input type="text" [value]="livro.editora" readonly>
+      </div>
+
+      <div class="form-group">
+        <label>Tema</label>
+        <input type="text" [(ngModel)]="livro.tema" name="tema">
+      </div>
+
+      <div class="form-group">
+        <label>Obra</label>
+        <input type="text" [(ngModel)]="livro.obra" name="obra">
+      </div>
+
+      <div class="form-group">
+        <label>Tags</label>
+        <input type="text" [(ngModel)]="livro.tags" name="tags">
+      </div>
+
+      <div class="form-group">
+        <label>Ano Lançamento</label>
+        <input type="text" [(ngModel)]="livro.anoLancamento" name="anoLancamento">
+      </div>
+
+      <div class="form-group">
+        <label>Quantidade</label>
+        <input type="number" [(ngModel)]="livro.quantidadeDisponivel" name="quantidadeDisponivel">
+      </div>
+
+      <div class="form-group">
+        <label>Status</label>
+        <input type="text" [value]="livro.status" readonly>
+      </div>
+
+      <div class="form-group">
+        <label>Sinopse</label>
+        <textarea [(ngModel)]="livro.sinopse" name="sinopse"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Data de Validade</label>
+        <input type="text" [(ngModel)]="livro.dtValidade" name="dtValidade">
+      </div>
+
+      <div class="form-group">
+        <label>Imagem da Capa</label>
+        <img
+          *ngIf="livro.uriImgLivro"
+          [src]="normalizeThumb(livro.uriImgLivro)"
+          class="thumb"
+        />
+      </div>
+
+    </form>
+
+    <!-- BOTÃO DE SALVAR -->
+    <button class="save-btn" *ngIf="livro" (click)="salvarAlteracoes()">
+      Salvar Alterações
+    </button>
+
+    <!-- TOAST -->
+    <app-toast [message]="alertMessage" [show]="showAlert"></app-toast>
+
+  </main>
+</div>

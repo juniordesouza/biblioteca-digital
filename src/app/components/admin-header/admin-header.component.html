@@ -1,7 +1,7 @@
 <header class="admin-header">
   <div class="header-left">
     <button class="menu-btn" (click)="onToggleSidebar()">☰</button>
-    <span class="logo">LOGO E NOME DO SITE</span>
+    <span class="logo">Midas Vault - Painel</span>
     <input type="text" placeholder="Pesquisar..." />
   </div>
 
@@ -50,5 +50,4 @@
 <app-historico-dialog
   *ngIf="showHistoricoDialog"
   (close)="showHistoricoDialog = false"
-  (submitted)="onHistoricoSubmitted($event)"
 ></app-historico-dialog>
