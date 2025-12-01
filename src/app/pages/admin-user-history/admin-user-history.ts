@@ -26,8 +26,9 @@ export class AdminUserHistory implements OnInit {
   sidebarOpen = true;
 
   historico: any[] = [];
-  usernameFromUrl = "";
+  historicoFiltrado: any[] = [];
 
+  usernameFromUrl = "";
   usernameSearch = "";
 
   showAlert = false;
@@ -40,7 +41,6 @@ export class AdminUserHistory implements OnInit {
 
   ngOnInit(): void {
 
-    // 🔥 AGORA REAGE A MUDANÇA DE ROTA
     this.route.paramMap.subscribe(params => {
 
       const username = params.get("id") ?? "";
@@ -53,7 +53,6 @@ export class AdminUserHistory implements OnInit {
       this.usernameFromUrl = username;
       this.usernameSearch = username;
 
-      // 🔥 busca sempre que mudar a rota
       this.buscarHistorico();
     });
   }
@@ -69,16 +68,11 @@ export class AdminUserHistory implements OnInit {
   }
 
   /** ===============================
-   *    🔥 Buscar Histórico Real
+   *  🔥 Buscar Histórico Real
    *  =============================== */
   buscarHistorico() {
 
-    const username = this.usernameSearch.trim();
-    if (!username) {
-      this.showToast("⚠️ Informe um username para buscar.");
-      return;
-    }
-
+    const username = this.usernameFromUrl.trim();
     const token = sessionStorage.getItem("token");
 
     this.http.get<any[]>(
@@ -91,11 +85,44 @@ export class AdminUserHistory implements OnInit {
           ...item,
           uriImgLivro: this.normalizeThumb(item.uriImgLivro)
         }));
+
+        this.filtrarLocal();
       },
       error: (err) => {
         console.error(err);
         this.showToast("❌ Erro ao carregar histórico.");
       }
+    });
+  }
+
+  /** ============================================
+   *  🔥 Filtro LOCAL — pesquisa em todos atributos
+   *  ============================================ */
+  filtrarLocal() {
+    const termo = this.usernameSearch.toLowerCase().trim();
+
+    if (!termo) {
+      this.historicoFiltrado = [...this.historico];
+      return;
+    }
+
+    this.historicoFiltrado = this.historico.filter(h => {
+
+      const campos = [
+        h.id,
+        h.usuarioId,
+        h.livroId,
+        h.tituloLivro,
+        h.dtInicio,
+        h.dtPrevistaDevolucao,
+        h.status
+      ];
+
+      return campos.some(c =>
+        c !== null &&
+        c !== undefined &&
+        c.toString().toLowerCase().includes(termo)
+      );
     });
   }
 

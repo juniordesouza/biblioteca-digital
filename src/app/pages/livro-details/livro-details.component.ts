@@ -39,59 +39,125 @@ export class LivroDetailsComponent {
 
   loading = signal<boolean>(true);
   showFullDescription = signal<boolean>(false);
+  livroObtido = signal<boolean>(false);
 
   toastMessage = '';
   toastShow = false;
 
-  livroObtido = signal<boolean>(false);
+  emprestimosUser: any[] = [];
+  reservasUser: any[] = [];
+
+  livroReservado = signal<boolean>(false);
+  idReservaAtiva = signal<number | null>(null);
+
+  // ======================================================
+  // 🔥 NOVO: Status final exibido (Emprestado se stock = 0)
+  // ======================================================
+  statusFinal = computed(() => {
+    const b = this.book();
+    if (b.stock === 0) return "EMPRESTADO";
+    return b.status || "DESCONHECIDO";
+  });
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
-      if (id) {
-        this.loadBook(id);
-        this.verificarEmprestimoAtivo(Number(id));
-      } else {
-        this.loading.set(false);
+      if (id) this.loadPage(id);
+      else this.loading.set(false);
+    });
+  }
+
+  loadPage(id: string) {
+    this.loading.set(true);
+    this.loadBook(id);
+
+    const username = sessionStorage.getItem("username");
+    if (!username) return;
+
+    this.loadEmprestimos(username, Number(id));
+    this.loadReservas(username);
+  }
+
+  private normalizeThumbnail(uri?: string): string {
+    if (!uri) {
+      return 'https://via.placeholder.com/300x450?text=Sem+Capa';
+    }
+
+    const cleaned = uri.replace(/\\/g, '/').trim();
+
+    if (/^https?:\/\//i.test(cleaned)) {
+      return cleaned;
+    }
+
+    if (cleaned.startsWith('/uploads') || cleaned.startsWith('uploads')) {
+      return `http://localhost:8080${cleaned.startsWith('/') ? cleaned : '/' + cleaned}`;
+    }
+
+    if (/^[a-zA-Z]:\//.test(cleaned)) {
+      return cleaned;
+    }
+
+    return 'https://via.placeholder.com/300x450?text=Sem+Capa';
+  }
+
+  loadEmprestimos(username: string, livroId: number) {
+    const token = sessionStorage.getItem('token');
+
+    this.http.get<any>(`http://localhost:8080/emprestimos/historico/${username}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: resp => {
+        const lista = Array.isArray(resp) ? resp : (resp.data ?? []);
+        this.emprestimosUser = lista;
+
+        const temAtivo = lista.some(
+          (e: any) => e.livroId === livroId && e.status === "ATIVO"
+        );
+
+        this.livroObtido.set(temAtivo);
       }
     });
   }
 
-  verificarEmprestimoAtivo(livroId: number) {
-    const cache = sessionStorage.getItem('historicoEmprestimos');
-    if (!cache) return;
-
-    let historico = [];
-    try { historico = JSON.parse(cache); } catch { historico = []; }
-
-    const ativo = historico.some(
-      (item: any) => item.livroId === livroId && item.status === 'ATIVO'
-    );
-
-    this.livroObtido.set(ativo);
-  }
-
-  showToast(msg: string) {
-    this.toastMessage = msg;
-    this.toastShow = true;
-    setTimeout(() => this.toastShow = false, 3000);
-  }
-
-  loadBook(id: string) {
-    this.loading.set(true);
-
+  loadReservas(username: string) {
     const token = sessionStorage.getItem('token');
-    const url = `http://localhost:8080/livros/${id}`;
 
-    this.http.get<any>(url, {
+    this.http.get<any>(`http://localhost:8080/reservas/historico/${username}`, {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe({
       next: resp => {
-        const d = resp.data;
+        const lista = Array.isArray(resp) ? resp : (resp.data ?? []);
+        this.reservasUser = lista;
+
+        const livroId = Number(this.book().id);
+
+        const reserva = lista.find(
+          (r: any) => r.livroId === livroId && r.status === "ATIVA"
+        );
+
+        if (reserva) {
+          this.livroReservado.set(true);
+          this.idReservaAtiva.set(reserva.id);
+        } else {
+          this.livroReservado.set(false);
+          this.idReservaAtiva.set(null);
+        }
+      }
+    });
+  }
+
+  loadBook(id: string) {
+    const token = sessionStorage.getItem('token');
+
+    this.http.get<any>(`http://localhost:8080/livros/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: resp => {
+        const d = Array.isArray(resp) ? resp[0] : resp.data;
 
         this.book.set({
           id: d.id ?? id,
-          cover: d.uriImgLivro ? `http://localhost:8080${d.uriImgLivro}` : 'https://via.placeholder.com/300x450?text=Sem+Capa',
+          cover: this.normalizeThumbnail(d.uriImgLivro),
           title: d.titulo,
           author: d.autor,
           autores: d.autores ?? [],
@@ -102,7 +168,7 @@ export class LivroDetailsComponent {
           tags: d.tags ?? [],
           anoLancamento: d.anoLancamento,
           description: d.sinopse,
-          stock: d.quantidadeDisponivel ?? 0,
+          stock: d.quantidadeDisponivelEmprestar ?? 0,
           status: d.status?.nome || d.status,
           urlLivro: d.urlLivro,
           rating: 4
@@ -110,10 +176,9 @@ export class LivroDetailsComponent {
 
         this.loading.set(false);
       },
-      error: err => {
-        console.error(err);
+      error: () => {
         this.loading.set(false);
-        this.showToast('Erro ao carregar os detalhes do livro.');
+        this.showToast("Erro ao carregar os detalhes do livro.");
       }
     });
   }
@@ -121,52 +186,30 @@ export class LivroDetailsComponent {
   obterLivro() {
     const username = sessionStorage.getItem('username');
     const token = sessionStorage.getItem('token');
+    const livroId = Number(this.book().id);
 
-    if (!username) {
-      this.showToast("Erro: usuário não encontrado na sessão.");
-      return;
-    }
-
-    const payload = {
-      username: username,
-      livroId: Number(this.route.snapshot.paramMap.get('id'))
-    };
-
-    this.http.post(`http://localhost:8080/emprestimos`, payload, {
+    this.http.post(`http://localhost:8080/emprestimos`, { username, livroId }, {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe({
-      next: resp => {
+      next: () => {
         this.showToast("Livro obtido com sucesso!");
         this.livroObtido.set(true);
+        this.loadEmprestimos(username!, livroId);
       },
-
-      error: (err) => {
-        const mensagemBackend =
-          err?.error?.mensagem ||
-          err?.error?.detalhes ||
-          'Erro ao processar a requisição.';
-
-        this.showToast(mensagemBackend);
+      error: err => {
+        const msg = err?.error?.mensagem || "Erro ao processar.";
+        this.showToast(msg);
       }
-
     });
   }
 
   devolverLivro() {
     const token = sessionStorage.getItem('token');
+    const username = sessionStorage.getItem('username');
     const livroId = Number(this.book().id);
 
-    const cache = sessionStorage.getItem('historicoEmprestimos');
-    if (!cache) {
-      this.showToast("Erro: histórico não encontrado.");
-      return;
-    }
-
-    let historico = [];
-    try { historico = JSON.parse(cache); } catch { historico = []; }
-
-    const emprestimo = historico.find(
-      (e: any) => e.livroId === livroId && e.status === 'ATIVO'
+    const emprestimo = this.emprestimosUser.find(
+      e => e.livroId === livroId && e.status === "ATIVO"
     );
 
     if (!emprestimo) {
@@ -174,55 +217,79 @@ export class LivroDetailsComponent {
       return;
     }
 
-    const url = `http://localhost:8080/emprestimos/${emprestimo.id}/devolver`;
-
-    this.http.put(url, {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    }).subscribe({
+    this.http.put(
+      `http://localhost:8080/emprestimos/${emprestimo.id}/devolver`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    ).subscribe({
       next: () => {
         this.showToast("Livro devolvido com sucesso!");
         this.livroObtido.set(false);
-
-        emprestimo.status = "FINALIZADO";
-        sessionStorage.setItem('historicoEmprestimos', JSON.stringify(historico));
-      },
-      error: () => {
-        this.showToast("Erro ao devolver livro.");
+        this.loadEmprestimos(username!, livroId);
       }
     });
-  }
-
-  truncatedDescription = computed(() => {
-    const desc = this.book()?.description || '';
-    return this.showFullDescription() ? desc : desc.slice(0, 450);
-  });
-
-  toggleDescription() {
-    this.showFullDescription.set(!this.showFullDescription());
   }
 
   reservarLivro() {
     const username = sessionStorage.getItem('username');
     const token = sessionStorage.getItem('token');
 
-    const payload = {
-      username: username,
-      livroId: this.book().id
-    };
-
-    this.http.post(`http://localhost:8080/reservas`, payload, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    .subscribe({
-      next: resp => {
+    this.http.post(
+      `http://localhost:8080/reservas`,
+      { username, livroId: this.book().id },
+      { headers: { Authorization: `Bearer ${token}` } }
+    ).subscribe({
+      next: () => {
         this.showToast("Reserva realizada com sucesso!");
+        this.loadReservas(username!);
       },
       error: err => {
-        const mensagem =
-          err?.error?.mensagem || 'Erro ao realizar reserva.';
-        this.showToast(mensagem);
+        const msg = err?.error?.mensagem || "Erro ao realizar reserva.";
+        this.showToast(msg);
       }
     });
   }
 
+  cancelarReserva() {
+    const token = sessionStorage.getItem("token");
+    const id = this.idReservaAtiva();
+
+    if (!id) {
+      this.showToast("Nenhuma reserva ativa encontrada.");
+      return;
+    }
+
+    this.http.put(
+      `http://localhost:8080/reservas/${id}/cancelar`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    ).subscribe({
+      next: () => {
+        this.showToast("Reserva cancelada com sucesso!");
+        this.livroReservado.set(false);
+
+        const username = sessionStorage.getItem("username")!;
+        this.loadReservas(username);
+      },
+      error: err => {
+        const msg = err?.error?.mensagem || "Erro ao cancelar reserva.";
+        this.showToast(msg);
+      }
+    });
+  }
+
+  truncatedDescription = computed(() => {
+    const d = this.book()?.description || '';
+    return this.showFullDescription() ? d : d.slice(0, 450);
+  });
+
+  toggleDescription() {
+    this.showFullDescription.set(!this.showFullDescription());
+  }
+
+  showToast(msg: string) {
+    this.toastMessage = msg;
+    this.toastShow = true;
+    setTimeout(() => this.toastShow = false, 3000);
+  }
 }

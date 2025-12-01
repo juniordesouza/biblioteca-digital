@@ -17,23 +17,26 @@ export class MenuComponent {
   public isBanned = signal(false);
 
   constructor(private router: Router) {
-    const storedUser = sessionStorage.getItem('username');
-    this.username.set(storedUser);
-
-    this.isPending.set(sessionStorage.getItem('pendingUser') !== null);
-    this.isBanned.set(sessionStorage.getItem('bannedUser') !== null);
+    this.username.set(sessionStorage.getItem('username'));
+    this.isPending.set(!!sessionStorage.getItem('pendingUser'));
+    this.isBanned.set(!!sessionStorage.getItem('bannedUser'));
   }
 
-  public toggleSearch(): void {
+  toggleSearch() {
     this.isSearchVisible.set(!this.isSearchVisible());
   }
 
-  // 🔥 REDIRECIONAR PARA CONFIGURAÇÕES / ALTERAR PERFIL
-  public goToConfig(): void {
+  // 🔥 Emite o evento que o catálogo escuta
+  search(ev: any) {
+    const value = ev.target.value;
+    window.dispatchEvent(new CustomEvent('catalog-search', { detail: value }));
+  }
+
+  goToConfig() {
     this.router.navigate(['/atualizar-perfil']);
   }
 
-  public logout(): void {
+  logout() {
     sessionStorage.clear();
     location.href = '/login';
   }

@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { CarouselNetflixComponent } from '../../components/carousel-netflix/carousel-netflix.component';
 import { MenuComponent } from '../../components/menu/menu.component';
 
@@ -13,15 +14,33 @@ import { MenuComponent } from '../../components/menu/menu.component';
 })
 export class Perfil {
   private router = inject(Router);
+  private http = inject(HttpClient);
 
   historicoFormatado = signal<any[]>([]);
   reservasMock = signal<any[]>([]);
   seusLivrosMock = signal<any[]>([]);
   slotsLivres = 0;
 
-  ngOnInit() {
+  // buffers seguros que NÃO se sobrescrevem
+  private emprestimosAtivos: any[] = [];
+  private reservasAtivas: any[] = [];
 
-    // ========= PERFIL PARA PEGAR limiteSlots
+  ngOnInit() {
+    const username = sessionStorage.getItem("username");
+    if (!username) {
+      console.error("Usuário não encontrado na sessão.");
+      return;
+    }
+
+    this.loadPerfil(username);
+    this.loadEmprestimos(username);
+    this.loadReservas(username);
+  }
+
+  // ============================================================
+  // PERFIL
+  // ============================================================
+  loadPerfil(username: string) {
     const perfilRaw = sessionStorage.getItem("perfilData");
     let perfilData: any = null;
 
@@ -29,77 +48,111 @@ export class Perfil {
     catch { perfilData = null; }
 
     const limiteSlots = perfilData?.limiteSlots ?? 3;
+    this.slotsLivres = limiteSlots;
+  }
 
+// ============================================================
+// EMPRESTIMOS
+// ============================================================
+loadEmprestimos(username: string) {
+  const token = sessionStorage.getItem("token");
 
-    // ========= HISTÓRICO DE EMPRÉSTIMOS
-    const raw = sessionStorage.getItem('historicoEmprestimos');
-    let historico = [];
+  this.http.get<any>(`http://localhost:8080/emprestimos/historico/${username}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+  .subscribe({
+    next: resp => {
 
-    try { historico = raw ? JSON.parse(raw) : []; }
-    catch { historico = []; }
+      // aceita array puro OU objeto data:
+      const historico = Array.isArray(resp) ? resp : (resp.data ?? []);
 
-    const convertidos = historico.map((item: any) => ({
-      id: item.livroId,
-      title: item.tituloLivro,
-      author: item.usuarioId,
-      thumbnail: this.normalizeThumb(item.uriImgLivro),
-    }));
-
-    this.historicoFormatado.set(convertidos);
-
-
-    // ========= RESERVAS DA SESSION
-    const reservasRaw = sessionStorage.getItem('historicoReservas');
-    let reservas = [];
-
-    try { reservas = reservasRaw ? JSON.parse(reservasRaw) : []; }
-    catch { reservas = []; }
-
-    const reservasConvertidas = reservas
-    .filter((r: any) => r.status === 'ATIVA')   // 👈 só reservas ativas!
-    .map((item: any) => ({
-      id: item.livroId,
-      title: `Livro ${item.livroId}`,
-      thumbnail: this.normalizeThumb(item.uriImgLivro),
-      status: 'RESERVADO',
-      posicaoFila: 0
-    }));
-
-
-    this.reservasMock.set(reservasConvertidas);
-
-
-    // ========= LIVROS ATIVOS (empréstimos)
-    const ativosConvertidos = historico
-      .filter((item: any) => item.status === 'ATIVO')
-      .map((item: any) => ({
+      const convertidos = historico.map((item: any) => ({
         id: item.livroId,
         title: item.tituloLivro,
+        author: item.usuarioId,
         thumbnail: this.normalizeThumb(item.uriImgLivro),
-        status: 'EM_ABERTO'
+        status: item.status
       }));
 
+      this.historicoFormatado.set(convertidos);
 
-    // ========= SEUS LIVROS = ativos + reservas
+      this.emprestimosAtivos = convertidos.filter((c: any) => c.status === "ATIVO");
+
+      this.rebuildSeusLivros();
+    },
+    error: err => {
+      console.error("Erro ao carregar histórico de empréstimos", err);
+    }
+  });
+}
+
+// ============================================================
+// RESERVAS
+// ============================================================
+loadReservas(username: string) {
+  const token = sessionStorage.getItem("token");
+
+  this.http.get<any>(`http://localhost:8080/reservas/historico/${username}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+  .subscribe({
+    next: resp => {
+
+      // aceita array OU objeto com data
+      const reservas = Array.isArray(resp) ? resp : (resp.data ?? []);
+
+      const reservasConvertidas = reservas
+        .filter((r: any) => r.status === 'ATIVA')
+        .map((item: any) => ({
+          id: item.livroId,
+          title: item.tituloLivro ?? `Livro ${item.livroId}`,
+          thumbnail: this.normalizeThumb(item.uriImgLivro),
+          status: 'RESERVADO',
+          posicaoFila: item.posicaoFila ?? 0
+        }));
+
+      this.reservasMock.set(reservasConvertidas);
+
+      this.reservasAtivas = reservasConvertidas;
+
+      this.rebuildSeusLivros();
+    },
+    error: err => {
+      console.error("Erro ao carregar reservas", err);
+    }
+  });
+}
+
+  // ============================================================
+  // 🔥 RECONSTRÓI LISTA SEM RACE CONDITION
+  // ============================================================
+  rebuildSeusLivros() {
     const seusLivros = [
-      ...ativosConvertidos,
-      ...this.reservasMock()
+      ...this.emprestimosAtivos,
+      ...this.reservasAtivas
     ];
 
     this.seusLivrosMock.set(seusLivros);
 
-    // ========= CALCULA SLOTS
-    const usados = seusLivros.length;
-    this.slotsLivres = Math.max(limiteSlots - usados, 0);
+    // recalcula slots
+    const perfilRaw = sessionStorage.getItem("perfilData");
+    let perfilData: any = null;
+    try { perfilData = perfilRaw ? JSON.parse(perfilRaw) : null; } catch {}
+
+    const limiteSlots = perfilData?.limiteSlots ?? 3;
+    this.slotsLivres = Math.max(limiteSlots - seusLivros.length, 0);
   }
 
-
+  // ============================================================
+  // UTIL
+  // ============================================================
   normalizeThumb(uri: string): string {
     if (!uri) return 'https://via.placeholder.com/150x220?text=Sem+Capa';
 
     const cleaned = uri.replace(/\\/g, '/');
     if (/^https?:\/\//i.test(cleaned)) return cleaned;
     if (cleaned.startsWith('/uploads')) return `http://localhost:8080${cleaned}`;
+
     return 'https://via.placeholder.com/150x220?text=Sem+Capa';
   }
 

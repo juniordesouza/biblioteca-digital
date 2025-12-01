@@ -3,11 +3,30 @@
 <main class="catalogo-wrapper">
   <h1 class="catalog-title">Catálogo</h1>
 
-  @for (category of categories(); track category) {
+  <!-- 🔥 CARROSSEL DE RESULTADOS DA BUSCA -->
+  @if (isSearching() && searchResults().length > 0) {
     <app-carousel-netflix
-      [title]="category"
-      [books]="booksByCategory()[category]"
+      title="Resultados da busca"
+      [books]="searchResults()"
       (bookSelected)="openBookDetails($event)"
     ></app-carousel-netflix>
+  }
+
+  <!-- 🔥 SE ESTÁ BUSCANDO MAS RETORNOU ZERO -->
+  @if (isSearching() && searchResults().length === 0) {
+    <p style="color: white; padding: 20px; font-size: 18px;">
+      Nenhum livro encontrado.
+    </p>
+  }
+
+  <!-- 🔥 SE NÃO ESTÁ BUSCANDO → MOSTRA CATÁLOGO NORMAL -->
+  @if (!isSearching()) {
+    @for (category of categories(); track category) {
+      <app-carousel-netflix
+        [title]="category"
+        [books]="booksByCategory()[category]"
+        (bookSelected)="openBookDetails($event)"
+      ></app-carousel-netflix>
+    }
   }
 </main>

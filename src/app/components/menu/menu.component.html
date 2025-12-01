@@ -25,10 +25,12 @@
       <span class="material-symbols-outlined">search</span>
     </div>
 
-    <input type="text"
-           placeholder="Pesquisar..."
-           [class.visible]="isSearchVisible()"
-           class="search-input">
+  <input type="text"
+            placeholder="Pesquisar..."
+            [class.visible]="isSearchVisible()"
+            class="search-input"
+            (input)="search($event)">
+
 
     <!-- 🔥 USER AREA (nome + engrenagem + logout) -->
     <div class="user-info" *ngIf="username() || isPending() || isBanned()">

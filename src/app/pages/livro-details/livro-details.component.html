@@ -1,4 +1,3 @@
-<!-- src/app/pages/livro-details/livro-details.component.html -->
 <app-menu></app-menu>
 
 <app-toast 
@@ -27,36 +26,33 @@
 
       <p><strong>Status:</strong>
         <span 
-          class="status-chip" 
-          [class.status-ok]="book().status === 'DISPONIVEL'"
-          [class.status-other]="book().status !== 'DISPONIVEL'">
-          {{ book().status }}
+          class="status-chip">
+          {{ statusFinal() }}
         </span>
       </p>
 
       <div class="list-box" *ngIf="book().autores?.length">
-        <strong style="width:100%">Autores:</strong>
+        <strong>Autores:</strong>
         <span class="chip" *ngFor="let a of book().autores">{{ a }}</span>
       </div>
 
       <div class="list-box" *ngIf="book().temas?.length">
-        <strong style="width:100%">Temas:</strong>
+        <strong>Temas:</strong>
         <span class="chip-alt" *ngFor="let t of book().temas">{{ t }}</span>
       </div>
 
       <div class="list-box" *ngIf="book().tags?.length">
-        <strong style="width:100%">Tags:</strong>
+        <strong>Tags:</strong>
         <span class="chip" *ngFor="let t of book().tags">#{{ t }}</span>
       </div>
 
       <p><strong>Descrição:</strong></p>
       <p class="description">
         {{ truncatedDescription() }}
-        <ng-container *ngIf="book().description?.length > 450">
-          <a (click)="toggleDescription()" class="read-more">
-            {{ showFullDescription() ? 'Ler menos' : 'Ler mais' }}
-          </a>
-        </ng-container>
+        <a *ngIf="book().description?.length > 450"
+           (click)="toggleDescription()" class="read-more">
+          {{ showFullDescription() ? 'Ler menos' : 'Ler mais' }}
+        </a>
       </p>
 
       <p class="stock" *ngIf="!livroObtido()">
@@ -65,31 +61,41 @@
 
       <div>
 
-        <!-- 📗 BOTÃO DE PEGAR LIVRO (só aparece se houver unidades disponíveis) -->
+        <!-- PEGAR LIVRO -->
         <button 
-          *ngIf="!livroObtido() && book().stock > 0" 
+          *ngIf="!livroObtido() && !livroReservado() && book().stock > 0" 
           class="btn-obter" 
           (click)="obterLivro()">
           OBTER LIVRO
         </button>
 
-        <!-- 📘 BOTÃO DE RESERVAR (se não houver unidades + status != DISPONIVEL) -->
-        <button
-          *ngIf="!livroObtido() && book().stock === 0"
-          class="btn-reservar"
-          (click)="reservarLivro()">
-          RESERVAR LIVRO
-        </button>
+        <!-- RESERVAR LIVRO (Esgotado) -->
+        <div *ngIf="!livroObtido() && !livroReservado() && book().stock === 0">
 
-        <!-- MENSAGEM DE INFO -->
-        <p 
-          *ngIf="!livroObtido() && book().stock === 0"
-          style="margin-top:8px;color:#ffb100;font-size:14px;">
-          Todos os exemplares estão emprestados.  
-          Você pode realizar uma reserva.
-        </p>
+          <button
+            class="btn-reservar"
+            (click)="reservarLivro()">
+            RESERVAR LIVRO
+          </button>
 
-        <!-- 📚 BOTÃO LER AGORA -->
+          <p style="margin-top:8px;color:#ffb100;font-size:14px;">
+            Todos os exemplares estão emprestados.<br>
+            Você pode realizar uma reserva.
+          </p>
+        </div>
+
+        <!-- USUÁRIO JÁ ESTÁ NA FILA -->
+        <div *ngIf="livroReservado()" style="margin-top:10px;">
+          <p style="color:#ffb100;font-size:14px;">
+            Você está na lista de espera para este livro.
+          </p>
+
+          <button class="btn-devolver" (click)="cancelarReserva()">
+            CANCELAR RESERVA
+          </button>
+        </div>
+
+        <!-- LER AGORA -->
         <a 
           *ngIf="livroObtido()" 
           class="btn-obter"
@@ -98,7 +104,7 @@
           LER AGORA
         </a>
 
-        <!-- 🔥 BOTÃO DEVOLVER LIVRO -->
+        <!-- DEVOLVER LIVRO -->
         <button
           *ngIf="livroObtido()"
           class="btn-devolver"

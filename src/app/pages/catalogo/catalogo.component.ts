@@ -1,6 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CarouselNetflixComponent } from '../../components/carousel-netflix/carousel-netflix.component';
 import { MenuComponent } from '../../components/menu/menu.component';
@@ -13,92 +13,111 @@ import { MenuComponent } from '../../components/menu/menu.component';
   styleUrls: ['./catalogo.component.css'],
 })
 export class CatalogoComponent {
+
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  // Ajuste aqui para os temas que você quer exibir (devem existir no banco)
   categories = signal<string[]>([
-    'Tecnologia',
-    'Ficção',
-    'Fantasia',
-    'História',
-    'Aventura',
-    'Mistério'
+    'Fiction',
+    'Computers',
+    'History',
+    'Science',
+    'Juvenile Fiction',
+    'Philosophy'
   ]);
 
-  // guarda os livros por categoria (todos os livros retornados pelo endpoint)
-  booksByCategory = signal<Record<string, Array<{ id: number; title: string; author: string; thumbnail: string }>>>({});
+  booksByCategory = signal<Record<string, any[]>>({});
+  searchResults = signal<any[]>([]);
+  searchText = signal('');
+
+  private debounceTimer: any = null;
+
+  // Quando searchText tem valor → estamos buscando
+  isSearching = computed(() => this.searchText().trim().length > 0);
+
+  constructor() {
+
+    // 🔥 EVENTO GLOBAL DA BARRA DE BUSCA DO MENU
+    window.addEventListener('catalog-search', (e: any) => {
+      this.searchText.set(e.detail ?? '');
+    });
+
+    // 🔥 EFEITO PARA RODAR BUSCA COM DEBOUNCE
+    effect(() => {
+      const query = this.searchText().trim();
+
+      if (this.debounceTimer) clearTimeout(this.debounceTimer);
+
+      if (query === '') {
+        this.searchResults.set([]);
+        return;
+      }
+
+      this.debounceTimer = setTimeout(() => {
+        this.executeSearch(query);
+      }, 800);
+    });
+  }
 
   ngOnInit() {
     this.loadBooksByThemes();
   }
 
-  /**
-   * Normaliza a URI de capa retornada pelo backend.
-   * - Se for /uploads/... -> prefixa base do servidor
-   * - Se for caminho Windows (C:\...) -> converte backslashes (pode não ser acessível do browser)
-   * - Se for já um URL absoluto (http(s)://) -> retorna direto
-   */
   private normalizeThumbnail(uri?: string): string {
-    if (!uri) {
-      return 'https://via.placeholder.com/150x220?text=Sem+Capa';
-    }
-
-    // converte backslashes para slash
-    const cleaned = uri.replace(/\\/g, '/').trim();
-
-    // já é uma URL absoluta
-    if (/^https?:\/\//i.test(cleaned)) {
-      return cleaned;
-    }
-
-    // caminho relativo público que começa com /uploads ou uploads
-    if (cleaned.startsWith('/uploads') || cleaned.startsWith('uploads')) {
-      // ajuste base se necessário (troque host/porta se o backend estiver em outro lugar)
-      return `http://localhost:8080${cleaned.startsWith('/') ? cleaned : '/' + cleaned}`;
-    }
-
-    // caminho Windows convertido -> provavelmente não acessível via HTTP,
-    // mas tentamos retornar como-is (com barras) caso você sirva arquivos por rota especial
-    if (/^[a-zA-Z]:\//.test(cleaned)) {
-      // opcional: se você tiver um endpoint que converte paths locais, adapte aqui
-      return cleaned;
-    }
-
-    // fallback: placeholder
+    if (!uri) return 'https://via.placeholder.com/150x220?text=Sem+Capa';
+    const cleaned = uri.replace(/\\/g, '/');
+    if (/^https?:\/\//i.test(cleaned)) return cleaned;
+    if (cleaned.startsWith('/uploads')) return `http://localhost:8080${cleaned}`;
     return 'https://via.placeholder.com/150x220?text=Sem+Capa';
   }
 
-  /**
-   * Carrega, para cada tema listado em `categories`, todos os livros vindos do endpoint:
-   * GET http://localhost:8080/livros/tema/{tema}
-   */
+  // 🔥 BUSCA GLOBAL
+  executeSearch(q: string) {
+    const token = sessionStorage.getItem('token');
+
+    this.http.get<any>(
+      `http://localhost:8080/livros/search?q=${encodeURIComponent(q)}&page=0&size=1000`,
+      { headers: token ? { Authorization: `Bearer ${token}` } : {} }
+    )
+    .subscribe({
+      next: (resp) => {
+        const content = resp?.data?.content ?? [];
+        this.searchResults.set(
+          content.map((l: any) => ({
+            id: l.id,
+            title: l.titulo,
+            author: l.autor ?? l.autores?.join(', ') ?? 'Autor desconhecido',
+            thumbnail: this.normalizeThumbnail(l.uriImgLivro)
+          }))
+        );
+      },
+      error: () => this.searchResults.set([])
+    });
+  }
+
+  // 🔥 CARREGAR CATEGORIAS
   loadBooksByThemes() {
     const token = sessionStorage.getItem('token');
 
-    this.categories().forEach((tema) => {
-      const url = `http://localhost:8080/livros/tema/${encodeURIComponent(tema)}`;
-
-      this.http.get<any>(url, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
-      }).subscribe({
+    this.categories().forEach(tema => {
+      this.http.get<any>(
+        `http://localhost:8080/livros/tema/${encodeURIComponent(tema)}`,
+        { headers: token ? { Authorization: `Bearer ${token}` } : {} }
+      )
+      .subscribe({
         next: (res) => {
-          const arr: any[] = Array.isArray(res?.data) ? res.data : [];
-
-          const books = arr.map(livro => ({
-            id: livro.id,
-            title: livro.titulo ?? 'Título não informado',
-            author: livro.autor ?? (livro.autores ? livro.autores.join(', ') : 'Autor desconhecido'),
-            thumbnail: this.normalizeThumbnail(livro.uriImgLivro)
+          const arr = res?.data ?? [];
+          const books = arr.map((l: any) => ({
+            id: l.id,
+            title: l.titulo,
+            author: l.autor ?? l.autores?.join(', ') ?? 'Autor desconhecido',
+            thumbnail: this.normalizeThumbnail(l.uriImgLivro)
           }));
 
           this.booksByCategory.update(prev => ({ ...prev, [tema]: books }));
         },
-        error: (err) => {
-          console.error(`Erro ao carregar tema ${tema}:`, err);
-          // mantém a chave presente mesmo se der erro, evitando undefined no template
-          this.booksByCategory.update(prev => ({ ...prev, [tema]: [] }));
-        }
+        error: () =>
+          this.booksByCategory.update(prev => ({ ...prev, [tema]: [] }))
       });
     });
   }
@@ -108,4 +127,3 @@ export class CatalogoComponent {
     this.router.navigate(['/livros', bookId]);
   }
 }
-  

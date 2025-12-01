@@ -11,18 +11,18 @@
       <input 
         type="text" 
         [(ngModel)]="usernameSearch"
-        placeholder="Buscar por username..."
+        placeholder="Buscar por qualquer atributo..."
+        (input)="filtrarLocal()"
       />
-      <button (click)="buscarHistorico()">Buscar</button>
     </div>
 
     <!-- 🔥 EMPTY STATE -->
-    <div class="empty-box" *ngIf="historico.length === 0">
+    <div class="empty-box" *ngIf="historicoFiltrado.length === 0">
       <p>Nenhum histórico encontrado.</p>
     </div>
 
     <!-- 🔥 TABELA -->
-    <div class="table-container" *ngIf="historico.length > 0">
+    <div class="table-container" *ngIf="historicoFiltrado.length > 0">
 
       <table>
         <thead>
@@ -33,14 +33,13 @@
             <th>Título</th>
             <th>Início</th>
             <th>Prevista Devolução</th>
-            <th>Renovações</th>
             <th>Status</th>
             <th>Capa</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr *ngFor="let h of historico">
+          <tr *ngFor="let h of historicoFiltrado">
 
             <td>{{ h.id }}</td>
             <td>{{ h.usuarioId }}</td>
@@ -50,8 +49,6 @@
 
             <td>{{ h.dtInicio }}</td>
             <td>{{ h.dtPrevistaDevolucao }}</td>
-
-            <td>{{ h.numRenovacoes }}</td>
 
             <td>
               <span [ngStyle]="{
@@ -78,7 +75,6 @@
       </table>
     </div>
 
-    <!-- 🔥 TOAST -->
     <app-toast [message]="alertMessage" [show]="showAlert"></app-toast>
 
   </main>
