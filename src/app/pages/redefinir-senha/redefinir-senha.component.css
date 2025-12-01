@@ -203,3 +203,81 @@ input::placeholder {
   }
 }
 
+.password-rules {
+  margin-top: -10px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  color: #bbb;
+  line-height: 1.4;
+}
+
+.password-rules p {
+  margin: 3px 0;
+  transition: color 0.3s ease;
+}
+
+.password-rules .valid {
+  color: #28a745 !important;
+  font-weight: bold;
+}
+
+.password-match {
+  color: #ff4d4d;
+  font-size: 0.9rem;
+  margin-top: -5px;
+  margin-bottom: 10px;
+  display: none;
+  font-weight: bold;
+}
+.password-match.visible {
+  display: block;
+}
+
+/* BOX DE REGRAS DA SENHA */
+.password-rules {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Cada regra de senha */
+.password-rules div {
+  margin-bottom: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #3a2f28;
+  border-left: 4px solid #a54242;
+  transition: 0.2s ease-in-out;
+}
+
+/* Quando a regra está válida */
+.password-rules div.valid {
+  background: #203d22;
+  border-left-color: #28a745;
+  color: #28a745;
+}
+
+/* Quando estiver inválida */
+.password-rules div:not(.valid) {
+  color: #ff6961;
+}
+
+/* MENSAGEM DE SENHAS DIFERENTES */
+.password-match {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  background: #3a2f28;
+  color: #ff6961;
+  border-left: 4px solid #ff6961;
+  font-size: 0.9rem;
+  display: none;
+}
+
+.password-match.visible {
+  display: block;
+}

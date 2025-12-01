@@ -38,6 +38,18 @@
             <label for="password">NOVA SENHA</label>
             <input type="password" id="password" name="password" placeholder="senha" required />
           </div>
+          <!-- FEEDBACK DE SENHA FORTE -->
+          <div class="password-rules" id="password-rules">
+            <p id="rule-length">• mínimo 6 caracteres</p>
+            <p id="rule-upper">• ao menos 1 letra maiúscula</p>
+            <p id="rule-lower">• ao menos 1 letra minúscula</p>
+            <p id="rule-number">• ao menos 1 número</p>
+            <p id="rule-special">• ao menos 1 caractere especial</p>
+          </div>
+
+          <!-- SENHAS DIFERENTES -->
+          <p id="password-match" class="password-match">As senhas não coincidem</p>
+
           <div class="form-group">
             <label for="confirm-password">CONFIRMAR NOVA SENHA</label>
             <input
