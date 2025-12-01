@@ -26,7 +26,7 @@
   transition: all .18s ease;
 }
 
-/* TÍTULO */
+/* TITLE */
 .dialog-box h2 {
   margin: 0 0 14px 0;
   font-size: 18px;
@@ -35,7 +35,7 @@
   color: #fff;
 }
 
-/* LABEL + INPUTS */
+/* LABEL */
 label {
   font-size: 13px;
   color: #d8d6d4;
@@ -43,20 +43,21 @@ label {
   margin-top: 10px;
 }
 
+/* INPUT + SELECT (dark mode restaurado) */
 input,
 select {
   width: 100%;
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.04);
-  background: linear-gradient(180deg, #23211f, #1f1d1b);
-  color: #f5f4f3;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(180deg, #23211f, #1f1d1b) !important;
+  color: #f5f4f3 !important;
   font-size: 14px;
   outline: none;
   transition: box-shadow .18s ease, border-color .18s ease, background .18s ease;
 }
 
-/* SELECT ARROW */
+/* SETA DOURADA */
 select {
   appearance: none;
   background-image: linear-gradient(45deg, transparent 50%, #bba36f 50%),
@@ -68,6 +69,12 @@ select {
   padding-right: 36px;
 }
 
+/* OPTIONS ESCUROS */
+select option {
+  background: #1f1d1b !important;
+  color: #ffffff !important;
+}
+
 /* FOCUS */
 input:focus,
 select:focus {
@@ -75,7 +82,7 @@ select:focus {
   box-shadow: 0 0 0 6px rgba(195,134,50,0.12);
 }
 
-/* ACTIONS */
+/* BOTÕES */
 .actions {
   display: flex;
   justify-content: flex-end;
@@ -83,7 +90,6 @@ select:focus {
   margin-top: 18px;
 }
 
-/* BOTÕES */
 .cancel, .confirm {
   padding: 10px 14px;
   border-radius: 10px;
@@ -100,16 +106,12 @@ select:focus {
   border: 1px solid rgba(255,255,255,0.03);
 }
 
-.cancel:hover { transform: translateY(-2px); }
-
 .confirm {
   background: linear-gradient(180deg, #c38632, #a86f22);
   color: #fff;
 }
 
-.confirm:hover { transform: translateY(-2px); }
-
-/* --- MODO SUCESSO --- */
+/* SUCESSO */
 .dialog-box.success-mode {
   text-align: center;
   padding: 32px 24px;
@@ -149,19 +151,7 @@ select:focus {
   color: #cfcac7;
 }
 
-/* FIX: fundo escuro no dropdown */
-select option {
-  background: #23211f !important;
-  color: #ffffff !important;
-}
-
-/* (Opcional, mas recomendado) remove contraste branco do Chrome */
-select optgroup {
-  background: #23211f !important;
-  color: #ffffff !important;
-}
-
-/* --- VALIDAÇÃO VISUAL --- */
+/* VALIDAÇÃO */
 .invalid {
   border-color: #ff4d4d !important;
   box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.20) !important;
@@ -174,38 +164,4 @@ select optgroup {
   50% { transform: translateX(4px); }
   75% { transform: translateX(-4px); }
   100% { transform: translateX(0); }
-}
-
-/* Modern Toast */
-.modern-toast {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: linear-gradient(180deg, #2b2927, #262322);
-  border: 1px solid rgba(255,255,255,0.05);
-  padding: 12px 16px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.55);
-  z-index: 10000;
-  color: #fff;
-  animation: toastFade .25s ease;
-}
-
-@keyframes toastFade {
-  from { opacity: 0; transform: translateY(-10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.toast-icon {
-  font-size: 18px;
-}
-
-.toast-content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
 }

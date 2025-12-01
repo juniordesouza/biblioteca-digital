@@ -20,8 +20,6 @@ import { ToastComponent } from '../../components/toast.component/toast.component
 export class CargoDialogComponent {
 
   @Output() close = new EventEmitter<void>();
-
-  // 👇 ADICIONADO — evento que o AdminHeader espera
   @Output() submitted = new EventEmitter<string>();
 
   username = "";
@@ -91,9 +89,7 @@ export class CargoDialogComponent {
     this.http.put<any>(
       'http://localhost:8080/admin/trocar-cargo',
       payload,
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      }
+      { headers: { Authorization: `Bearer ${token}` } }
     )
     .subscribe({
       next: (res) => {
@@ -102,11 +98,11 @@ export class CargoDialogComponent {
           this.responseData = res;
           this.success = true;
 
-          // 👇 ADICIONADO — envia mensagem para o componente pai
           this.submitted.emit(res?.mensagem || "Cargo atualizado com sucesso.");
 
           this.cdr.markForCheck();
 
+          // FECHA SOMENTE AQUI — AdminHeader não fecha mais
           setTimeout(() => {
             this.close.emit();
           }, 2500);

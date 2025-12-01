@@ -117,8 +117,7 @@ export class AdminHeaderComponent {
 
   // callback do cargo (vem do CargoDialogComponent)
   onCargoSubmitted(message: string) {
-    this.showToast(message || 'Cargo alterado.');
-    this.showCargoDialog = false;
+    //
   }
 
   // toast local
